@@ -173,9 +173,9 @@ const avatarUrl = 'avatar.glb';
 
 function setupScene(canvas, small = false) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(small ? 31 : 29, 1, 0.01, 100);
-  camera.position.set(0, -8.2, 1.55);
-  camera.lookAt(0, 0, small ? 1.05 : 1.48);
+  const camera = new THREE.PerspectiveCamera(small ? 30 : 27, 1, 0.01, 100);
+  camera.position.set(0, -6.2, small ? 1.05 : 1.25);
+  camera.lookAt(0, 0, small ? 0.95 : 1.22);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -186,17 +186,23 @@ function setupScene(canvas, small = false) {
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
   renderer.setClearColor(0x000000, 0);
 
-  scene.add(new THREE.HemisphereLight(0xfff7e8, 0x463c31, 2.1));
+  scene.add(new THREE.HemisphereLight(0xfff8ec, 0x5b5042, 1.7));
 
-  const key = new THREE.DirectionalLight(0xfff1cf, 2.3);
-  key.position.set(3, -4, 5);
+  const key = new THREE.DirectionalLight(0xfff4d9, 2.0);
+  key.position.set(2.5, -4.5, 5);
   scene.add(key);
 
-  const fill = new THREE.DirectionalLight(0xd9d9e8, 1.15);
-  fill.position.set(-3, -1, 3);
+  const fill = new THREE.DirectionalLight(0xe5e4ef, 0.9);
+  fill.position.set(-3.5, -2, 2.5);
   scene.add(fill);
+
+  const rim = new THREE.DirectionalLight(0xc9c9dd, 0.7);
+  rim.position.set(2, 2.5, 4);
+  scene.add(rim);
 
   return { scene, camera, renderer };
 }
@@ -211,23 +217,25 @@ function resizeScene(sceneData, canvas) {
 }
 
 function prepareAvatar(source, small = false) {
-  source.rotation.set(0, Math.PI, 0);
+  source.rotation.set(0, 0, 0);
   source.updateMatrixWorld(true);
 
   const bounds = new THREE.Box3().setFromObject(source);
   const size = bounds.getSize(new THREE.Vector3());
   const center = bounds.getCenter(new THREE.Vector3());
-  const targetHeight = small ? 2.05 : 2.75;
+  const targetHeight = small ? 1.72 : 2.38;
   const scale = targetHeight / Math.max(size.z, 0.001);
 
   source.scale.setScalar(scale);
-  source.position.set(-center.x, -center.y, -bounds.min.z);
+  source.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
   source.updateMatrixWorld(true);
 
   const wrapper = new THREE.Group();
   wrapper.add(source);
-  wrapper.position.set(0, 0, 0);
+  wrapper.position.set(0, 0, small ? 0.90 : 1.20);
+  wrapper.rotation.y = 0;
   wrapper.userData.avatarSource = source;
+  wrapper.userData.baseY = 0;
 
   return wrapper;
 }
@@ -290,10 +298,10 @@ function animateAvatar(model, time) {
   const source = model.userData.avatarSource || model;
   const breathe = reducedMotion ? 0 : Math.sin(time * 1.5) * 0.012;
   const targetX = pointer.y * 0.045;
-  const targetY = Math.PI - pointer.x * 0.22 + poseCurrent.head;
+  const targetY = pointer.x * 0.22 + poseCurrent.head;
   const targetZ = -pointer.y * 0.035 + poseCurrent.tilt;
 
-  model.position.z += (breathe + poseCurrent.bounce - model.position.z) * 0.08;
+  model.position.z += (model.userData.baseY + breathe + poseCurrent.bounce - model.position.z) * 0.08;
   model.position.x += (poseCurrent.lean - model.position.x) * 0.08;
   model.rotation.x += (targetX - model.rotation.x) * 0.07;
   model.rotation.y += (targetY - model.rotation.y) * 0.07;
