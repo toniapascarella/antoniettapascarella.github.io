@@ -49,7 +49,7 @@ nav.links a:hover,nav.links a:focus-visible{color:var(--ink);border-color:var(--
 .hero-visual{position:relative;width:min(47vw,500px);height:min(62vw,590px);min-width:320px;min-height:430px;display:flex;align-items:center;justify-content:center;overflow:visible;flex:0 0 auto;margin:0 auto}
 .hero-visual::before{content:"";position:absolute;width:78%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at center,transparent 0 57%,var(--line-soft) 57.5% 58%,transparent 58.5%),repeating-conic-gradient(from 0deg,var(--line) 0deg 2deg,transparent 2deg 18deg);opacity:.62;transform:rotate(-7deg)}
 .hero-visual::after{content:"";position:absolute;inset:13% 8%;border:1px solid var(--line-soft);border-radius:48% 52% 46% 54%;transform:rotate(5deg);pointer-events:none}
-#avatar-canvas{position:relative;z-index:2;width:100%;height:100%;display:block;cursor:grab}#avatar-canvas:active{cursor:grabbing}
+#avatar-canvas{position:relative;z-index:2;width:100%;height:100%;display:block;cursor:default}
 .avatar-label{position:absolute;z-index:3;right:2%;top:12%;font:italic 1rem var(--font-display);color:var(--ink-soft);transform:rotate(3deg);pointer-events:none}.avatar-label::after{content:"";position:absolute;width:52px;height:24px;border-top:1px solid var(--ocra);border-radius:50%;left:-44px;top:22px;transform:rotate(-16deg)}
 .avatar-status{position:absolute;z-index:3;bottom:4%;left:5%;display:flex;align-items:center;gap:.45rem;font:.68rem var(--font-ui);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint)}.avatar-status i{width:7px;height:7px;border-radius:50%;background:var(--oliva);box-shadow:0 0 0 4px rgba(95,113,72,.12)}
 section{padding:clamp(2.5rem,6vw,4.5rem) 0}section#chi-sono,section#accessibilita,section#contatti{border-top:1px solid var(--line-soft)}
@@ -154,17 +154,24 @@ const companionCaption = document.getElementById('companionCaption');
 let heroRenderer, heroScene, heroCamera, avatar;
 let companionRenderer, companionScene, companionCamera, companionAvatar;
 let clock;
-let pointer = { x: 0, y: 0 };
-let poseTarget = { head: 0, tilt: 0, arm: 0, lean: 0, bounce: 0 };
-let poseCurrent = { ...poseTarget };
 
+const pointer = {
+  x: 0,
+  y: 0,
+  targetX: 0,
+  targetY: 0
+};
+
+const poseTarget = { head: 0, tilt: 0, arm: 0, lean: 0, bounce: 0 };
+const poseCurrent = { ...poseTarget };
+const eyeState = new WeakMap();
 const avatarUrl = './avatar.glb';
 
 function setupScene(canvas, small = false) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(small ? 25 : 24, 1, 0.1, 100);
-  camera.position.set(0, -7.2, 2.25);
-  camera.lookAt(0, 0, 1.65);
+  const camera = new THREE.PerspectiveCamera(small ? 27 : 25, 1, 0.1, 100);
+  camera.position.set(0, -7.4, 2.1);
+  camera.lookAt(0, 0, 1.45);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -175,16 +182,17 @@ function setupScene(canvas, small = false) {
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.setClearColor(0x000000, 0);
 
-  scene.add(new THREE.HemisphereLight(0xfff7e8, 0x463c31, 2.2));
+  scene.add(new THREE.HemisphereLight(0xfff7e8, 0x463c31, 2.0));
 
-  const key = new THREE.DirectionalLight(0xfff1cf, 2.5);
-  key.position.set(2, -4, 5);
+  const key = new THREE.DirectionalLight(0xfff1cf, 2.2);
+  key.position.set(3, -4, 5);
   scene.add(key);
 
-  const rim = new THREE.DirectionalLight(0xb0b4d6, 1.1);
-  rim.position.set(-3, 2, 3);
-  scene.add(rim);
+  const fill = new THREE.DirectionalLight(0xd9d9e8, 1.0);
+  fill.position.set(-3, -1, 3);
+  scene.add(fill);
 
   return { scene, camera, renderer };
 }
@@ -193,37 +201,51 @@ function resizeScene(sceneData, canvas) {
   const rect = canvas.getBoundingClientRect();
   const width = Math.max(1, rect.width);
   const height = Math.max(1, rect.height);
-
   sceneData.renderer.setSize(width, height, false);
   sceneData.camera.aspect = width / height;
   sceneData.camera.updateProjectionMatrix();
 }
 
-function loadAvatar(scene, callback) {
-  const loader = new GLTFLoader();
+function prepareAvatar(model, small = false) {
+  model.rotation.set(Math.PI, 0, 0);
+  model.position.set(0, 0, 0);
 
-  loader.load(
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+
+  model.position.x -= center.x;
+  model.position.z -= center.z;
+  model.position.y -= box.min.y;
+
+  const desiredHeight = small ? 4.1 : 5.0;
+  if (size.y > 0) {
+    const scale = desiredHeight / size.y;
+    model.scale.setScalar(scale);
+  }
+
+  return model;
+}
+
+function loadAvatar(scene, callback, small = false) {
+  new GLTFLoader().load(
     avatarUrl,
     gltf => {
-      const model = gltf.scene;
-      model.scale.setScalar(1.05);
-      model.rotation.y = Math.PI;
+      const model = prepareAvatar(gltf.scene, small);
       scene.add(model);
       callback(model);
     },
     undefined,
-    error => {
-      console.error('Unable to load avatar.glb:', error);
-    }
+    error => console.error('Unable to load avatar.glb:', error)
   );
 }
 
 function applyPose(name) {
   const poses = {
     home: { head: 0, tilt: 0, arm: 0, lean: 0, bounce: 0 },
-    about: { head: -0.13, tilt: 0.04, arm: -0.10, lean: -0.035, bounce: 0.012 },
-    work: { head: 0.18, tilt: -0.035, arm: 0.22, lean: 0.025, bounce: -0.008 },
-    contact: { head: -0.20, tilt: 0.05, arm: -0.30, lean: -0.02, bounce: 0.016 }
+    about: { head: -0.11, tilt: 0.035, arm: -0.08, lean: -0.025, bounce: 0.01 },
+    work: { head: 0.15, tilt: -0.025, arm: 0.18, lean: 0.02, bounce: -0.006 },
+    contact: { head: -0.16, tilt: 0.045, arm: -0.24, lean: -0.015, bounce: 0.012 }
   };
 
   const labels = {
@@ -233,42 +255,103 @@ function applyPose(name) {
     contact: 'scrivimi'
   };
 
-  poseTarget = poses[name] || poses.home;
+  Object.assign(poseTarget, poses[name] || poses.home);
+  if (companionCaption) companionCaption.textContent = labels[name] || labels.home;
+}
 
-  if (companionCaption) {
-    companionCaption.textContent = labels[name] || labels.home;
-  }
+function findPart(root, names) {
+  const wanted = names.map(name => name.toLowerCase());
+  let found = null;
+
+  root.traverse(node => {
+    if (found || !node.name) return;
+    const name = node.name.toLowerCase();
+    if (wanted.some(value => name === value || name.includes(value))) found = node;
+  });
+
+  return found;
 }
 
 function animateAvatar(model, time) {
   if (!model) return;
 
   for (const key of Object.keys(poseCurrent)) {
-    poseCurrent[key] += (poseTarget[key] - poseCurrent[key]) * 0.055;
+    poseCurrent[key] += (poseTarget[key] - poseCurrent[key]) * 0.06;
   }
 
-  const breathe = reducedMotion ? 0 : Math.sin(time * 1.7) * 0.012;
+  pointer.x += (pointer.targetX - pointer.x) * 0.09;
+  pointer.y += (pointer.targetY - pointer.y) * 0.09;
 
+  const breathe = reducedMotion ? 0 : Math.sin(time * 1.5) * 0.018;
   model.position.y = breathe + poseCurrent.bounce;
-  model.position.x = (reducedMotion ? 0 : Math.sin(time * 0.55) * 0.012) + poseCurrent.lean;
+  model.position.x = poseCurrent.lean;
 
-  const targetY = Math.PI + pointer.x * 0.30 + poseCurrent.head;
-  const targetX = -pointer.y * 0.10 + poseCurrent.tilt;
+  const baseX = Math.PI;
+  const targetY = -pointer.x * 0.22 + poseCurrent.head;
+  const targetZ = -pointer.y * 0.07 + poseCurrent.tilt;
 
-  model.rotation.y += (targetY - model.rotation.y) * 0.045;
-  model.rotation.x += (targetX - model.rotation.x) * 0.045;
+  model.rotation.x += (baseX - model.rotation.x) * 0.06;
+  model.rotation.y += (targetY - model.rotation.y) * 0.06;
+  model.rotation.z += (targetZ - model.rotation.z) * 0.06;
 
-  const armLeft = model.getObjectByName('arm_-1');
-  const armRight = model.getObjectByName('arm_1');
-  const handLeft = model.getObjectByName('hand_-1');
-  const handRight = model.getObjectByName('hand_1');
-  const head = model.getObjectByName('head');
+  const armLeft = findPart(model, ['arm_-1', 'arm_left', 'left_arm']);
+  const armRight = findPart(model, ['arm_1', 'arm_right', 'right_arm']);
+  const handLeft = findPart(model, ['hand_-1', 'hand_left', 'left_hand']);
+  const handRight = findPart(model, ['hand_1', 'hand_right', 'right_hand']);
+  const head = findPart(model, ['head', 'face']);
+  const pupilLeft = findPart(model, ['pupil_-1']);
+  const pupilRight = findPart(model, ['pupil_1']);
+  const irisLeft = findPart(model, ['iris_-1']);
+  const irisRight = findPart(model, ['iris_1']);
 
-  if (armLeft) armLeft.rotation.z += (-poseCurrent.arm * 0.22 - armLeft.rotation.z) * 0.06;
-  if (armRight) armRight.rotation.z += (poseCurrent.arm * 0.22 - armRight.rotation.z) * 0.06;
-  if (handLeft) handLeft.rotation.z += (-poseCurrent.arm * 0.12 - handLeft.rotation.z) * 0.06;
-  if (handRight) handRight.rotation.z += (poseCurrent.arm * 0.12 - handRight.rotation.z) * 0.06;
-  if (head) head.rotation.z += (poseCurrent.tilt * 0.5 - head.rotation.z) * 0.04;
+  if (!eyeState.has(model)) {
+    eyeState.set(model, {
+      pupilLeft: pupilLeft ? { x: pupilLeft.rotation.x, y: pupilLeft.rotation.y } : null,
+      pupilRight: pupilRight ? { x: pupilRight.rotation.x, y: pupilRight.rotation.y } : null,
+      irisLeft: irisLeft ? { x: irisLeft.rotation.x, y: irisLeft.rotation.y } : null,
+      irisRight: irisRight ? { x: irisRight.rotation.x, y: irisRight.rotation.y } : null
+    });
+  }
+
+  const eyes = eyeState.get(model);
+  const eyeX = -pointer.y * 0.18;
+  const eyeY = pointer.x * 0.20;
+
+  if (pupilLeft && eyes.pupilLeft) {
+    pupilLeft.rotation.x = eyes.pupilLeft.x + eyeX;
+    pupilLeft.rotation.y = eyes.pupilLeft.y + eyeY;
+  }
+  if (pupilRight && eyes.pupilRight) {
+    pupilRight.rotation.x = eyes.pupilRight.x + eyeX;
+    pupilRight.rotation.y = eyes.pupilRight.y + eyeY;
+  }
+  if (irisLeft && eyes.irisLeft) {
+    irisLeft.rotation.x = eyes.irisLeft.x + eyeX * 0.8;
+    irisLeft.rotation.y = eyes.irisLeft.y + eyeY * 0.8;
+  }
+  if (irisRight && eyes.irisRight) {
+    irisRight.rotation.x = eyes.irisRight.x + eyeX * 0.8;
+    irisRight.rotation.y = eyes.irisRight.y + eyeY * 0.8;
+  }
+
+  if (armLeft) armLeft.rotation.z += (-poseCurrent.arm * 0.20 - armLeft.rotation.z) * 0.07;
+  if (armRight) armRight.rotation.z += (poseCurrent.arm * 0.20 - armRight.rotation.z) * 0.07;
+  if (handLeft) handLeft.rotation.z += (-poseCurrent.arm * 0.10 - handLeft.rotation.z) * 0.07;
+  if (handRight) handRight.rotation.z += (poseCurrent.arm * 0.10 - handRight.rotation.z) * 0.07;
+  if (head) head.rotation.z += (poseCurrent.tilt * 0.35 - head.rotation.z) * 0.05;
+}
+
+function setPointerFromEvent(event, canvas) {
+  const rect = canvas.getBoundingClientRect();
+  const x = (event.clientX - rect.left) / rect.width;
+  const y = (event.clientY - rect.top) / rect.height;
+  pointer.targetX = THREE.MathUtils.clamp((x - 0.5) * 2, -1, 1);
+  pointer.targetY = THREE.MathUtils.clamp((y - 0.5) * 2, -1, 1);
+}
+
+function resetPointer() {
+  pointer.targetX = 0;
+  pointer.targetY = 0;
 }
 
 function init3D() {
@@ -278,43 +361,24 @@ function init3D() {
   heroScene = hero.scene;
   heroCamera = hero.camera;
   heroRenderer = hero.renderer;
-
-  loadAvatar(heroScene, model => {
-    avatar = model;
-  });
-
+  loadAvatar(heroScene, model => { avatar = model; });
   resizeScene(hero, heroCanvas);
   window.addEventListener('resize', () => resizeScene(hero, heroCanvas));
 
-  heroCanvas.addEventListener('pointermove', event => {
-    const rect = heroCanvas.getBoundingClientRect();
-    pointer.x = event.clientX / rect.width - rect.left / rect.width - 0.5;
-    pointer.y = event.clientY / rect.height - rect.top / rect.height - 0.5;
-  });
-
-  heroCanvas.addEventListener('pointerleave', () => {
-    pointer.x = 0;
-    pointer.y = 0;
-  });
+  heroCanvas.addEventListener('pointermove', event => setPointerFromEvent(event, heroCanvas));
+  heroCanvas.addEventListener('pointerleave', resetPointer);
 
   if (companionCanvas) {
-    const companionSceneData = setupScene(companionCanvas, true);
-    companionScene = companionSceneData.scene;
-    companionCamera = companionSceneData.camera;
-    companionRenderer = companionSceneData.renderer;
+    const small = setupScene(companionCanvas, true);
+    companionScene = small.scene;
+    companionCamera = small.camera;
+    companionRenderer = small.renderer;
+    loadAvatar(companionScene, model => { companionAvatar = model; }, true);
+    resizeScene(small, companionCanvas);
+    window.addEventListener('resize', () => resizeScene(small, companionCanvas));
 
-    loadAvatar(companionScene, model => {
-      companionAvatar = model;
-    });
-
-    resizeScene(companionSceneData, companionCanvas);
-    window.addEventListener('resize', () => resizeScene(companionSceneData, companionCanvas));
-
-    companionCanvas.addEventListener('pointermove', event => {
-      const rect = companionCanvas.getBoundingClientRect();
-      pointer.x = event.clientX / rect.width - rect.left / rect.width - 0.5;
-      pointer.y = event.clientY / rect.height - rect.top / rect.height - 0.5;
-    });
+    companionCanvas.addEventListener('pointermove', event => setPointerFromEvent(event, companionCanvas));
+    companionCanvas.addEventListener('pointerleave', resetPointer);
   }
 
   clock = new THREE.Clock();
@@ -323,19 +387,12 @@ function init3D() {
 
 function render() {
   requestAnimationFrame(render);
-
   const time = clock.getElapsedTime();
-
   animateAvatar(avatar, time);
   animateAvatar(companionAvatar, time);
 
-  if (heroRenderer && heroScene && heroCamera) {
-    heroRenderer.render(heroScene, heroCamera);
-  }
-
-  if (companionRenderer && companionScene && companionCamera) {
-    companionRenderer.render(companionScene, companionCamera);
-  }
+  if (heroRenderer) heroRenderer.render(heroScene, heroCamera);
+  if (companionRenderer) companionRenderer.render(companionScene, companionCamera);
 }
 
 init3D();
