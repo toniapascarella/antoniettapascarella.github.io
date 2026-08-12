@@ -10,625 +10,136 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
 <style>
-  :root{
-    --bg: #F1EDE4;           /* RAL 9010 */
-    --bg-panel: #E8E0CC;     /* legno chiaro / cornice */
-    --bg-panel-deep: #DED2B4;
-    --ink: #241B12;          /* nero-bruno */
-    --ink-soft: #4B3B27;     /* bruno */
-    --ink-faint: #7A6A54;
-    --line: #C6B78F;
-    --line-soft: #D8CBA9;
-    --lavanda: #64628C;
-    --oliva: #5F7148;
-    --ocra: #A97C22;
-    --vinaccia: #6E2C2C;
-    --marini: #B9860B;
-
-    --font-display: 'Cormorant Garamond', serif;
-    --font-body: 'EB Garamond', Georgia, serif;
-    --font-ui: 'Jost', sans-serif;
-
-    --h1: clamp(2.4rem, 4.5vw, 3rem);
-    --h2: clamp(1.9rem, 3.2vw, 2.25rem);
-    --h3: clamp(1.35rem, 2.1vw, 1.5rem);
-    --body: 1.0625rem;
-    --micro: 0.8125rem;
-  }
-
-  *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:var(--font-body);
-    font-size:var(--body);
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection{ background:var(--ocra); color:#fff; }
-
-  a{ color:inherit; }
-
-  img, svg{ max-width:100%; display:block; }
-
-  h1,h2,h3{
-    font-family:var(--font-display);
-    color:var(--ink);
-    margin:0 0 .5em;
-    font-weight:700;
-    letter-spacing:.005em;
-  }
-  h1{ font-size:var(--h1); line-height:1.12; font-weight:700; }
-  h2{ font-size:var(--h2); font-weight:600; }
-  h3{ font-size:var(--h3); font-weight:600; color:var(--ink-soft); }
-  p{ margin:0 0 1.1em; color:var(--ink-soft); }
-  em{ color:var(--vinaccia); font-style:italic; }
-
-  .eyebrow{
-    font-family:var(--font-ui);
-    font-size:var(--micro);
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:var(--ocra);
-    font-weight:500;
-    display:inline-block;
-    margin-bottom:.9em;
-  }
-
-  .wrap{
-    max-width:1040px;
-    margin:0 auto;
-    padding:0 clamp(1.25rem, 4vw, 3rem);
-  }
-
-  /* Decorative rosette */
-  .rosone{
-    --size: 200px;
-    width:var(--size); height:var(--size);
-    border-radius:50%;
-    position:relative;
-    flex:none;
-    background:
-      radial-gradient(circle at center, transparent 0 26%, var(--line-soft) 26% 27%, transparent 27% 40%, var(--line-soft) 40% 41%, transparent 41%),
-      repeating-conic-gradient(from 0deg, var(--line) 0deg 3deg, transparent 3deg 30deg);
-    border:2px solid var(--line);
-    box-shadow: 0 0 0 6px var(--bg), 0 0 0 8px var(--line-soft);
-  }
-  .rosone::after{
-    content:"";
-    position:absolute; inset:38%;
-    border-radius:50%;
-    background:var(--ocra);
-    opacity:.85;
-  }
-  .rosone.small{ --size:64px; box-shadow:0 0 0 4px var(--bg), 0 0 0 5px var(--line-soft); }
-
-  .divider{
-    display:flex; align-items:center; justify-content:center;
-    gap:1rem;
-    margin: 3.2rem 0;
-    color:var(--line);
-  }
-  .divider::before, .divider::after{
-    content:""; flex:1; height:1px;
-    background:linear-gradient(90deg, transparent, var(--line), transparent);
-  }
-
-  /* Panel */
-  .panel{
-    position:relative;
-    background:var(--bg-panel);
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding: clamp(1.75rem, 4vw, 3rem);
-    box-shadow: inset 0 0 0 6px var(--bg), inset 0 0 0 7px var(--line-soft);
-  }
-  .panel::before, .panel::after,
-  .panel .corner-tl, .panel .corner-br{ content:""; }
-  .panel::before, .panel::after{
-    content:"";
-    position:absolute; width:22px; height:22px;
-    border-radius:50%;
-    background:radial-gradient(circle, var(--ocra) 0 30%, transparent 32%),
-               radial-gradient(circle, var(--line) 0 60%, transparent 62%);
-  }
-  .panel::before{ top:10px; left:10px; }
-  .panel::after{ bottom:10px; right:10px; }
-
-  /* Navigation */
-  header.nav{
-    position:sticky; top:0; z-index:50;
-    background:rgba(241,237,228,.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-inner{
-    max-width:1040px; margin:0 auto;
-    padding: .9rem clamp(1.25rem,4vw,3rem);
-    display:flex; align-items:center; justify-content:space-between;
-    gap:1rem; flex-wrap:wrap;
-  }
-  .brand{
-    font-family:var(--font-display);
-    font-weight:700; font-size:1.15rem;
-    letter-spacing:.03em;
-  }
-  .brand span{ color:var(--ocra); }
-  nav.links{
-    display:flex; gap:1.6rem; flex-wrap:wrap;
-    font-family:var(--font-ui);
-    font-size:.85rem;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-  }
-  nav.links a{
-    text-decoration:none; color:var(--ink-soft);
-    padding-bottom:2px;
-    border-bottom:1px solid transparent;
-    transition:border-color .2s, color .2s;
-  }
-  nav.links a:hover, nav.links a:focus-visible{
-    color:var(--ink); border-color:var(--ocra);
-  }
-
-  /* Hero */
-  .hero{ padding: clamp(3rem,8vw,6rem) 0 clamp(2rem,5vw,3.5rem); }
-  .hero-inner{
-    display:flex; align-items:center; gap: clamp(2rem, 6vw, 4rem);
-    flex-wrap:wrap-reverse;
-  }
-  .hero-text{ flex:1 1 420px; min-width:280px; }
-  .hero-visual{ flex:0 0 auto; margin:0 auto; }
-  .hero-tags{
-    display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1.6rem;
-  }
-  .tag{
-    font-family:var(--font-ui); font-size:var(--micro);
-    text-transform:uppercase; letter-spacing:.08em;
-    border:1px solid var(--line); padding:.35em .8em;
-    border-radius:20px;
-    color:var(--ink-soft); background:var(--bg-panel);
-  }
-  .cta{
-    display:inline-flex; align-items:center; gap:.5em;
-    margin-top:2rem;
-    font-family:var(--font-ui); font-size:.85rem;
-    letter-spacing:.08em; text-transform:uppercase;
-    color:var(--ink); text-decoration:none;
-    border-bottom:1px solid var(--ocra); padding-bottom:.2em;
-  }
-
-  /* Sections */
-  section{ padding: clamp(2.5rem,6vw,4.5rem) 0; }
-  section#chi-sono, section#accessibilita, section#contatti{
-    border-top:1px solid var(--line-soft);
-  }
-
-  .lede{ max-width:60ch; }
-
-  .grid-2{
-    display:grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem,4vw,3rem);
-  }
-  @media (max-width:720px){ .grid-2{ grid-template-columns:1fr; } }
-
-  /* Case study metadata */
-  .meta-strip{
-    display:flex; flex-wrap:wrap; gap:2rem 3rem;
-    margin: 1.6rem 0 2.4rem;
-    font-family:var(--font-ui);
-  }
-  .meta-item .label{
-    display:block; font-size:var(--micro); text-transform:uppercase;
-    letter-spacing:.1em; color:var(--ocra); margin-bottom:.3em;
-  }
-  .meta-item .value{ font-family:var(--font-body); font-size:.98rem; color:var(--ink); }
-
-  /* Before and after frames */
-  .compare{
-    display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;
-    margin: 1.6rem 0 2.5rem;
-  }
-  @media (max-width:640px){ .compare{ grid-template-columns:1fr; } }
-  .screen{
-    border:1px solid var(--line);
-    border-radius:20px;
-    background:#1c1d22;
-    aspect-ratio: 16/10;
-    padding:14px;
-    position:relative;
-    overflow:hidden;
-  }
-  .screen .bar{ height:8px; background:#3a3c46; margin-bottom:8px; width:40%; border-radius:20px; }
-  .screen .tiles{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; height:calc(100% - 24px); }
-  .screen .tile{ background:#2b2c34; border:1px solid #3a3c46; border-radius:8px; }
-  .screen.after .tile:nth-child(1){ border-color:#8647FF; }
-  .screen.after .tile:nth-child(2){ border-color:#FF8747; }
-  .screen.after .tile:nth-child(3){ border-color:#18CC00; }
-  .screen.after .tile:nth-child(4){ border-color:#F7D70D; }
-  .screen.after .tile:nth-child(5){ border-color:#5999F7; }
-  .screen.after .tile:nth-child(6){ border-color:#FF2C20; }
-  figcaption{
-    font-family:var(--font-ui); font-size:var(--micro);
-    text-transform:uppercase; letter-spacing:.08em;
-    color:var(--ink-faint); margin-top:.6em; text-align:center;
-  }
-
-  /* Project note */
-  blockquote{
-    margin: 2rem 0; padding: 1.4rem 1.8rem;
-    border-left:3px solid var(--vinaccia);
-    border-radius:20px;
-    background:var(--bg-panel);
-    font-style:italic; color:var(--ink-soft);
-  }
-  blockquote footer{
-    margin-top:.6em; font-style:normal; font-family:var(--font-ui);
-    font-size:var(--micro); letter-spacing:.06em; text-transform:uppercase;
-    color:var(--ocra);
-  }
-
-  /* Palette */
-  .palette-group{ margin-bottom:2.2rem; }
-  .palette-group h3{ margin-bottom:.9rem; }
-  .swatches{
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-    gap:.9rem;
-  }
-  .swatch{
-    border:1px solid var(--line);
-    border-radius:20px;
-    overflow:hidden;
-    background:var(--bg);
-  }
-  .swatch .chip{ height:52px; }
-  .swatch .info{ padding:.55em .7em; font-family:var(--font-ui); }
-  .swatch .name{ font-size:.78rem; color:var(--ink); display:block; }
-  .swatch .hex{ font-size:.72rem; color:var(--ink-faint); letter-spacing:.03em; }
-
-  /* Accessibility */
-  .a11y-row{
-    display:flex; gap:2.2rem; flex-wrap:wrap; align-items:center;
-    margin-top:1.6rem;
-  }
-  .badge{
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    width:96px; height:96px; border-radius:50%;
-    border:2px solid var(--ocra);
-    box-shadow:0 0 0 5px var(--bg), 0 0 0 6px var(--line-soft);
-    font-family:var(--font-display); font-weight:700;
-  }
-  .badge .lvl{ font-size:1.5rem; color:var(--ink); }
-  .badge .std{ font-size:.65rem; font-family:var(--font-ui); text-transform:uppercase;
-    letter-spacing:.08em; color:var(--ocra); }
-  .a11y-text{ flex:1; min-width:260px; }
-
-  /* Footer and contact */
-  footer.site{
-    padding: clamp(2.5rem,6vw,4rem) 0 3rem;
-    text-align:center;
-  }
-  .contact-links{
-    display:flex; justify-content:center; gap:1.6rem; flex-wrap:wrap;
-    font-family:var(--font-ui); font-size:.9rem;
-    text-transform:uppercase; letter-spacing:.06em;
-    margin-top:1.4rem;
-  }
-  .contact-links a{ text-decoration:none; border-bottom:1px solid var(--line);
-    padding-bottom:2px; color:var(--ink-soft); }
-  .contact-links a:hover{ color:var(--ink); border-color:var(--ocra); }
-  .fine{ margin-top:2.4rem; font-family:var(--font-ui); font-size:var(--micro);
-    color:var(--ink-faint); letter-spacing:.04em; }
-
-  /* Visible keyboard focus */
-  a:focus-visible, button:focus-visible{
-    outline:2px solid var(--vinaccia); outline-offset:3px;
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior:auto; }
-  }
-
-  @media (max-width: 560px){
-    .rosone{ --size:130px; }
-    nav.links{ gap:1rem; font-size:.75rem; }
-  }
-
-  /* Interactive portfolio layer */
-  .nav-inner{ position:relative; }
-  .nav-tools{ display:flex; align-items:center; gap:.55rem; }
-  .sound-toggle{ border:1px solid var(--line); background:transparent; color:var(--ink); border-radius:20px; padding:.45rem .75rem; font:500 .72rem var(--font-ui); letter-spacing:.08em; text-transform:uppercase; cursor:pointer; }
-  .sound-toggle:hover{ background:var(--bg-panel); border-color:var(--ocra); }
-  .scroll-progress{ position:fixed; left:0; top:0; height:2px; width:0; background:var(--ocra); z-index:100; transform-origin:left; }
-  .hero{ min-height:calc(100vh - 70px); display:flex; align-items:center; }
-  .hero-inner{ min-height:72vh; }
-  .hero-copy{ position:relative; z-index:2; }
-  .hero-kicker{ display:flex; align-items:center; gap:.65rem; font-family:var(--font-ui); font-size:.76rem; text-transform:uppercase; letter-spacing:.16em; color:var(--ocra); }
-  .hero-kicker::before{ content:""; width:26px; height:1px; background:var(--ocra); }
-  .hero h1{ font-size:clamp(3rem,6vw,5.7rem); line-height:.94; letter-spacing:-.025em; max-width:650px; }
-  .hero h1 em{ color:var(--vinaccia); }
-  .hero-intro{ max-width:54ch; font-size:1.08rem; }
-  .hero-note{ margin-top:1rem; font: .72rem var(--font-ui); color:var(--ink-faint); letter-spacing:.08em; text-transform:uppercase; }
-  .hero-visual{ position:relative; width:min(47vw,500px); height:min(62vw,590px); min-width:320px; min-height:430px; display:flex; align-items:center; justify-content:center; overflow:visible; }
-  .hero-visual::before{ content:""; position:absolute; width:78%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle at center, transparent 0 57%, var(--line-soft) 57.5% 58%, transparent 58.5%), repeating-conic-gradient(from 0deg, var(--line) 0deg 2deg, transparent 2deg 18deg); opacity:.62; transform:rotate(-7deg); }
-  .hero-visual::after{ content:""; position:absolute; inset:13% 8%; border:1px solid var(--line-soft); border-radius:48% 52% 46% 54%; transform:rotate(5deg); pointer-events:none; }
-  #avatar-canvas{ position:relative; z-index:2; width:100%; height:100%; display:block; cursor:grab; }
-  #avatar-canvas:active{ cursor:grabbing; }
-  .avatar-label{ position:absolute; z-index:3; right:2%; top:12%; font:italic 1rem var(--font-display); color:var(--ink-soft); transform:rotate(3deg); pointer-events:none; }
-  .avatar-label::after{ content:""; position:absolute; width:52px; height:24px; border-top:1px solid var(--ocra); border-radius:50%; left:-44px; top:22px; transform:rotate(-16deg); }
-  .avatar-status{ position:absolute; z-index:3; bottom:4%; left:5%; display:flex; align-items:center; gap:.45rem; font:.68rem var(--font-ui); text-transform:uppercase; letter-spacing:.1em; color:var(--ink-faint); }
-  .avatar-status i{ width:7px; height:7px; border-radius:50%; background:var(--oliva); box-shadow:0 0 0 4px rgba(95,113,72,.12); }
-  .reveal{ opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease; }
-  .reveal.is-visible{ opacity:1; transform:none; }
-  .lift{ transition:transform .3s ease, box-shadow .3s ease; }
-  .lift:hover{ transform:translateY(-4px); box-shadow:0 16px 35px rgba(36,27,18,.08); }
-  .case-link{ display:inline-flex; align-items:center; gap:.4rem; margin-top:1.1rem; font:500 .76rem var(--font-ui); text-transform:uppercase; letter-spacing:.08em; color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ocra); }
-  .mono{ font-family:var(--font-ui); }
-  @media (max-width:900px){
-    .hero{ min-height:auto; }
-    .hero-inner{ flex-wrap:wrap; padding-top:1rem; }
-    .hero-visual{ width:min(100%,520px); margin:0 auto; }
-  }
-  @media (max-width:560px){
-    .nav-inner{ align-items:flex-start; }
-    .brand{ font-size:1rem; }
-    nav.links{ width:100%; order:3; justify-content:space-between; }
-    .nav-tools{ position:absolute; right:1.25rem; top:.85rem; }
-    .hero h1{ font-size:clamp(2.8rem,14vw,4.2rem); }
-    .hero-visual{ min-width:100%; height:440px; min-height:440px; }
-    .avatar-label{ right:4%; top:8%; }
-  }
-  @media (prefers-reduced-motion: reduce){
-    .reveal{ opacity:1; transform:none; transition:none; }
-    .lift{ transition:none; }
-  }
-
-
-  /* Narrative character companion */
-  .character-companion{
-    position:fixed; right:18px; bottom:18px; z-index:40;
-    width:154px; height:190px; border:1px solid var(--line); border-radius:20px;
-    background:rgba(241,237,228,.90); backdrop-filter:blur(8px);
-    box-shadow:0 14px 35px rgba(36,27,18,.10); overflow:hidden;
-    opacity:0; transform:translateY(20px) scale(.96); pointer-events:none;
-    transition:opacity .35s ease, transform .35s ease;
-  }
-  .character-companion.is-active{opacity:1;transform:none;pointer-events:auto}
-  .character-companion canvas{width:100%;height:100%;display:block}
-  .companion-caption{position:absolute;left:10px;bottom:8px;font:.58rem var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:rgba(241,237,228,.82);padding:3px 6px;border-radius:20px}
-  .narrative-card{margin-top:1rem;display:flex;align-items:center;gap:.65rem;font:.68rem var(--font-ui);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint)}
-  .narrative-card i{width:7px;height:7px;border-radius:50%;background:var(--ocra);display:inline-block}
-  .case-link[data-look-at]{cursor:pointer}
-  @media(max-width:560px){.character-companion{right:10px;bottom:10px;width:118px;height:148px}.companion-caption{font-size:.5rem}}
-  @media(prefers-reduced-motion:reduce){.character-companion{transition:none}}
+:root{
+  --bg:#F1EDE4;--bg-panel:#E8E0CC;--bg-panel-deep:#DED2B4;--ink:#241B12;--ink-soft:#4B3B27;
+  --ink-faint:#7A6A54;--line:#C6B78F;--line-soft:#D8CBA9;--lavanda:#64628C;--oliva:#5F7148;
+  --ocra:#A97C22;--vinaccia:#6E2C2C;
+  --font-display:'Cormorant Garamond',serif;--font-body:'EB Garamond',Georgia,serif;--font-ui:'Jost',sans-serif;
+  --h1:clamp(2.4rem,4.5vw,3rem);--h2:clamp(1.9rem,3.2vw,2.25rem);--h3:clamp(1.35rem,2.1vw,1.5rem);
+  --body:1.0625rem;--micro:.8125rem;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}
+::selection{background:var(--ocra);color:#fff}a{color:inherit}img,svg{max-width:100%;display:block}
+h1,h2,h3{font-family:var(--font-display);color:var(--ink);margin:0 0 .5em;font-weight:700;letter-spacing:.005em}
+h1{font-size:var(--h1);line-height:1.12}h2{font-size:var(--h2);font-weight:600}h3{font-size:var(--h3);font-weight:600;color:var(--ink-soft)}
+p{margin:0 0 1.1em;color:var(--ink-soft)}em{color:var(--vinaccia);font-style:italic}
+.eyebrow{font-family:var(--font-ui);font-size:var(--micro);letter-spacing:.16em;text-transform:uppercase;color:var(--ocra);font-weight:500;display:inline-block;margin-bottom:.9em}
+.wrap{max-width:1040px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem)}
+.rosone{--size:200px;width:var(--size);height:var(--size);border-radius:50%;position:relative;flex:none;background:radial-gradient(circle at center,transparent 0 26%,var(--line-soft) 26% 27%,transparent 27% 40%,var(--line-soft) 40% 41%,transparent 41%),repeating-conic-gradient(from 0deg,var(--line) 0deg 3deg,transparent 3deg 30deg);border:2px solid var(--line);box-shadow:0 0 0 6px var(--bg),0 0 0 8px var(--line-soft)}
+.rosone::after{content:"";position:absolute;inset:38%;border-radius:50%;background:var(--ocra);opacity:.85}.rosone.small{--size:64px;box-shadow:0 0 0 4px var(--bg),0 0 0 5px var(--line-soft)}
+.divider{display:flex;align-items:center;justify-content:center;gap:1rem;margin:3.2rem 0;color:var(--line)}.divider::before,.divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
+.panel{position:relative;background:var(--bg-panel);border:1px solid var(--line);border-radius:20px;padding:clamp(1.75rem,4vw,3rem);box-shadow:inset 0 0 0 6px var(--bg),inset 0 0 0 7px var(--line-soft)}
+.panel::before,.panel::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,var(--ocra) 0 30%,transparent 32%),radial-gradient(circle,var(--line) 0 60%,transparent 62%)}.panel::before{top:10px;left:10px}.panel::after{bottom:10px;right:10px}
+header.nav{position:sticky;top:0;z-index:50;background:rgba(241,237,228,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:1040px;margin:0 auto;padding:.9rem clamp(1.25rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.brand{font-family:var(--font-display);font-weight:700;font-size:1.15rem;letter-spacing:.03em}.brand span{color:var(--ocra)}
+nav.links{display:flex;gap:1.6rem;flex-wrap:wrap;font-family:var(--font-ui);font-size:.85rem;letter-spacing:.06em;text-transform:uppercase}
+nav.links a{text-decoration:none;color:var(--ink-soft);padding-bottom:2px;border-bottom:1px solid transparent;transition:border-color .2s,color .2s}
+nav.links a:hover,nav.links a:focus-visible{color:var(--ink);border-color:var(--ocra)}
+.nav-tools{display:flex;align-items:center;gap:.55rem}.sound-toggle{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:20px;padding:.45rem .75rem;font:500 .72rem var(--font-ui);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.sound-toggle:hover{background:var(--bg-panel);border-color:var(--ocra)}
+.scroll-progress{position:fixed;left:0;top:0;height:2px;width:0;background:var(--ocra);z-index:100;transform-origin:left}
+.hero{min-height:calc(100vh - 70px);display:flex;align-items:center;padding:clamp(3rem,8vw,6rem) 0 clamp(2rem,5vw,3.5rem)}
+.hero-inner{display:flex;align-items:center;gap:clamp(2rem,6vw,4rem);flex-wrap:wrap-reverse;min-height:72vh}
+.hero-text{flex:1 1 420px;min-width:280px}.hero-copy{position:relative;z-index:2}
+.hero-kicker{display:flex;align-items:center;gap:.65rem;font-family:var(--font-ui);font-size:.76rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ocra)}.hero-kicker::before{content:"";width:26px;height:1px;background:var(--ocra)}
+.hero h1{font-size:clamp(3rem,6vw,5.7rem);line-height:.94;letter-spacing:-.025em;max-width:650px}.hero h1 em{color:var(--vinaccia)}
+.hero-intro{max-width:54ch;font-size:1.08rem}.hero-tags{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.6rem}.tag{font-family:var(--font-ui);font-size:var(--micro);text-transform:uppercase;letter-spacing:.08em;border:1px solid var(--line);padding:.35em .8em;border-radius:20px;color:var(--ink-soft);background:var(--bg-panel)}
+.cta{display:inline-flex;align-items:center;gap:.5em;margin-top:2rem;font-family:var(--font-ui);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ocra);padding-bottom:.2em}
+.hero-note{margin-top:1rem;font:.72rem var(--font-ui);color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase}
+.hero-visual{position:relative;width:min(47vw,500px);height:min(62vw,590px);min-width:320px;min-height:430px;display:flex;align-items:center;justify-content:center;overflow:visible;flex:0 0 auto;margin:0 auto}
+.hero-visual::before{content:"";position:absolute;width:78%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at center,transparent 0 57%,var(--line-soft) 57.5% 58%,transparent 58.5%),repeating-conic-gradient(from 0deg,var(--line) 0deg 2deg,transparent 2deg 18deg);opacity:.62;transform:rotate(-7deg)}
+.hero-visual::after{content:"";position:absolute;inset:13% 8%;border:1px solid var(--line-soft);border-radius:48% 52% 46% 54%;transform:rotate(5deg);pointer-events:none}
+#avatar-canvas{position:relative;z-index:2;width:100%;height:100%;display:block;cursor:grab}#avatar-canvas:active{cursor:grabbing}
+.avatar-label{position:absolute;z-index:3;right:2%;top:12%;font:italic 1rem var(--font-display);color:var(--ink-soft);transform:rotate(3deg);pointer-events:none}.avatar-label::after{content:"";position:absolute;width:52px;height:24px;border-top:1px solid var(--ocra);border-radius:50%;left:-44px;top:22px;transform:rotate(-16deg)}
+.avatar-status{position:absolute;z-index:3;bottom:4%;left:5%;display:flex;align-items:center;gap:.45rem;font:.68rem var(--font-ui);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint)}.avatar-status i{width:7px;height:7px;border-radius:50%;background:var(--oliva);box-shadow:0 0 0 4px rgba(95,113,72,.12)}
+section{padding:clamp(2.5rem,6vw,4.5rem) 0}section#chi-sono,section#accessibilita,section#contatti{border-top:1px solid var(--line-soft)}
+.lede{max-width:60ch}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,3rem)}
+.meta-strip{display:flex;flex-wrap:wrap;gap:2rem 3rem;margin:1.6rem 0 2.4rem;font-family:var(--font-ui)}.meta-item .label{display:block;font-size:var(--micro);text-transform:uppercase;letter-spacing:.1em;color:var(--ocra);margin-bottom:.3em}.meta-item .value{font-family:var(--font-body);font-size:.98rem;color:var(--ink)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1.6rem 0 2.5rem}.screen{border:1px solid var(--line);border-radius:20px;background:#1c1d22;aspect-ratio:16/10;padding:14px;position:relative;overflow:hidden}.screen .bar{height:8px;background:#3a3c46;margin-bottom:8px;width:40%;border-radius:20px}.screen .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;height:calc(100% - 24px)}.screen .tile{background:#2b2c34;border:1px solid #3a3c46;border-radius:8px}.screen.after .tile:nth-child(1){border-color:#8647FF}.screen.after .tile:nth-child(2){border-color:#FF8747}.screen.after .tile:nth-child(3){border-color:#18CC00}.screen.after .tile:nth-child(4){border-color:#F7D70D}.screen.after .tile:nth-child(5){border-color:#5999F7}.screen.after .tile:nth-child(6){border-color:#FF2C20}
+figcaption{font-family:var(--font-ui);font-size:var(--micro);text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);margin-top:.6em;text-align:center}
+blockquote{margin:2rem 0;padding:1.4rem 1.8rem;border-left:3px solid var(--vinaccia);border-radius:20px;background:var(--bg-panel);font-style:italic;color:var(--ink-soft)}blockquote footer{margin-top:.6em;font-style:normal;font-family:var(--font-ui);font-size:var(--micro);letter-spacing:.06em;text-transform:uppercase;color:var(--ocra)}
+.palette-group{margin-bottom:2.2rem}.palette-group h3{margin-bottom:.9rem}.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.9rem}.swatch{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--bg)}.swatch .chip{height:52px}.swatch .info{padding:.55em .7em;font-family:var(--font-ui)}.swatch .name{font-size:.78rem;color:var(--ink);display:block}.swatch .hex{font-size:.72rem;color:var(--ink-faint);letter-spacing:.03em}
+.a11y-row{display:flex;gap:2.2rem;flex-wrap:wrap;align-items:center;margin-top:1.6rem}.badge{display:flex;flex-direction:column;align-items:center;justify-content:center;width:96px;height:96px;border-radius:50%;border:2px solid var(--ocra);box-shadow:0 0 0 5px var(--bg),0 0 0 6px var(--line-soft);font-family:var(--font-display);font-weight:700}.badge .lvl{font-size:1.5rem;color:var(--ink)}.badge .std{font-size:.65rem;font-family:var(--font-ui);text-transform:uppercase;letter-spacing:.08em;color:var(--ocra)}.a11y-text{flex:1;min-width:260px}
+footer.site{padding:clamp(2.5rem,6vw,4rem) 0 3rem;text-align:center}.contact-links{display:flex;justify-content:center;gap:1.6rem;flex-wrap:wrap;font-family:var(--font-ui);font-size:.9rem;text-transform:uppercase;letter-spacing:.06em;margin-top:1.4rem}.contact-links a{text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;color:var(--ink-soft)}.contact-links a:hover{color:var(--ink);border-color:var(--ocra)}.fine{margin-top:2.4rem;font-family:var(--font-ui);font-size:var(--micro);color:var(--ink-faint);letter-spacing:.04em}
+a:focus-visible,button:focus-visible{outline:2px solid var(--vinaccia);outline-offset:3px}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}.reveal.is-visible{opacity:1;transform:none}.lift{transition:transform .3s ease,box-shadow .3s ease}.lift:hover{transform:translateY(-4px);box-shadow:0 16px 35px rgba(36,27,18,.08)}
+.case-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:1.1rem;font:500 .76rem var(--font-ui);text-transform:uppercase;letter-spacing:.08em;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ocra)}
+.character-companion{position:fixed;right:18px;bottom:18px;z-index:40;width:154px;height:190px;border:1px solid var(--line);border-radius:20px;background:rgba(241,237,228,.92);backdrop-filter:blur(8px);box-shadow:0 14px 35px rgba(36,27,18,.10);overflow:hidden;opacity:0;transform:translateY(20px) scale(.96);pointer-events:none;transition:opacity .35s ease,transform .35s ease}.character-companion.is-active{opacity:1;transform:none;pointer-events:auto}.character-companion canvas{width:100%;height:100%;display:block}.companion-caption{position:absolute;left:10px;bottom:8px;font:.58rem var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:rgba(241,237,228,.82);padding:3px 6px;border-radius:20px}
+@media(max-width:900px){.hero{min-height:auto}.hero-inner{flex-wrap:wrap;padding-top:1rem}.hero-visual{width:min(100%,520px);margin:0 auto}}
+@media(max-width:720px){.grid-2{grid-template-columns:1fr}}
+@media(max-width:640px){.compare{grid-template-columns:1fr}}
+@media(max-width:560px){.rosone{--size:130px}.nav-inner{align-items:flex-start}.brand{font-size:1rem}nav.links{width:100%;order:3;justify-content:space-between;gap:1rem;font-size:.75rem}.nav-tools{position:absolute;right:1.25rem;top:.85rem}.hero h1{font-size:clamp(2.8rem,14vw,4.2rem)}.hero-visual{min-width:100%;height:440px;min-height:440px}.avatar-label{right:4%;top:8%}.character-companion{right:10px;bottom:10px;width:118px;height:148px}.companion-caption{font-size:.5rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.lift{transition:none}.character-companion{transition:none}}
 </style>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23F1EDE4' stroke='%23A97C22' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23A97C22'/%3E%3C/svg%3E">
 </head>
 <body>
-
 <div class="scroll-progress" id="scrollProgress"></div>
-<header class="nav">
-  <div class="nav-inner">
-    <div class="brand">Antonietta Pascarella <span>·</span> UX/UI</div>
-    <nav class="links">
-      <a href="#home" data-sound="hover">01. Home</a>
-      <a href="#chi-sono" data-sound="hover">02. About</a>
-      <a href="#progetto" data-sound="hover">03. Work</a>
-      <a href="#contatti" data-sound="hover">04. Contact</a>
-    </nav>
-    <div class="nav-tools"><button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false">◖ sound on</button></div>
-  </div>
-</header>
-
+<header class="nav"><div class="nav-inner">
+<div class="brand">Antonietta Pascarella <span>·</span> UX/UI</div>
+<nav class="links"><a href="#home" data-sound="hover">01. Home</a><a href="#chi-sono" data-sound="hover">02. About</a><a href="#progetto" data-sound="hover">03. Work</a><a href="#contatti" data-sound="hover">04. Contact</a></nav>
+<div class="nav-tools"><button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false">sound on</button></div>
+</div></header>
 
 <div class="character-companion" id="characterCompanion" aria-hidden="true">
-  <canvas id="companion-canvas" aria-label="Piccolo avatar 3D interattivo"></canvas>
-  <div class="companion-caption" id="companionCaption">in ascolto</div>
+<canvas id="companion-canvas" aria-label="Piccolo avatar 3D interattivo"></canvas>
+<div class="companion-caption" id="companionCaption">in ascolto</div>
 </div>
+
 <main>
+<section id="home" class="hero"><div class="wrap hero-inner">
+<div class="hero-text hero-copy reveal">
+<span class="hero-kicker">UI/UX Designer · Bologna</span>
+<h1>Progetto interfacce con <em>rigore, curiosità</em> e attenzione alle persone.</h1>
+<p class="hero-intro">Sono Antonietta, laureata magistrale in Informatica con lode. Ho portato nel design il metodo che mi ha insegnato l'informatica: ricerca strutturata, iterazioni documentate e decisioni motivate, non solo schermate belle da vedere.</p>
+<div class="hero-tags"><span class="tag" data-sound="hover">UX Research</span><span class="tag" data-sound="hover">UI Design</span><span class="tag" data-sound="hover">Design System</span><span class="tag" data-sound="hover">Data-Informed Design</span></div>
+<a class="cta" href="#progetto" data-sound="click">Scopri il progetto ↓</a>
+<div class="hero-note">scroll / move the character / listen to the details</div>
+</div>
+<div class="hero-visual reveal"><canvas id="avatar-canvas" aria-label="Avatar 3D interattivo di Antonietta"></canvas><div class="avatar-label">ciao, sono Antonietta! ♡</div><div class="avatar-status"><i></i><span>interactive character</span></div></div>
+</div></section>
 
-  <section id="home" class="hero">
-    <div class="wrap hero-inner">
-      <div class="hero-text hero-copy reveal">
-        <span class="hero-kicker">UI/UX Designer · Bologna</span>
-        <h1>Progetto interfacce con <em>rigore, curiosità</em> e attenzione alle persone.</h1>
-        <p class="hero-intro">Sono Antonietta, laureata magistrale in Informatica con lode. Ho portato nel design il metodo che mi ha insegnato l'informatica: ricerca strutturata, iterazioni documentate e decisioni motivate, non solo schermate belle da vedere.</p>
-        <div class="hero-tags">
-          <span class="tag" data-sound="hover">UX Research</span>
-          <span class="tag" data-sound="hover">UI Design</span>
-          <span class="tag" data-sound="hover">Design System</span>
-          <span class="tag" data-sound="hover">Data-Informed Design</span>
-        </div>
-        <a class="cta" href="#progetto" data-sound="click">Scopri il progetto ↓</a>
-        <div class="hero-note">scroll / move the character / listen to the details</div>
-      </div>
-      <div class="hero-visual reveal">
-        <canvas id="avatar-canvas" aria-label="Avatar 3D interattivo di Antonietta"></canvas>
-        <div class="avatar-label">ciao, sono Antonietta! ♡</div>
-        <div class="avatar-status"><i></i><span>interactive character</span></div>
-      </div>
-    </div>
-  </section>
+<div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
 
-  <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
+<section id="chi-sono" class="reveal"><div class="wrap"><div class="grid-2">
+<div><span class="eyebrow">Chi sono</span><h2>Dall'informatica al design, senza perdere il metodo</h2></div>
+<div><p>Il mio percorso in informatica mi ha dato familiarità con il pensiero sistemico, la lettura di dati reali e la costruzione di processi ripetibili. Nel design applico lo stesso approccio: ogni scelta, che sia un flusso, un componente o una gerarchia visiva, nasce da un'ipotesi verificabile e non da un'intuizione isolata.</p><p>Lavoro sia sul lato UX (ricerca, architettura dell'informazione, user flow) sia sul lato UI (design system, alta fedeltà, accessibilità), con un'attenzione particolare ai contesti industriali e data-intensive, dove la chiarezza dell'informazione conta quanto l'estetica.</p></div>
+</div></div></section>
 
-  <section id="chi-sono" class="reveal">
-    <div class="wrap">
-      <div class="grid-2">
-        <div>
-          <span class="eyebrow">Chi sono</span>
-          <h2>Dall'informatica al design, senza perdere il metodo</h2>
-        </div>
-        <div>
-          <p>Il mio percorso in informatica mi ha dato familiarità con il pensiero sistemico, la lettura di dati reali e la costruzione di processi ripetibili. Nel design applico lo stesso approccio: ogni scelta, che sia un flusso, un componente o una gerarchia visiva, nasce da un'ipotesi verificabile e non da un'intuizione isolata.</p>
-          <p>Lavoro sia sul lato UX (ricerca, architettura dell'informazione, user flow) sia sul lato UI (design system, alta fedeltà, accessibilità), con un'attenzione particolare ai contesti industriali e data-intensive, dove la chiarezza dell'informazione conta quanto l'estetica.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
 
-  <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
+<section id="progetto" class="reveal"><div class="wrap">
+<span class="eyebrow">Caso studio</span><h2>Redesign dell'interfaccia operativa per un impianto industriale</h2>
+<p class="lede">Progetto realizzato per un'azienda italiana attiva nella produzione di impianti industriali, in collaborazione con il team tecnico dell'agenzia per cui lavoro.</p>
+<div class="meta-strip"><div class="meta-item"><span class="label">Ruolo</span><span class="value">UX/UI Design, sviluppo del design system</span></div><div class="meta-item"><span class="label">Fasi</span><span class="value">Wireframe → Mockup → Prototipo interattivo</span></div><div class="meta-item"><span class="label">Strumenti</span><span class="value">Figma, Stark (audit accessibilità)</span></div></div>
+<div class="panel lift"><h3>Il contesto</h3><p>Il progetto nasce da una pipeline dati IoT/ML già esistente (raccolta e predizione dei dati di impianto). Il mio compito è stato progettare l'interfaccia web che rende questi dati fruibili a due profili utente: il <em>Plant Manager</em>, interessato alla performance d'insieme, e il <em>Maintenance Technician</em>, focalizzato su manutenzione predittiva e allarmi.</p><p>Il cliente desiderava rinnovare un'applicazione esistente, poco leggibile e priva di un sistema coerente. Le esigenze di business e utente erano già state raccolte dal cliente attraverso interviste dirette con gli utenti finali; ho ricevuto brief e interfacce originali, e da lì ho condotto un'analisi euristica per individuare criticità di usabilità prima di ridisegnare.</p></div>
+<h3 style="margin-top:2.4rem;">Prima e dopo</h3><p>Confronto tra l'interfaccia originale e il nuovo design system, pensato per dare gerarchia visiva immediata tramite color-coding per categoria funzionale.</p>
+<div class="compare"><figure><div class="screen before"><div class="bar"></div><div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div></div><figcaption>Prima: tile monocromatiche, nessuna gerarchia</figcaption></figure><figure><div class="screen after"><div class="bar"></div><div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div></div><figcaption>Dopo: color coding per modulo funzionale</figcaption></figure></div>
+<h3>Dal wireframe al prototipo</h3><p>Il lavoro ha coperto l'intero flusso applicativo: autenticazione con login, registrazione e reset password su due canali (email e telefono), selezione geografica con mappa interattiva sincronizzata a una lista filtrabile, landing page a moduli e le sette funzionalità core dell'app, tra cui manutenzione predittiva, performance dell'impianto, risparmio energetico, storico dati e gestione allarmi.</p><p>Ogni schermata è passata da wireframe a bassa fedeltà a mockup ad alta fedeltà, fino a un prototipo Figma cliccabile. Ho dedicato attenzione anche ai micro stati dei singoli componenti, come un filtro con zero, uno o più elementi selezionati, e non solo alle schermate considerate "finali".</p>
+<blockquote>Le user stories sono state scritte alla fine del processo invece che all'inizio, come normalmente ci si aspetterebbe in un workflow UX. Scrivendole a posteriori sono emersi elementi che avrebbero potuto migliorare ulteriormente l'app fin dalle prime fasi: una lezione che porto con me nei progetti successivi.<footer>Dalla documentazione del progetto</footer></blockquote>
+<div id="palette"><h3>Design system, la palette</h3><p>Palette estratta dal file Figma di produzione, organizzata per funzione: base, brand, semantica (stati positivi/critici/warning) e accenti categorici per modulo.</p>
+<div class="palette-group"><h3>Base &amp; neutrali</h3><div class="swatches">
+<div class="swatch"><div class="chip" style="background:#1A1B20"></div><div class="info"><span class="name">Nero principale</span><span class="hex">#1A1B20</span></div></div>
+<div class="swatch"><div class="chip" style="background:#262934"></div><div class="info"><span class="name">Superficie scura</span><span class="hex">#262934</span></div></div>
+<div class="swatch"><div class="chip" style="background:#F5F7FA"></div><div class="info"><span class="name">Bianco input</span><span class="hex">#F5F7FA</span></div></div>
+<div class="swatch"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #ddd"></div><div class="info"><span class="name">Bianco</span><span class="hex">#FFFFFF</span></div></div>
+<div class="swatch"><div class="chip" style="background:#787A7D"></div><div class="info"><span class="name">Grigio testo</span><span class="hex">#787A7D</span></div></div>
+<div class="swatch"><div class="chip" style="background:#000000"></div><div class="info"><span class="name">Nero</span><span class="hex">#000000</span></div></div>
+</div></div>
+<div class="palette-group"><h3>Brand</h3><div class="swatches"><div class="swatch"><div class="chip" style="background:#F7D70D"></div><div class="info"><span class="name">Giallo brand</span><span class="hex">#F7D70D</span></div></div><div class="swatch"><div class="chip" style="background:#24559D"></div><div class="info"><span class="name">Blu brand</span><span class="hex">#24559D</span></div></div></div></div>
+<div class="palette-group"><h3>Semantica: positivo, critico, warning</h3><div class="swatches">
+<div class="swatch"><div class="chip" style="background:#18CC00"></div><div class="info"><span class="name">Verde pieno</span><span class="hex">#18CC00</span></div></div><div class="swatch"><div class="chip" style="background:#99E7BD"></div><div class="info"><span class="name">Menta</span><span class="hex">#99E7BD</span></div></div><div class="swatch"><div class="chip" style="background:#C3EEBE"></div><div class="info"><span class="name">Verde chiaro</span><span class="hex">#C3EEBE</span></div></div><div class="swatch"><div class="chip" style="background:#D61E0D"></div><div class="info"><span class="name">Rosso</span><span class="hex">#D61E0D</span></div></div><div class="swatch"><div class="chip" style="background:#FF8747"></div><div class="info"><span class="name">Arancione</span><span class="hex">#FF8747</span></div></div><div class="swatch"><div class="chip" style="background:#FF8A3D"></div><div class="info"><span class="name">Arancione warning</span><span class="hex">#FF8A3D</span></div></div><div class="swatch"><div class="chip" style="background:#FFB788"></div><div class="info"><span class="name">Arancione chiaro</span><span class="hex">#FFB788</span></div></div>
+</div></div>
+<div class="palette-group"><h3>Accenti categorici per modulo</h3><div class="swatches">
+<div class="swatch"><div class="chip" style="background:#8647FF"></div><div class="info"><span class="name">Viola Mixer</span><span class="hex">#8647FF</span></div></div><div class="swatch"><div class="chip" style="background:#C29AFF"></div><div class="info"><span class="name">Viola chiaro</span><span class="hex">#C29AFF</span></div></div><div class="swatch"><div class="chip" style="background:#E4D2FF"></div><div class="info"><span class="name">Lilla tenue</span><span class="hex">#E4D2FF</span></div></div><div class="swatch"><div class="chip" style="background:#C084FC"></div><div class="info"><span class="name">Viola linea</span><span class="hex">#C084FC</span></div></div><div class="swatch"><div class="chip" style="background:#6FAAFF"></div><div class="info"><span class="name">Blu filter</span><span class="hex">#6FAAFF</span></div></div><div class="swatch"><div class="chip" style="background:#5999F7"></div><div class="info"><span class="name">Blu electrical</span><span class="hex">#5999F7</span></div></div><div class="swatch"><div class="chip" style="background:#BCC8FF"></div><div class="info"><span class="name">Blu lavanda</span><span class="hex">#BCC8FF</span></div></div><div class="swatch"><div class="chip" style="background:#BED5F6"></div><div class="info"><span class="name">Azzurro maintenance</span><span class="hex">#BED5F6</span></div></div><div class="swatch"><div class="chip" style="background:#FC84DE"></div><div class="info"><span class="name">Rosa energy</span><span class="hex">#FC84DE</span></div></div><div class="swatch"><div class="chip" style="background:#F4C534"></div><div class="info"><span class="name">Oro period</span><span class="hex">#F4C534</span></div></div><div class="swatch"><div class="chip" style="background:#F6E46E"></div><div class="info"><span class="name">Giallo plant</span><span class="hex">#F6E46E</span></div></div><div class="swatch"><div class="chip" style="background:#00B8C5"></div><div class="info"><span class="name">Turchese</span><span class="hex">#00B8C5</span></div></div>
+</div></div></div>
+</div></section>
 
-  <section id="progetto" class="reveal">
-    <div class="wrap">
-      <span class="eyebrow">Caso studio</span>
-      <h2>Redesign dell'interfaccia operativa per un impianto industriale</h2>
-      <p class="lede">Progetto realizzato per un'azienda italiana attiva nella produzione di impianti industriali, in collaborazione con il team tecnico dell'agenzia per cui lavoro.</p>
-
-      <div class="meta-strip">
-        <div class="meta-item">
-          <span class="label">Ruolo</span>
-          <span class="value">UX/UI Design, sviluppo del design system</span>
-        </div>
-        <div class="meta-item">
-          <span class="label">Fasi</span>
-          <span class="value">Wireframe → Mockup → Prototipo interattivo</span>
-        </div>
-        <div class="meta-item">
-          <span class="label">Strumenti</span>
-          <span class="value">Figma, Stark (audit accessibilità)</span>
-        </div>
-      </div>
-
-      <div class="panel lift">
-        <h3>Il contesto</h3>
-        <p>Il progetto nasce da una pipeline dati IoT/ML già esistente (raccolta e predizione dei dati di impianto). Il mio compito è stato progettare l'interfaccia web che rende questi dati fruibili a due profili utente: il <em>Plant Manager</em>, interessato alla performance d'insieme, e il <em>Maintenance Technician</em>, focalizzato su manutenzione predittiva e allarmi.</p>
-        <p>Il cliente desiderava rinnovare un'applicazione esistente, poco leggibile e priva di un sistema coerente. Le esigenze di business e utente erano già state raccolte dal cliente attraverso interviste dirette con gli utenti finali; ho ricevuto brief e interfacce originali, e da lì ho condotto un'analisi euristica per individuare criticità di usabilità prima di ridisegnare.</p>
-      </div>
-
-      <h3 style="margin-top:2.4rem;">Prima e dopo</h3>
-      <p>Confronto tra l'interfaccia originale e il nuovo design system, pensato per dare gerarchia visiva immediata tramite color-coding per categoria funzionale.</p>
-      <div class="compare">
-        <figure>
-          <div class="screen before">
-            <div class="bar"></div>
-            <div class="tiles">
-              <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-              <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-            </div>
-          </div>
-          <figcaption>Prima: tile monocromatiche, nessuna gerarchia</figcaption>
-        </figure>
-        <figure>
-          <div class="screen after">
-            <div class="bar"></div>
-            <div class="tiles">
-              <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-              <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-            </div>
-          </div>
-          <figcaption>Dopo: color coding per modulo funzionale</figcaption>
-        </figure>
-      </div>
-
-      <h3>Dal wireframe al prototipo</h3>
-      <p>Il lavoro ha coperto l'intero flusso applicativo: autenticazione con login, registrazione e reset password su due canali (email e telefono), selezione geografica con mappa interattiva sincronizzata a una lista filtrabile, landing page a moduli e le sette funzionalità core dell'app, tra cui manutenzione predittiva, performance dell'impianto, risparmio energetico, storico dati e gestione allarmi.</p>
-      <p>Ogni schermata è passata da wireframe a bassa fedeltà a mockup ad alta fedeltà, fino a un prototipo Figma cliccabile. Ho dedicato attenzione anche ai micro stati dei singoli componenti, come un filtro con zero, uno o più elementi selezionati, e non solo alle schermate considerate "finali".</p>
-
-      <blockquote>
-        Le user stories sono state scritte alla fine del processo invece che all'inizio, come normalmente ci si aspetterebbe in un workflow UX. Scrivendole a posteriori sono emersi elementi che avrebbero potuto migliorare ulteriormente l'app fin dalle prime fasi: una lezione che porto con me nei progetti successivi.
-        <footer>Dalla documentazione del progetto</footer>
-      </blockquote>
-
-      <div id="palette">
-        <h3>Design system, la palette</h3>
-        <p>Palette estratta dal file Figma di produzione, organizzata per funzione: base, brand, semantica (stati positivi/critici/warning) e accenti categorici per modulo.</p>
-
-        <div class="palette-group">
-          <h3>Base &amp; neutrali</h3>
-          <div class="swatches">
-            <div class="swatch"><div class="chip" style="background:#1A1B20"></div><div class="info"><span class="name">Nero principale</span><span class="hex">#1A1B20</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#262934"></div><div class="info"><span class="name">Superficie scura</span><span class="hex">#262934</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#F5F7FA"></div><div class="info"><span class="name">Bianco input</span><span class="hex">#F5F7FA</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #ddd"></div><div class="info"><span class="name">Bianco</span><span class="hex">#FFFFFF</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#787A7D"></div><div class="info"><span class="name">Grigio testo</span><span class="hex">#787A7D</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#000000"></div><div class="info"><span class="name">Nero</span><span class="hex">#000000</span></div></div>
-          </div>
-        </div>
-
-        <div class="palette-group">
-          <h3>Brand</h3>
-          <div class="swatches">
-            <div class="swatch"><div class="chip" style="background:#F7D70D"></div><div class="info"><span class="name">Giallo brand</span><span class="hex">#F7D70D</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#24559D"></div><div class="info"><span class="name">Blu brand</span><span class="hex">#24559D</span></div></div>
-          </div>
-        </div>
-
-        <div class="palette-group">
-          <h3>Semantica: positivo, critico, warning</h3>
-          <div class="swatches">
-            <div class="swatch"><div class="chip" style="background:#18CC00"></div><div class="info"><span class="name">Verde pieno</span><span class="hex">#18CC00</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#99E7BD"></div><div class="info"><span class="name">Menta</span><span class="hex">#99E7BD</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#C3EEBE"></div><div class="info"><span class="name">Verde chiaro</span><span class="hex">#C3EEBE</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#D61E0D"></div><div class="info"><span class="name">Rosso</span><span class="hex">#D61E0D</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#FF8747"></div><div class="info"><span class="name">Arancione</span><span class="hex">#FF8747</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#FF8A3D"></div><div class="info"><span class="name">Arancione warning</span><span class="hex">#FF8A3D</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#FFB788"></div><div class="info"><span class="name">Arancione chiaro</span><span class="hex">#FFB788</span></div></div>
-          </div>
-        </div>
-
-        <div class="palette-group">
-          <h3>Accenti categorici per modulo</h3>
-          <div class="swatches">
-            <div class="swatch"><div class="chip" style="background:#8647FF"></div><div class="info"><span class="name">Viola Mixer</span><span class="hex">#8647FF</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#C29AFF"></div><div class="info"><span class="name">Viola chiaro</span><span class="hex">#C29AFF</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#E4D2FF"></div><div class="info"><span class="name">Lilla tenue</span><span class="hex">#E4D2FF</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#C084FC"></div><div class="info"><span class="name">Viola linea</span><span class="hex">#C084FC</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#6FAAFF"></div><div class="info"><span class="name">Blu filter</span><span class="hex">#6FAAFF</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#5999F7"></div><div class="info"><span class="name">Blu electrical</span><span class="hex">#5999F7</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#BCC8FF"></div><div class="info"><span class="name">Blu lavanda</span><span class="hex">#BCC8FF</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#BED5F6"></div><div class="info"><span class="name">Azzurro maintenance</span><span class="hex">#BED5F6</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#FC84DE"></div><div class="info"><span class="name">Rosa energy</span><span class="hex">#FC84DE</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#F4C534"></div><div class="info"><span class="name">Oro period</span><span class="hex">#F4C534</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#F6E46E"></div><div class="info"><span class="name">Giallo plant</span><span class="hex">#F6E46E</span></div></div>
-            <div class="swatch"><div class="chip" style="background:#00B8C5"></div><div class="info"><span class="name">Turchese</span><span class="hex">#00B8C5</span></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
-
-  <section id="accessibilita" class="reveal">
-    <div class="wrap">
-      <span class="eyebrow">Accessibilità</span>
-      <h2>Conformità WCAG verificata, non presunta</h2>
-      <div class="a11y-row">
-        <div class="badge"><span class="lvl">AA</span><span class="std">WCAG 2</span></div>
-        <div class="badge"><span class="lvl">AAA</span><span class="std">WCAG 2</span></div>
-        <div class="a11y-text">
-          <p>Tutti i mockup del progetto sono stati sottoposti a verifica tramite <strong>Stark, Universal Accessibility Framework (SUAF)</strong>, per controllare la conformità alle <a href="https://www.w3.org/WAI/WCAG2AA-Conformance" target="_blank" rel="noopener">Web Content Accessibility Guidelines</a>. Il risultato è una conformità di livello <strong>AA</strong> su tutti i componenti verificati, e <strong>AAA</strong> per la maggior parte di essi, contrasto colore, dimensione del testo e stati interattivi inclusi.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
-
-  <section id="contatti" class="reveal">
-    <div class="wrap" style="text-align:center;">
-      <span class="eyebrow">Contatti</span>
-      <h2>Parliamone</h2>
-      <p class="lede" style="margin:0 auto;">Sono disponibile per nuove collaborazioni e progetti di UX/UI design.</p>
-    </div>
-  </section>
-
+<div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
+<section id="accessibilita" class="reveal"><div class="wrap"><span class="eyebrow">Accessibilità</span><h2>Conformità WCAG verificata, non presunta</h2><div class="a11y-row"><div class="badge"><span class="lvl">AA</span><span class="std">WCAG 2</span></div><div class="badge"><span class="lvl">AAA</span><span class="std">WCAG 2</span></div><div class="a11y-text"><p>Tutti i mockup del progetto sono stati sottoposti a verifica tramite <strong>Stark, Universal Accessibility Framework (SUAF)</strong>, per controllare la conformità alle <a href="https://www.w3.org/WAI/WCAG2AA-Conformance" target="_blank" rel="noopener">Web Content Accessibility Guidelines</a>. Il risultato è una conformità di livello <strong>AA</strong> su tutti i componenti verificati, e <strong>AAA</strong> per la maggior parte di essi, contrasto colore, dimensione del testo e stati interattivi inclusi.</p></div></div></div></section>
+<div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
+<section id="contatti" class="reveal"><div class="wrap" style="text-align:center"><span class="eyebrow">Contatti</span><h2>Parliamone</h2><p class="lede" style="margin:0 auto">Sono disponibile per nuove collaborazioni e progetti di UX/UI design.</p></div></section>
 </main>
-
-<footer class="site">
-  <div class="wrap">
-    <div class="rosone small" style="margin:0 auto 1.2rem;"></div>
-    <div class="contact-links">
-      <a href="mailto:antonietta.pascarella@email.com">Email</a>
-      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://behance.net" target="_blank" rel="noopener">Behance</a>
-    </div>
-    <p class="fine">Antonietta Pascarella, UI/UX Designer · Bologna, Italia</p>
-  </div>
-</footer>
-
+<footer class="site"><div class="wrap"><div class="rosone small" style="margin:0 auto 1.2rem"></div><div class="contact-links"><a href="mailto:antonietta.pascarella@email.com">Email</a><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a><a href="https://behance.net" target="_blank" rel="noopener">Behance</a></div><p class="fine">Antonietta Pascarella, UI/UX Designer · Bologna, Italia</p></div></footer>
 
 <script type="module">
 import * as THREE from 'three';
@@ -639,17 +150,21 @@ const heroCanvas = document.getElementById('avatar-canvas');
 const companionCanvas = document.getElementById('companion-canvas');
 const companion = document.getElementById('characterCompanion');
 const companionCaption = document.getElementById('companionCaption');
-let heroRenderer, heroScene, heroCamera, avatar, clock;
-let companionRenderer, companionScene, companionCamera, companionAvatar;
-let pointer = {x:0,y:0};
-let pose = 'home', poseTarget = {head:0, tilt:0, arm:0, lean:0, bounce:0};
-let poseCurrent = {...poseTarget};
 
-function setupScene(canvas, small=false){
+let heroRenderer, heroScene, heroCamera, avatar;
+let companionRenderer, companionScene, companionCamera, companionAvatar;
+let clock;
+let pointer = { x: 0, y: 0 };
+let poseTarget = { head: 0, tilt: 0, arm: 0, lean: 0, bounce: 0 };
+let poseCurrent = { ...poseTarget };
+
+const avatarUrl = './avatar.glb';
+
+function setupScene(canvas, small = false) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(small ? 30 : 30, 1, 0.1, 100);
-  camera.position.set(0, -6.8, 1.65);
-  camera.lookAt(0, 0, 1.55);
+  const camera = new THREE.PerspectiveCamera(small ? 25 : 24, 1, 0.1, 100);
+  camera.position.set(0, -7.2, 2.25);
+  camera.lookAt(0, 0, 1.65);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -660,211 +175,271 @@ function setupScene(canvas, small=false){
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
 
-  scene.add(new THREE.HemisphereLight(0xfff7e8, 0x463c31, 2.4));
+  scene.add(new THREE.HemisphereLight(0xfff7e8, 0x463c31, 2.2));
 
-  const key = new THREE.DirectionalLight(0xfff1cf, 2.8);
+  const key = new THREE.DirectionalLight(0xfff1cf, 2.5);
   key.position.set(2, -4, 5);
   scene.add(key);
 
-  const rim = new THREE.DirectionalLight(0xb0b4d6, 1.3);
+  const rim = new THREE.DirectionalLight(0xb0b4d6, 1.1);
   rim.position.set(-3, 2, 3);
   scene.add(rim);
 
-  return {scene, camera, renderer};
+  return { scene, camera, renderer };
 }
 
-function resizeScene(o, canvas){
+function resizeScene(sceneData, canvas) {
   const rect = canvas.getBoundingClientRect();
   const width = Math.max(1, rect.width);
   const height = Math.max(1, rect.height);
 
-  o.renderer.setSize(width, height, false);
-  o.camera.aspect = width / height;
-  o.camera.updateProjectionMatrix();
+  sceneData.renderer.setSize(width, height, false);
+  sceneData.camera.aspect = width / height;
+  sceneData.camera.updateProjectionMatrix();
 }
 
-function prepareAvatar(model){
-  model.rotation.set(0, Math.PI, 0);
-
-  const initialBox = new THREE.Box3().setFromObject(model);
-  const initialSize = initialBox.getSize(new THREE.Vector3());
-  const targetHeight = 3.05;
-
-  if(initialSize.z > 0){
-    model.scale.setScalar(targetHeight / initialSize.z);
-  }
-
-  const box = new THREE.Box3().setFromObject(model);
-  const center = box.getCenter(new THREE.Vector3());
-
-  model.position.x -= center.x;
-  model.position.y -= center.y;
-  model.position.z -= box.min.z;
-
-  model.traverse(object => {
-    if(object.isMesh){
-      object.frustumCulled = false;
-      if(object.material){
-        object.material.needsUpdate = true;
-      }
-    }
-  });
-
-  return model;
-}
-
-function loadAvatar(scene, cb){
+function loadAvatar(scene, callback) {
   const loader = new GLTFLoader();
-  const avatarPath = './assets/avatar.glb';
 
   loader.load(
-    avatarPath,
+    avatarUrl,
     gltf => {
-      const model = prepareAvatar(gltf.scene);
+      const model = gltf.scene;
+      model.scale.setScalar(1.05);
+      model.rotation.y = Math.PI;
       scene.add(model);
-      cb(model);
+      callback(model);
     },
     undefined,
     error => {
-      console.error('Could not load avatar.glb', error);
+      console.error('Unable to load avatar.glb:', error);
     }
   );
 }
-function applyPose(name){
-  pose=name;
-  const map={
-    home:{head:0,tilt:0,arm:0,lean:0,bounce:0},
-    about:{head:-.13,tilt:.04,arm:-.10,lean:-.035,bounce:.012},
-    work:{head:.18,tilt:-.035,arm:.22,lean:.025,bounce:-.008},
-    contact:{head:-.20,tilt:.05,arm:-.30,lean:-.02,bounce:.016}
+
+function applyPose(name) {
+  const poses = {
+    home: { head: 0, tilt: 0, arm: 0, lean: 0, bounce: 0 },
+    about: { head: -0.13, tilt: 0.04, arm: -0.10, lean: -0.035, bounce: 0.012 },
+    work: { head: 0.18, tilt: -0.035, arm: 0.22, lean: 0.025, bounce: -0.008 },
+    contact: { head: -0.20, tilt: 0.05, arm: -0.30, lean: -0.02, bounce: 0.016 }
   };
-  poseTarget=map[name]||map.home;
-  const labels={home:'in ascolto',about:'ti racconto',work:'guarda qui',contact:'scrivimi'};
-  if(companionCaption) companionCaption.textContent=labels[name]||labels.home;
-}
-function animateAvatar(a,t,small=false){
-  if(!a)return;
-  for(const k of Object.keys(poseCurrent)) poseCurrent[k]+= (poseTarget[k]-poseCurrent[k])*.055;
-  const breathe=reducedMotion?0:Math.sin(t*1.7)*.012;
-  a.position.y=breathe+poseCurrent.bounce;
-  a.position.x=(reducedMotion?0:Math.sin(t*.55)*.012)+poseCurrent.lean;
-  a.rotation.y += (Math.PI + pointer.x*.30 + poseCurrent.head - a.rotation.y)*.045;
-  a.rotation.x += (-pointer.y*.10 + poseCurrent.tilt - a.rotation.x)*.045;
-  // The model uses named parts, so the character can make small gestures without a full rig.
-  const armL=a.getObjectByName('arm_-1'), armR=a.getObjectByName('arm_1');
-  const handL=a.getObjectByName('hand_-1'), handR=a.getObjectByName('hand_1');
-  const head=a.getObjectByName('head');
-  if(armL) armL.rotation.z += (-poseCurrent.arm*.22-armL.rotation.z)*.06;
-  if(armR) armR.rotation.z += (poseCurrent.arm*.22-armR.rotation.z)*.06;
-  if(handL) handL.rotation.z += (-poseCurrent.arm*.12-handL.rotation.z)*.06;
-  if(handR) handR.rotation.z += (poseCurrent.arm*.12-handR.rotation.z)*.06;
-  if(head) head.rotation.z += (poseCurrent.tilt*.5-head.rotation.z)*.04;
-}
 
-function init3D(){
-  if(!heroCanvas)return;
-  const h=setupScene(heroCanvas); heroScene=h.scene;heroCamera=h.camera;heroRenderer=h.renderer;
-  loadAvatar(heroScene,a=>avatar=a); resizeScene(h,heroCanvas); window.addEventListener('resize',()=>resizeScene(h,heroCanvas));
-  heroCanvas.addEventListener('pointermove',e=>{const r=heroCanvas.getBoundingClientRect();pointer.x=(e.clientX-r.left)/r.width-.5;pointer.y=(e.clientY-r.top)/r.height-.5;});
-  heroCanvas.addEventListener('pointerleave',()=>{pointer.x=0;pointer.y=0;});
+  const labels = {
+    home: 'in ascolto',
+    about: 'ti racconto',
+    work: 'guarda qui',
+    contact: 'scrivimi'
+  };
 
-  if(companionCanvas){
-    const c=setupScene(companionCanvas,true); companionScene=c.scene;companionCamera=c.camera;companionRenderer=c.renderer;
-    loadAvatar(companionScene,a=>companionAvatar=a); resizeScene(c,companionCanvas); window.addEventListener('resize',()=>resizeScene(c,companionCanvas));
-    companionCanvas.addEventListener('pointermove',e=>{const r=companionCanvas.getBoundingClientRect();pointer.x=(e.clientX-r.left)/r.width-.5;pointer.y=(e.clientY-r.top)/r.height-.5;});
+  poseTarget = poses[name] || poses.home;
+
+  if (companionCaption) {
+    companionCaption.textContent = labels[name] || labels.home;
   }
-  clock=new THREE.Clock(); requestAnimationFrame(loop);
 }
-function loop(){
-  requestAnimationFrame(loop); const t=clock.getElapsedTime();
-  animateAvatar(avatar,t); animateAvatar(companionAvatar,t,true);
-  heroRenderer?.render(heroScene,heroCamera); companionRenderer?.render(companionScene,companionCamera);
+
+function animateAvatar(model, time) {
+  if (!model) return;
+
+  for (const key of Object.keys(poseCurrent)) {
+    poseCurrent[key] += (poseTarget[key] - poseCurrent[key]) * 0.055;
+  }
+
+  const breathe = reducedMotion ? 0 : Math.sin(time * 1.7) * 0.012;
+
+  model.position.y = breathe + poseCurrent.bounce;
+  model.position.x = (reducedMotion ? 0 : Math.sin(time * 0.55) * 0.012) + poseCurrent.lean;
+
+  const targetY = Math.PI + pointer.x * 0.30 + poseCurrent.head;
+  const targetX = -pointer.y * 0.10 + poseCurrent.tilt;
+
+  model.rotation.y += (targetY - model.rotation.y) * 0.045;
+  model.rotation.x += (targetX - model.rotation.x) * 0.045;
+
+  const armLeft = model.getObjectByName('arm_-1');
+  const armRight = model.getObjectByName('arm_1');
+  const handLeft = model.getObjectByName('hand_-1');
+  const handRight = model.getObjectByName('hand_1');
+  const head = model.getObjectByName('head');
+
+  if (armLeft) armLeft.rotation.z += (-poseCurrent.arm * 0.22 - armLeft.rotation.z) * 0.06;
+  if (armRight) armRight.rotation.z += (poseCurrent.arm * 0.22 - armRight.rotation.z) * 0.06;
+  if (handLeft) handLeft.rotation.z += (-poseCurrent.arm * 0.12 - handLeft.rotation.z) * 0.06;
+  if (handRight) handRight.rotation.z += (poseCurrent.arm * 0.12 - handRight.rotation.z) * 0.06;
+  if (head) head.rotation.z += (poseCurrent.tilt * 0.5 - head.rotation.z) * 0.04;
 }
+
+function init3D() {
+  if (!heroCanvas) return;
+
+  const hero = setupScene(heroCanvas);
+  heroScene = hero.scene;
+  heroCamera = hero.camera;
+  heroRenderer = hero.renderer;
+
+  loadAvatar(heroScene, model => {
+    avatar = model;
+  });
+
+  resizeScene(hero, heroCanvas);
+  window.addEventListener('resize', () => resizeScene(hero, heroCanvas));
+
+  heroCanvas.addEventListener('pointermove', event => {
+    const rect = heroCanvas.getBoundingClientRect();
+    pointer.x = event.clientX / rect.width - rect.left / rect.width - 0.5;
+    pointer.y = event.clientY / rect.height - rect.top / rect.height - 0.5;
+  });
+
+  heroCanvas.addEventListener('pointerleave', () => {
+    pointer.x = 0;
+    pointer.y = 0;
+  });
+
+  if (companionCanvas) {
+    const companionSceneData = setupScene(companionCanvas, true);
+    companionScene = companionSceneData.scene;
+    companionCamera = companionSceneData.camera;
+    companionRenderer = companionSceneData.renderer;
+
+    loadAvatar(companionScene, model => {
+      companionAvatar = model;
+    });
+
+    resizeScene(companionSceneData, companionCanvas);
+    window.addEventListener('resize', () => resizeScene(companionSceneData, companionCanvas));
+
+    companionCanvas.addEventListener('pointermove', event => {
+      const rect = companionCanvas.getBoundingClientRect();
+      pointer.x = event.clientX / rect.width - rect.left / rect.width - 0.5;
+      pointer.y = event.clientY / rect.height - rect.top / rect.height - 0.5;
+    });
+  }
+
+  clock = new THREE.Clock();
+  requestAnimationFrame(render);
+}
+
+function render() {
+  requestAnimationFrame(render);
+
+  const time = clock.getElapsedTime();
+
+  animateAvatar(avatar, time);
+  animateAvatar(companionAvatar, time);
+
+  if (heroRenderer && heroScene && heroCamera) {
+    heroRenderer.render(heroScene, heroCamera);
+  }
+
+  if (companionRenderer && companionScene && companionCamera) {
+    companionRenderer.render(companionScene, companionCamera);
+  }
+}
+
 init3D();
 
-// Reveal sections as they enter the viewport
-const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('is-visible');}),{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-
-// Change the character pose as the page moves through the story.
-const sections=[...document.querySelectorAll('main section[id]')];
-const sectionObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
-  if(entry.isIntersecting){
-    const id=entry.target.id;
-    if(id==='home'||id==='chi-sono'||id==='progetto'||id==='contatti'){
-      applyPose(id==='home'?'home':id==='chi-sono'?'about':id==='progetto'?'work':'contact');
-      companion?.classList.toggle('is-active',id!=='home');
-      companion?.setAttribute('aria-hidden',String(id==='home'));
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-visible');
     }
-  }
-}),{threshold:.42});
-sections.forEach(s=>sectionObserver.observe(s));
+  });
+}, { threshold: 0.12 });
 
-// Make the companion look toward the active project.
-document.querySelectorAll('.lift,.case-link').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{applyPose('work');pointer.x=.34;});
-  el.addEventListener('mouseleave',()=>{pointer.x=0;});
+document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
+
+const sections = [...document.querySelectorAll('main section[id]')];
+
+const sectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+
+    const poses = {
+      home: 'home',
+      'chi-sono': 'about',
+      progetto: 'work',
+      contatti: 'contact'
+    };
+
+    if (poses[entry.target.id]) {
+      applyPose(poses[entry.target.id]);
+
+      const showCompanion = entry.target.id !== 'home';
+      companion?.classList.toggle('is-active', showCompanion);
+      companion?.setAttribute('aria-hidden', String(!showCompanion));
+    }
+  });
+}, { threshold: 0.42 });
+
+sections.forEach(section => sectionObserver.observe(section));
+
+document.querySelectorAll('.lift,.case-link').forEach(element => {
+  element.addEventListener('mouseenter', () => {
+    applyPose('work');
+    pointer.x = 0.34;
+  });
+
+  element.addEventListener('mouseleave', () => {
+    pointer.x = 0;
+  });
 });
 
-const progress=document.getElementById('scrollProgress');
-window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;progress.style.width=(h>0?(scrollY/h)*100:0)+'%';},{passive:true});
+const progress = document.getElementById('scrollProgress');
 
-// Lightweight interaction sounds
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-let audioCtx = null;
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.width = `${total > 0 ? (window.scrollY / total) * 100 : 0}%`;
+}, { passive: true });
+
+const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+let audioContext = null;
 let soundOn = true;
-let audioUnlocked = false;
 
-function unlockAudio(){
-  if(!AudioCtx || audioUnlocked)return;
+function enableAudio() {
+  if (!AudioContextClass) return;
 
-  audioCtx = audioCtx || new AudioCtx();
-
-  if(audioCtx.state === 'suspended'){
-    audioCtx.resume();
+  if (!audioContext) {
+    audioContext = new AudioContextClass();
   }
 
-  audioUnlocked = true;
+  if (audioContext.state === 'suspended') {
+    audioContext.resume().catch(() => {});
+  }
 }
 
-function blip(kind='hover'){
-  if(!soundOn || !AudioCtx || !audioUnlocked || !audioCtx)return;
+function blip(kind = 'hover') {
+  if (!soundOn || !AudioContextClass) return;
 
-  const oscillator = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  const now = audioCtx.currentTime;
+  enableAudio();
+
+  if (!audioContext || audioContext.state !== 'running') return;
+
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  const now = audioContext.currentTime;
 
   oscillator.type = 'sine';
   oscillator.frequency.setValueAtTime(kind === 'click' ? 520 : 330, now);
-  oscillator.frequency.exponentialRampToValueAtTime(
-    kind === 'click' ? 760 : 420,
-    now + 0.055
-  );
+  oscillator.frequency.exponentialRampToValueAtTime(kind === 'click' ? 760 : 420, now + 0.055);
 
   gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(
-    kind === 'click' ? 0.028 : 0.009,
-    now + 0.008
-  );
-  gain.gain.exponentialRampToValueAtTime(
-    0.0001,
-    now + (kind === 'click' ? 0.1 : 0.055)
-  );
+  gain.gain.exponentialRampToValueAtTime(kind === 'click' ? 0.028 : 0.009, now + 0.008);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + (kind === 'click' ? 0.1 : 0.055));
 
   oscillator.connect(gain);
-  gain.connect(audioCtx.destination);
+  gain.connect(audioContext.destination);
+
   oscillator.start(now);
   oscillator.stop(now + 0.12);
 }
 
-window.addEventListener('pointerdown', unlockAudio, {once:true});
+document.addEventListener('pointerdown', enableAudio, { once: true });
 
 document.querySelectorAll('[data-sound]').forEach(element => {
   element.addEventListener('mouseenter', () => {
-    if(element.dataset.sound === 'hover')blip('hover');
+    if (element.dataset.sound === 'hover') blip('hover');
   });
 
   element.addEventListener('click', () => blip('click'));
@@ -873,17 +448,15 @@ document.querySelectorAll('[data-sound]').forEach(element => {
 const soundToggle = document.getElementById('soundToggle');
 
 soundToggle?.addEventListener('click', () => {
-  if(!soundOn){
-    soundOn = true;
-    unlockAudio();
-  }else{
-    soundOn = false;
+  soundOn = !soundOn;
+
+  if (soundOn) {
+    enableAudio();
+    blip('click');
   }
 
-  soundToggle.textContent = soundOn ? '◖ sound on' : '◖ sound off';
-  soundToggle.setAttribute('aria-pressed', String(!soundOn));
-
-  if(soundOn)blip('click');
+  soundToggle.textContent = soundOn ? 'sound on' : 'sound off';
+  soundToggle.setAttribute('aria-pressed', String(soundOn));
 });
 </script>
 </body>
