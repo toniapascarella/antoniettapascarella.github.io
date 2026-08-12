@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#F1EDE4">
 <meta name="description" content="Antonietta Pascarella, UI/UX Designer. Portfolio di product, UI e UX design.">
 <title>Antonietta Pascarella, UI/UX Designer</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2712%27 fill=%27%23F1EDE4%27/%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2718%27 fill=%27%23A97C22%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
@@ -165,7 +166,7 @@ const pointer = {
 const poseTarget = { head: 0, tilt: 0, arm: 0, lean: 0, bounce: 0 };
 const poseCurrent = { ...poseTarget };
 const eyeState = new WeakMap();
-const avatarUrl = './avatar.glb';
+const avatarUrl = 'avatar.glb';
 
 function setupScene(canvas, small = false) {
   const scene = new THREE.Scene();
@@ -216,7 +217,6 @@ function prepareAvatar(model, small = false) {
 
   model.position.x -= center.x;
   model.position.z -= center.z;
-  model.position.y -= box.min.y;
 
   const desiredHeight = small ? 4.1 : 5.0;
   if (size.y > 0) {
@@ -467,11 +467,7 @@ function enableAudio() {
 }
 
 function blip(kind = 'hover') {
-  if (!soundOn || !AudioContextClass) return;
-
-  enableAudio();
-
-  if (!audioContext || audioContext.state !== 'running') return;
+  if (!soundOn || !audioContext || audioContext.state !== 'running') return;
 
   const oscillator = audioContext.createOscillator();
   const gain = audioContext.createGain();
@@ -479,42 +475,54 @@ function blip(kind = 'hover') {
 
   oscillator.type = 'sine';
   oscillator.frequency.setValueAtTime(kind === 'click' ? 520 : 330, now);
-  oscillator.frequency.exponentialRampToValueAtTime(kind === 'click' ? 760 : 420, now + 0.055);
+  oscillator.frequency.exponentialRampToValueAtTime(
+    kind === 'click' ? 760 : 420,
+    now + 0.055
+  );
 
   gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(kind === 'click' ? 0.028 : 0.009, now + 0.008);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + (kind === 'click' ? 0.1 : 0.055));
+  gain.gain.exponentialRampToValueAtTime(
+    kind === 'click' ? 0.028 : 0.009,
+    now + 0.008
+  );
+  gain.gain.exponentialRampToValueAtTime(
+    0.0001,
+    now + (kind === 'click' ? 0.1 : 0.055)
+  );
 
   oscillator.connect(gain);
   gain.connect(audioContext.destination);
-
   oscillator.start(now);
   oscillator.stop(now + 0.12);
 }
 
-document.addEventListener('pointerdown', enableAudio, { once: true });
+document.addEventListener('pointerdown', () => {
+  enableAudio();
+}, { once: true });
 
 document.querySelectorAll('[data-sound]').forEach(element => {
   element.addEventListener('mouseenter', () => {
     if (element.dataset.sound === 'hover') blip('hover');
   });
 
-  element.addEventListener('click', () => blip('click'));
+  element.addEventListener('click', () => {
+    blip('click');
+  });
 });
 
 const soundToggle = document.getElementById('soundToggle');
 
 soundToggle?.addEventListener('click', () => {
   soundOn = !soundOn;
+  soundToggle.textContent = soundOn ? '◖ SOUND ON' : '◖ SOUND OFF';
+  soundToggle.setAttribute('aria-pressed', String(!soundOn));
 
   if (soundOn) {
     enableAudio();
     blip('click');
   }
-
-  soundToggle.textContent = soundOn ? 'sound on' : 'sound off';
-  soundToggle.setAttribute('aria-pressed', String(soundOn));
 });
+
 </script>
 </body>
 </html>
