@@ -51,6 +51,9 @@ nav.links a:hover,nav.links a:focus-visible{color:var(--ink);border-color:var(--
 .hero-visual::before{content:"";position:absolute;width:78%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at center,transparent 0 57%,var(--line-soft) 57.5% 58%,transparent 58.5%),repeating-conic-gradient(from 0deg,var(--line) 0deg 2deg,transparent 2deg 18deg);opacity:.62;transform:rotate(-7deg)}
 .hero-visual::after{content:"";position:absolute;inset:13% 8%;border:1px solid var(--line-soft);border-radius:48% 52% 46% 54%;transform:rotate(5deg);pointer-events:none}
 #avatar-canvas{position:relative;z-index:2;width:100%;height:100%;display:block;cursor:default;touch-action:none}
+.hero-visual{will-change:auto}
+#avatar-canvas{opacity:0;transition:opacity .35s ease}
+#avatar-canvas.is-ready{opacity:1}
 .avatar-label{position:absolute;z-index:3;right:2%;top:12%;font:italic 1rem var(--font-display);color:var(--ink-soft);transform:rotate(3deg);pointer-events:none}.avatar-label::after{content:"";position:absolute;width:52px;height:24px;border-top:1px solid var(--ocra);border-radius:50%;left:-44px;top:22px;transform:rotate(-16deg)}
 .avatar-status{position:absolute;z-index:3;bottom:4%;left:5%;display:flex;align-items:center;gap:.45rem;font:.68rem var(--font-ui);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint)}.avatar-status i{width:7px;height:7px;border-radius:50%;background:var(--oliva);box-shadow:0 0 0 4px rgba(95,113,72,.12)}
 section{padding:clamp(2.5rem,6vw,4.5rem) 0}section#chi-sono,section#accessibilita,section#contatti{border-top:1px solid var(--line-soft)}
@@ -96,7 +99,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--vinaccia);outline-o
 <a class="cta" href="#progetto" data-sound="click">Scopri il progetto ↓</a>
 <div class="hero-note">scroll / move the character / listen to the details</div>
 </div>
-<div class="hero-visual reveal"><canvas id="avatar-canvas" aria-label="Avatar 3D interattivo di Antonietta"></canvas><div class="avatar-label">ciao, sono Antonietta! ♡</div><div class="avatar-status"><i></i><span>interactive character</span></div></div>
+<div class="hero-visual"><canvas id="avatar-canvas" aria-label="Avatar 3D interattivo di Antonietta"></canvas><div class="avatar-label">ciao, sono Antonietta! ♡</div><div class="avatar-status"><i></i><span>interactive character</span></div></div>
 </div></section>
 
 <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
@@ -274,13 +277,13 @@ function animateAvatar(model, time) {
   model.position.y = breathe + poseCurrent.bounce;
   model.position.x = poseCurrent.lean;
 
-  const baseX = Math.PI;
-  const targetY = -pointer.x * 0.22 + poseCurrent.head;
-  const targetZ = -pointer.y * 0.07 + poseCurrent.tilt;
+  const targetX = pointer.y * 0.045;
+  const targetY = Math.PI + pointer.x * 0.22 + poseCurrent.head;
+  const targetZ = -pointer.y * 0.035 + poseCurrent.tilt;
 
-  model.rotation.x += (baseX - model.rotation.x) * 0.06;
-  model.rotation.y += (targetY - model.rotation.y) * 0.06;
-  model.rotation.z += (targetZ - model.rotation.z) * 0.06;
+  model.rotation.x += (targetX - model.rotation.x) * 0.07;
+  model.rotation.y += (targetY - model.rotation.y) * 0.07;
+  model.rotation.z += (targetZ - model.rotation.z) * 0.07;
 
   const armLeft = findPart(model, ['arm_-1', 'arm_left', 'left_arm']);
   const armRight = findPart(model, ['arm_1', 'arm_right', 'right_arm']);
@@ -294,32 +297,32 @@ function animateAvatar(model, time) {
 
   if (!eyeState.has(model)) {
     eyeState.set(model, {
-      pupilLeft: pupilLeft ? { x: pupilLeft.rotation.x, y: pupilLeft.rotation.y } : null,
-      pupilRight: pupilRight ? { x: pupilRight.rotation.x, y: pupilRight.rotation.y } : null,
-      irisLeft: irisLeft ? { x: irisLeft.rotation.x, y: irisLeft.rotation.y } : null,
-      irisRight: irisRight ? { x: irisRight.rotation.x, y: irisRight.rotation.y } : null
+      pupilLeft: pupilLeft ? { x: pupilLeft.position.x, y: pupilLeft.position.y } : null,
+      pupilRight: pupilRight ? { x: pupilRight.position.x, y: pupilRight.position.y } : null,
+      irisLeft: irisLeft ? { x: irisLeft.position.x, y: irisLeft.position.y } : null,
+      irisRight: irisRight ? { x: irisRight.position.x, y: irisRight.position.y } : null
     });
   }
 
   const eyes = eyeState.get(model);
-  const eyeX = -pointer.y * 0.18;
-  const eyeY = pointer.x * 0.20;
+  const eyeX = THREE.MathUtils.clamp(pointer.x * 0.025, -0.025, 0.025);
+  const eyeY = THREE.MathUtils.clamp(-pointer.y * 0.018, -0.018, 0.018);
 
   if (pupilLeft && eyes.pupilLeft) {
-    pupilLeft.rotation.x = eyes.pupilLeft.x + eyeX;
-    pupilLeft.rotation.y = eyes.pupilLeft.y + eyeY;
+    pupilLeft.position.x += (eyes.pupilLeft.x + eyeX - pupilLeft.position.x) * 0.16;
+    pupilLeft.position.y += (eyes.pupilLeft.y + eyeY - pupilLeft.position.y) * 0.16;
   }
   if (pupilRight && eyes.pupilRight) {
-    pupilRight.rotation.x = eyes.pupilRight.x + eyeX;
-    pupilRight.rotation.y = eyes.pupilRight.y + eyeY;
+    pupilRight.position.x += (eyes.pupilRight.x + eyeX - pupilRight.position.x) * 0.16;
+    pupilRight.position.y += (eyes.pupilRight.y + eyeY - pupilRight.position.y) * 0.16;
   }
   if (irisLeft && eyes.irisLeft) {
-    irisLeft.rotation.x = eyes.irisLeft.x + eyeX * 0.8;
-    irisLeft.rotation.y = eyes.irisLeft.y + eyeY * 0.8;
+    irisLeft.position.x += (eyes.irisLeft.x + eyeX * 0.8 - irisLeft.position.x) * 0.14;
+    irisLeft.position.y += (eyes.irisLeft.y + eyeY * 0.8 - irisLeft.position.y) * 0.14;
   }
   if (irisRight && eyes.irisRight) {
-    irisRight.rotation.x = eyes.irisRight.x + eyeX * 0.8;
-    irisRight.rotation.y = eyes.irisRight.y + eyeY * 0.8;
+    irisRight.position.x += (eyes.irisRight.x + eyeX * 0.8 - irisRight.position.x) * 0.14;
+    irisRight.position.y += (eyes.irisRight.y + eyeY * 0.8 - irisRight.position.y) * 0.14;
   }
 
   if (armLeft) armLeft.rotation.z += (-poseCurrent.arm * 0.20 - armLeft.rotation.z) * 0.07;
@@ -349,7 +352,7 @@ function init3D() {
   heroScene = hero.scene;
   heroCamera = hero.camera;
   heroRenderer = hero.renderer;
-  loadAvatar(heroScene, model => { avatar = model; });
+  loadAvatar(heroScene, model => { avatar = model; heroCanvas.classList.add('is-ready'); });
   resizeScene(hero, heroCanvas);
   window.addEventListener('resize', () => resizeScene(hero, heroCanvas));
 
@@ -361,7 +364,7 @@ function init3D() {
     companionScene = small.scene;
     companionCamera = small.camera;
     companionRenderer = small.renderer;
-    loadAvatar(companionScene, model => { companionAvatar = model; }, true);
+    loadAvatar(companionScene, model => { companionAvatar = model; companionCanvas.classList.add('is-ready'); }, true);
     resizeScene(small, companionCanvas);
     window.addEventListener('resize', () => resizeScene(small, companionCanvas));
 
@@ -446,7 +449,12 @@ function enableAudio() {
   if (!AudioContextClass) return;
 
   if (!audioContext) {
-    audioContext = new AudioContextClass();
+    try {
+      audioContext = new AudioContextClass();
+    } catch (error) {
+      audioContext = null;
+      return;
+    }
   }
 
   if (audioContext.state === 'suspended') {
@@ -484,9 +492,8 @@ function blip(kind = 'hover') {
   oscillator.stop(now + 0.12);
 }
 
-document.addEventListener('pointerdown', () => {
-  enableAudio();
-}, { once: true });
+document.addEventListener('pointerdown', enableAudio, { once: true, passive: true });
+document.addEventListener('keydown', enableAudio, { once: true });
 
 document.querySelectorAll('[data-sound]').forEach(element => {
   element.addEventListener('mouseenter', () => {
@@ -506,8 +513,7 @@ soundToggle?.addEventListener('click', () => {
   soundToggle.setAttribute('aria-pressed', String(!soundOn));
 
   if (soundOn) {
-    enableAudio();
-    blip('click');
+        blip('click');
   }
 });
 
