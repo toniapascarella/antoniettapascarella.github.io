@@ -83,7 +83,7 @@
     padding:0 clamp(1.25rem, 4vw, 3rem);
   }
 
-  /* ---------- rosone, motivo ricorrente ---------- */
+  /* Decorative rosette */
   .rosone{
     --size: 200px;
     width:var(--size); height:var(--size);
@@ -116,7 +116,7 @@
     background:linear-gradient(90deg, transparent, var(--line), transparent);
   }
 
-  /* ---------- boiserie panel ---------- */
+  /* Panel */
   .panel{
     position:relative;
     background:var(--bg-panel);
@@ -137,7 +137,7 @@
   .panel::before{ top:10px; left:10px; }
   .panel::after{ bottom:10px; right:10px; }
 
-  /* ---------- nav ---------- */
+  /* Navigation */
   header.nav{
     position:sticky; top:0; z-index:50;
     background:rgba(241,237,228,.92);
@@ -173,7 +173,7 @@
     color:var(--ink); border-color:var(--ocra);
   }
 
-  /* ---------- hero ---------- */
+  /* Hero */
   .hero{ padding: clamp(3rem,8vw,6rem) 0 clamp(2rem,5vw,3.5rem); }
   .hero-inner{
     display:flex; align-items:center; gap: clamp(2rem, 6vw, 4rem);
@@ -200,7 +200,7 @@
     border-bottom:1px solid var(--ocra); padding-bottom:.2em;
   }
 
-  /* ---------- sections ---------- */
+  /* Sections */
   section{ padding: clamp(2.5rem,6vw,4.5rem) 0; }
   section#chi-sono, section#accessibilita, section#contatti{
     border-top:1px solid var(--line-soft);
@@ -213,7 +213,7 @@
   }
   @media (max-width:720px){ .grid-2{ grid-template-columns:1fr; } }
 
-  /* case-study meta strip */
+  /* Case study metadata */
   .meta-strip{
     display:flex; flex-wrap:wrap; gap:2rem 3rem;
     margin: 1.6rem 0 2.4rem;
@@ -225,7 +225,7 @@
   }
   .meta-item .value{ font-family:var(--font-body); font-size:.98rem; color:var(--ink); }
 
-  /* before/after mockup frames (stilizzati, non screenshot) */
+  /* Before and after frames */
   .compare{
     display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;
     margin: 1.6rem 0 2.5rem;
@@ -255,7 +255,7 @@
     color:var(--ink-faint); margin-top:.6em; text-align:center;
   }
 
-  /* lesson learned callout */
+  /* Project note */
   blockquote{
     margin: 2rem 0; padding: 1.4rem 1.8rem;
     border-left:3px solid var(--vinaccia);
@@ -269,7 +269,7 @@
     color:var(--ocra);
   }
 
-  /* ---------- palette ---------- */
+  /* Palette */
   .palette-group{ margin-bottom:2.2rem; }
   .palette-group h3{ margin-bottom:.9rem; }
   .swatches{
@@ -287,7 +287,7 @@
   .swatch .name{ font-size:.78rem; color:var(--ink); display:block; }
   .swatch .hex{ font-size:.72rem; color:var(--ink-faint); letter-spacing:.03em; }
 
-  /* ---------- accessibilità ---------- */
+  /* Accessibility */
   .a11y-row{
     display:flex; gap:2.2rem; flex-wrap:wrap; align-items:center;
     margin-top:1.6rem;
@@ -304,7 +304,7 @@
     letter-spacing:.08em; color:var(--ocra); }
   .a11y-text{ flex:1; min-width:260px; }
 
-  /* ---------- footer / contatti ---------- */
+  /* Footer and contact */
   footer.site{
     padding: clamp(2.5rem,6vw,4rem) 0 3rem;
     text-align:center;
@@ -321,7 +321,7 @@
   .fine{ margin-top:2.4rem; font-family:var(--font-ui); font-size:var(--micro);
     color:var(--ink-faint); letter-spacing:.04em; }
 
-  /* focus visibile per accessibilità */
+  /* Visible keyboard focus */
   a:focus-visible, button:focus-visible{
     outline:2px solid var(--vinaccia); outline-offset:3px;
   }
@@ -335,7 +335,7 @@
     nav.links{ gap:1rem; font-size:.75rem; }
   }
 
-  /* ---------- interactive portfolio layer ---------- */
+  /* Interactive portfolio layer */
   .nav-inner{ position:relative; }
   .nav-tools{ display:flex; align-items:center; gap:.55rem; }
   .sound-toggle{ border:1px solid var(--line); background:transparent; color:var(--ink); border-radius:20px; padding:.45rem .75rem; font:500 .72rem var(--font-ui); letter-spacing:.08em; text-transform:uppercase; cursor:pointer; }
@@ -385,7 +385,7 @@
   }
 
 
-  /* ---------- narrative character companion ---------- */
+  /* Narrative character companion */
   .character-companion{
     position:fixed; right:18px; bottom:18px; z-index:40;
     width:154px; height:190px; border:1px solid var(--line); border-radius:20px;
@@ -403,6 +403,7 @@
   @media(max-width:560px){.character-companion{right:10px;bottom:10px;width:118px;height:148px}.companion-caption{font-size:.5rem}}
   @media(prefers-reduced-motion:reduce){.character-companion{transition:none}}
 </style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23F1EDE4' stroke='%23A97C22' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23A97C22'/%3E%3C/svg%3E">
 </head>
 <body>
 
@@ -646,21 +647,91 @@ let poseCurrent = {...poseTarget};
 
 function setupScene(canvas, small=false){
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(small?25:24,1,.1,100);
-  camera.position.set(0,-7.2,2.25); camera.lookAt(0,0,1.65);
-  const renderer = new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'high-performance'});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.outputColorSpace=THREE.SRGBColorSpace;
-  scene.add(new THREE.HemisphereLight(0xfff7e8,0x463c31,2.2));
-  const key=new THREE.DirectionalLight(0xfff1cf,2.5); key.position.set(2,-4,5); scene.add(key);
-  const rim=new THREE.DirectionalLight(0xb0b4d6,1.1); rim.position.set(-3,2,3); scene.add(rim);
-  return {scene,camera,renderer};
+  const camera = new THREE.PerspectiveCamera(small ? 30 : 30, 1, 0.1, 100);
+  camera.position.set(0, -6.8, 1.65);
+  camera.lookAt(0, 0, 1.55);
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true,
+    alpha: true,
+    powerPreference: 'high-performance'
+  });
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;
+
+  scene.add(new THREE.HemisphereLight(0xfff7e8, 0x463c31, 2.4));
+
+  const key = new THREE.DirectionalLight(0xfff1cf, 2.8);
+  key.position.set(2, -4, 5);
+  scene.add(key);
+
+  const rim = new THREE.DirectionalLight(0xb0b4d6, 1.3);
+  rim.position.set(-3, 2, 3);
+  scene.add(rim);
+
+  return {scene, camera, renderer};
 }
+
 function resizeScene(o, canvas){
-  const r=canvas.getBoundingClientRect(); o.renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);
-  o.camera.aspect=r.width/Math.max(1,r.height); o.camera.updateProjectionMatrix();
+  const rect = canvas.getBoundingClientRect();
+  const width = Math.max(1, rect.width);
+  const height = Math.max(1, rect.height);
+
+  o.renderer.setSize(width, height, false);
+  o.camera.aspect = width / height;
+  o.camera.updateProjectionMatrix();
 }
+
+function prepareAvatar(model){
+  model.rotation.set(0, Math.PI, 0);
+
+  const initialBox = new THREE.Box3().setFromObject(model);
+  const initialSize = initialBox.getSize(new THREE.Vector3());
+  const targetHeight = 3.05;
+
+  if(initialSize.z > 0){
+    model.scale.setScalar(targetHeight / initialSize.z);
+  }
+
+  const box = new THREE.Box3().setFromObject(model);
+  const center = box.getCenter(new THREE.Vector3());
+
+  model.position.x -= center.x;
+  model.position.y -= center.y;
+  model.position.z -= box.min.z;
+
+  model.traverse(object => {
+    if(object.isMesh){
+      object.frustumCulled = false;
+      if(object.material){
+        object.material.needsUpdate = true;
+      }
+    }
+  });
+
+  return model;
+}
+
 function loadAvatar(scene, cb){
-  new GLTFLoader().load('assets/avatar.glb',g=>{const a=g.scene;a.scale.setScalar(1.05);a.rotation.y=Math.PI;scene.add(a);cb(a);},undefined,e=>console.warn('Avatar GLB non disponibile',e));
+  const loader = new GLTFLoader();
+  const avatarPath = './assets/avatar.glb';
+
+  loader.load(
+    avatarPath,
+    gltf => {
+      const model = prepareAvatar(gltf.scene);
+      scene.add(model);
+      cb(model);
+    },
+    undefined,
+    error => {
+      console.error('Could not load avatar.glb', error);
+    }
+  );
 }
 function applyPose(name){
   pose=name;
@@ -682,7 +753,7 @@ function animateAvatar(a,t,small=false){
   a.position.x=(reducedMotion?0:Math.sin(t*.55)*.012)+poseCurrent.lean;
   a.rotation.y += (Math.PI + pointer.x*.30 + poseCurrent.head - a.rotation.y)*.045;
   a.rotation.x += (-pointer.y*.10 + poseCurrent.tilt - a.rotation.x)*.045;
-  // The GLB is intentionally made from named parts, so these small gestures work without a rig.
+  // The model uses named parts, so the character can make small gestures without a full rig.
   const armL=a.getObjectByName('arm_-1'), armR=a.getObjectByName('arm_1');
   const handL=a.getObjectByName('hand_-1'), handR=a.getObjectByName('hand_1');
   const head=a.getObjectByName('head');
@@ -714,11 +785,11 @@ function loop(){
 }
 init3D();
 
-// Scroll reveals
+// Reveal sections as they enter the viewport
 const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('is-visible');}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-// Narrative state: the character changes pose as the story changes.
+// Change the character pose as the page moves through the story.
 const sections=[...document.querySelectorAll('main section[id]')];
 const sectionObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
   if(entry.isIntersecting){
@@ -732,7 +803,7 @@ const sectionObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{
 }),{threshold:.42});
 sections.forEach(s=>sectionObserver.observe(s));
 
-// Work cards make the companion look toward the hovered target.
+// Make the companion look toward the active project.
 document.querySelectorAll('.lift,.case-link').forEach(el=>{
   el.addEventListener('mouseenter',()=>{applyPose('work');pointer.x=.34;});
   el.addEventListener('mouseleave',()=>{pointer.x=0;});
@@ -741,11 +812,79 @@ document.querySelectorAll('.lift,.case-link').forEach(el=>{
 const progress=document.getElementById('scrollProgress');
 window.addEventListener('scroll',()=>{const h=document.documentElement.scrollHeight-innerHeight;progress.style.width=(h>0?(scrollY/h)*100:0)+'%';},{passive:true});
 
-// Soft interaction sound
-const AudioCtx=window.AudioContext||window.webkitAudioContext; let audioCtx=null,soundOn=true;
-function blip(kind='hover'){if(!soundOn||!AudioCtx)return;audioCtx ||= new AudioCtx();if(audioCtx.state==='suspended')audioCtx.resume();const o=audioCtx.createOscillator(),g=audioCtx.createGain(),n=audioCtx.currentTime;o.type='sine';o.frequency.setValueAtTime(kind==='click'?520:330,n);o.frequency.exponentialRampToValueAtTime(kind==='click'?760:420,n+.055);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(kind==='click'?.028:.009,n+.008);g.gain.exponentialRampToValueAtTime(.0001,n+(kind==='click'?.1:.055));o.connect(g);g.connect(audioCtx.destination);o.start(n);o.stop(n+.12)}
-document.querySelectorAll('[data-sound]').forEach(el=>{el.addEventListener('mouseenter',()=>el.dataset.sound==='hover'&&blip('hover'));el.addEventListener('click',()=>blip('click'));});
-const soundToggle=document.getElementById('soundToggle'); soundToggle?.addEventListener('click',()=>{soundOn=!soundOn;soundToggle.textContent=soundOn?'◖ sound on':'◖ sound off';soundToggle.setAttribute('aria-pressed',String(!soundOn));if(soundOn)blip('click')});
+// Lightweight interaction sounds
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+let soundOn = true;
+let audioUnlocked = false;
+
+function unlockAudio(){
+  if(!AudioCtx || audioUnlocked)return;
+
+  audioCtx = audioCtx || new AudioCtx();
+
+  if(audioCtx.state === 'suspended'){
+    audioCtx.resume();
+  }
+
+  audioUnlocked = true;
+}
+
+function blip(kind='hover'){
+  if(!soundOn || !AudioCtx || !audioUnlocked || !audioCtx)return;
+
+  const oscillator = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const now = audioCtx.currentTime;
+
+  oscillator.type = 'sine';
+  oscillator.frequency.setValueAtTime(kind === 'click' ? 520 : 330, now);
+  oscillator.frequency.exponentialRampToValueAtTime(
+    kind === 'click' ? 760 : 420,
+    now + 0.055
+  );
+
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(
+    kind === 'click' ? 0.028 : 0.009,
+    now + 0.008
+  );
+  gain.gain.exponentialRampToValueAtTime(
+    0.0001,
+    now + (kind === 'click' ? 0.1 : 0.055)
+  );
+
+  oscillator.connect(gain);
+  gain.connect(audioCtx.destination);
+  oscillator.start(now);
+  oscillator.stop(now + 0.12);
+}
+
+window.addEventListener('pointerdown', unlockAudio, {once:true});
+
+document.querySelectorAll('[data-sound]').forEach(element => {
+  element.addEventListener('mouseenter', () => {
+    if(element.dataset.sound === 'hover')blip('hover');
+  });
+
+  element.addEventListener('click', () => blip('click'));
+});
+
+const soundToggle = document.getElementById('soundToggle');
+
+soundToggle?.addEventListener('click', () => {
+  if(!soundOn){
+    soundOn = true;
+    unlockAudio();
+  }else{
+    soundOn = false;
+  }
+
+  soundToggle.textContent = soundOn ? '◖ sound on' : '◖ sound off';
+  soundToggle.setAttribute('aria-pressed', String(!soundOn));
+
+  if(soundOn)blip('click');
+});
 </script>
 </body>
 </html>
