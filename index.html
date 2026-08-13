@@ -185,6 +185,40 @@ em{
   margin:3.2rem 0;
   color:var(--line);
 }
+.typing-name {
+  display: inline-block;
+  min-width: 1ch;
+  white-space: nowrap;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 1px;
+  height: .9em;
+  margin-left: .16rem;
+  vertical-align: -.08em;
+  background: currentColor;
+  animation: cursorBlink .8s steps(1) infinite;
+}
+
+@keyframes cursorBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  .typing-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
 
 .divider::before,
 .divider::after{
@@ -1152,7 +1186,12 @@ button:focus-visible{
   <div class="nav-inner">
 
     <div class="brand">
-      Antonietta Pascarella <span>·</span> UX/UI
+      <span
+        class="typing-name"
+        id="typingName"
+        aria-label="Ciao, sono Antonietta Pascarella"
+      ></span>
+      <span class="typing-cursor" aria-hidden="true"></span>
     </div>
 
     <nav class="links">
@@ -1163,14 +1202,47 @@ button:focus-visible{
     </nav>
 
     <div class="nav-tools">
+    
       <button
-        class="sound-toggle"
+        class="sound-toggle icon-button"
         id="soundToggle"
         type="button"
-        aria-pressed="false"
+        aria-label="Disattiva suoni"
+        aria-pressed="true"
+        title="Suoni"
       >
-        sound on
+        <svg
+          class="tool-icon sound-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M4 10v4h4l5 4V6l-5 4H4z"></path>
+          <path d="M16 9.5c1 .8 1.5 1.5 1.5 2.5s-.5 1.7-1.5 2.5"></path>
+          <path d="M18.5 7c1.7 1.4 2.5 3 2.5 5s-.8 3.6-2.5 5"></path>
+        </svg>
       </button>
+    
+      <button
+        class="language-toggle"
+        id="languageToggle"
+        type="button"
+        aria-label="Cambia lingua"
+        title="Italiano / English"
+      >
+        <svg
+          class="tool-icon"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M3 12h18"></path>
+          <path d="M12 3c2.2 2.4 3.3 5.4 3.3 9s-1.1 6.6-3.3 9"></path>
+          <path d="M12 3c-2.2 2.4-3.3 5.4-3.3 9s1.1 6.6 3.3 9"></path>
+        </svg>
+    
+        <span id="languageLabel">IT</span>
+      </button>
+    
     </div>
 
   </div>
@@ -1886,6 +1958,53 @@ import {
 const reducedMotion = window.matchMedia(
   '(prefers-reduced-motion: reduce)'
 ).matches;
+const typingName =
+  document.getElementById('typingName');
+
+const typingText = {
+  it: 'Ciao, sono Antonietta Pascarella',
+  en: 'Hi, I’m Antonietta Pascarella'
+};
+
+let currentLanguage = 'it';
+let typingTimer = null;
+let typingIndex = 0;
+
+
+/* Type the intro once instead of making it feel like a permanent loader. */
+function startTyping() {
+
+  if (!typingName) return;
+
+  clearInterval(typingTimer);
+
+  const text =
+    typingText[currentLanguage];
+
+  typingIndex = 0;
+  typingName.textContent = '';
+
+  if (reducedMotion) {
+    typingName.textContent = text;
+    return;
+  }
+
+  typingTimer = setInterval(() => {
+
+    typingName.textContent =
+      text.slice(0, typingIndex + 1);
+
+    typingIndex += 1;
+
+    playTypingSound();
+
+    if (typingIndex >= text.length) {
+      clearInterval(typingTimer);
+      typingTimer = null;
+    }
+
+  }, 62);
+}
 
 const heroCanvas = document.getElementById('avatar-canvas');
 const companionCanvas = document.getElementById('companion-canvas');
@@ -2812,8 +2931,7 @@ function blip(kind = 'hover') {
     return;
   }
 
-  audioCtx ||=
-    new AudioContextClass();
+  audioCtx ||= new AudioContextClass();
 
   if (
     audioCtx.state !== 'running'
@@ -2830,8 +2948,7 @@ function blip(kind = 'hover') {
   const now =
     audioCtx.currentTime;
 
-  oscillator.type =
-    'sine';
+  oscillator.type = 'sine';
 
   oscillator.frequency.setValueAtTime(
     kind === 'click'
@@ -2852,10 +2969,11 @@ function blip(kind = 'hover') {
     now
   );
 
+  /* Slightly louder than the original, while keeping the sound subtle. */
   gain.gain.exponentialRampToValueAtTime(
     kind === 'click'
-      ? 0.028
-      : 0.009,
+      ? 0.075
+      : 0.028,
     now + 0.008
   );
 
@@ -2880,6 +2998,77 @@ function blip(kind = 'hover') {
   );
 }
 
+let lastTypingSound = 0;
+
+
+/* Typing uses a shorter, softer click than navigation sounds. */
+function playTypingSound() {
+
+  if (
+    !soundOn ||
+    !AudioContextClass ||
+    reducedMotion
+  ) {
+    return;
+  }
+
+  const nowMs = performance.now();
+
+  if (nowMs - lastTypingSound < 48) {
+    return;
+  }
+
+  lastTypingSound = nowMs;
+
+  audioCtx ||= new AudioContextClass();
+
+  if (
+    audioCtx.state !== 'running'
+  ) {
+    return;
+  }
+
+  const oscillator =
+    audioCtx.createOscillator();
+
+  const gain =
+    audioCtx.createGain();
+
+  const now =
+    audioCtx.currentTime;
+
+  oscillator.type = 'square';
+
+  oscillator.frequency.setValueAtTime(
+    720 + Math.random() * 90,
+    now
+  );
+
+  gain.gain.setValueAtTime(
+    0.0001,
+    now
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    0.018,
+    now + 0.004
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    0.0001,
+    now + 0.035
+  );
+
+  oscillator.connect(gain);
+  gain.connect(
+    audioCtx.destination
+  );
+
+  oscillator.start(now);
+  oscillator.stop(
+    now + 0.04
+  );
+}
 
 function enableAudio() {
 
