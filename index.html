@@ -340,6 +340,8 @@ function loadBee(scene, callback, small = false) {
 
       const model = centerModel(source, small);
 
+      model.rotation.x = Math.PI;
+
       if (gltf.animations.length) {
         const mixer = new THREE.AnimationMixer(source);
 
