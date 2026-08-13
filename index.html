@@ -649,15 +649,22 @@ function applyLanguage(lang) {
   if (langBtn) {
     langBtn.textContent = lang === 'it' ? 'EN' : 'IT';
   }
+
+  // Aggiorna didascalia companion
+  if (companionCaption) {
+    const currentPose = Object.keys({ home: 'home', 'chi-sono': 'about', progetto: 'work', contatti: 'contact' }).find(key => document.getElementById(key)?.getBoundingClientRect().top < window.innerHeight / 2) || 'home';
+    const poseMap = { home: 'home', 'chi-sono': 'about', progetto: 'work', contatti: 'contact' };
+    const pose = Object.values(poseMap).find((_, i) => Object.keys(poseMap)[i] === currentPose) || 'home';
+    const captionKey = `caption.${pose}`;
+    companionCaption.textContent = translations[lang][captionKey] || translations[lang]['caption.home'];
+  }
 }
 
-document.getElementById('langToggle')?.addEventListener('click', () => {
-  enableAudio();
-  blip('click');
-  const nextLang = currentLang === 'it' ? 'en' : 'it';
-  applyLanguage(nextLang);
+window.addEventListener('DOMContentLoaded', () => {
+  // Applica lingua di default (italiano) al caricamento
+  applyLanguage('it');
+  startTypewriterAnimation();
 });
-
 
 // --- AUDIO AUDIO CONTEXT & SINTETIZZATORE "CURIOSITÀ" ---
 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
