@@ -1,72 +1,66 @@
 <!DOCTYPE html>
+
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#F1EDE4">
-<meta name="description" content="Antonietta Pascarella — UX/UI Designer. Portfolio di product, UI e UX design.">
-<title>Antonietta Pascarella — UX/UI Designer</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2712%27 fill=%27%23F1EDE4%27/%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2718%27 fill=%27%23A97C22%27/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#F1EDE4" name="theme-color"/>
+<meta content="Antonietta Pascarella, UI/UX Designer. Portfolio di product, UI e UX design." name="description"/>
+<title>Antonietta Pascarella, UI/UX Designer</title>
+<link href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 rx=%2712%27 fill=%27%23F1EDE4%27/%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2718%27 fill=%27%23A97C22%27/%3E%3C/svg%3E" rel="icon"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&amp;family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Jost:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.3.0/index.css" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"}}</script>
-<script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/i18next@25.6.0/dist/umd/i18next.min.js"></script>
-<link rel="stylesheet" href="styles.css">
+<link href="styles.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="scroll-progress" id="scrollProgress"></div>
+<!-- The header stays visually light and functional: navigation first, utilities second. -->
 <header class="nav"><div class="nav-inner">
-<div class="brand">Antonietta Pascarella</div>
-<nav class="links"><a href="#home" data-sound="hover" data-i18n="nav.home">01. Home</a><a href="#chi-sono" data-sound="hover" data-i18n="nav.about">02. About</a><a href="#progetto" data-sound="hover" data-i18n="nav.work">03. Work</a><a href="#contatti" data-sound="hover" data-i18n="nav.contact">04. Contact</a></nav>
+<div aria-hidden="true" class="brand"></div>
+<nav class="links"><a data-i18n="nav.home" data-sound="hover" href="#home">01. Home</a><a data-i18n="nav.about" data-sound="hover" href="#chi-sono">02. Chi sono</a><a data-i18n="nav.work" data-sound="hover" href="#progetto">03. Progetto</a><a data-i18n="nav.contact" data-sound="hover" href="#contatti">04. Contatti</a></nav>
 <div class="nav-tools">
-<button class="utility-toggle" id="soundToggle" type="button" aria-pressed="true" data-sound="click" aria-label="Turn sound off"><i data-lucide="volume-2" aria-hidden="true"></i><span data-i18n="controls.soundOn">Sound on</span></button>
-<button class="utility-toggle" id="languageToggle" type="button" aria-pressed="false" aria-label="Switch to French"><i data-lucide="languages" aria-hidden="true"></i><span id="languageLabel">FR</span></button>
+<button aria-label="Turn sound off" aria-pressed="true" class="utility-toggle" id="soundToggle" type="button"><i aria-hidden="true" data-lucide="volume-2"></i><span data-ui-label="sound">Sound on</span></button>
+<button aria-label="Switch to English" aria-pressed="false" class="utility-toggle" id="languageToggle" type="button"><i aria-hidden="true" data-lucide="languages"></i><span id="languageLabel">EN</span></button>
 </div>
 </div></header>
-
-<div class="character-companion" id="characterCompanion" aria-hidden="true">
-<canvas id="companion-canvas" aria-label="Piccolo avatar 3D interattivo"></canvas>
-<div class="companion-caption" id="companionCaption" data-i18n="avatar.listening">in ascolto</div>
+<div aria-hidden="true" class="character-companion" id="characterCompanion">
+<canvas aria-label="Piccola ape 3D interattiva" id="companion-canvas"></canvas>
+<div class="companion-caption" data-i18n="avatar.listening" id="companionCaption">in ascolto</div>
 </div>
-
 <main>
-<section id="home" class="hero"><div class="wrap hero-inner">
+<!-- The hero introduces the person before the case-study details. The animated greeting is the only new interaction here. -->
+<section class="hero" id="home"><div class="wrap hero-inner">
 <div class="hero-text hero-copy reveal">
 <span class="hero-kicker" data-i18n="hero.kicker">UI/UX Designer · Bologna</span>
-<div class="type-hero" aria-live="polite">
-  <p class="type-prefix" data-i18n="hero.greeting">Ciao, sono</p>
-  <h1 class="type-title"><span id="typedName" class="gradient-text"></span><span class="type-cursor" aria-hidden="true"></span></h1>
-  <p class="type-role" data-i18n="hero.role">UX/UI Designer</p>
-</div>
+<h1 aria-live="polite" class="hero-title"><span id="typedGreeting"></span><span aria-hidden="true" class="typing-cursor"></span></h1>
 <p class="hero-intro" data-i18n="hero.intro">Sono Antonietta, laureata magistrale in Informatica con lode. Ho portato nel design il metodo che mi ha insegnato l'informatica: ricerca strutturata, iterazioni documentate e decisioni motivate, non solo schermate belle da vedere.</p>
 <div class="hero-tags"><span class="tag" data-sound="hover">UX Research</span><span class="tag" data-sound="hover">UI Design</span><span class="tag" data-sound="hover">Design System</span><span class="tag" data-sound="hover">Data-Informed Design</span></div>
-<a class="cta" href="#progetto" data-sound="click" data-i18n="hero.cta">Scopri il progetto ↓</a>
+<a class="cta" data-i18n="hero.cta" data-sound="click" href="#progetto">Scopri il progetto ↓</a>
 <div class="hero-note" data-i18n="hero.note">scroll / move the character / listen to the details</div>
 </div>
-<div class="hero-visual reveal"><canvas id="avatar-canvas" aria-label="Avatar 3D interattivo di Antonietta"></canvas><div class="avatar-label">ciao, sono Antonietta! ♡</div><div class="avatar-status"><i></i><span>interactive character</span></div></div>
+<div class="hero-visual"><canvas aria-label="Ape 3D interattiva" id="avatar-canvas"></canvas><div class="avatar-label" data-i18n="hero.avatarLabel">ciao, sono Antonietta! ♡</div><div class="avatar-status"><i></i><span data-i18n="hero.avatarStatus">interactive character</span></div></div>
 </div></section>
-
 <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
-
-<section id="chi-sono" class="reveal"><div class="wrap"><div class="grid-2">
-<div><span class="eyebrow" data-i18n="about.label">Chi sono</span><h2>Dall'informatica al design, senza perdere il metodo</h2></div>
-<div><p><span data-i18n="about.p1">Il mio percorso in informatica mi ha dato familiarità con il pensiero sistemico, la lettura di dati reali e la costruzione di processi ripetibili. Nel design applico lo stesso approccio: ogni scelta, che sia un flusso, un componente o una gerarchia visiva, nasce da un'ipotesi verificabile e non da un'intuizione isolata.</span></p><p><span data-i18n="about.p2">Lavoro sia sul lato UX (ricerca, architettura dell'informazione, user flow) sia sul lato UI (design system, alta fedeltà, accessibilità), con un'attenzione particolare ai contesti industriali e data-intensive, dove la chiarezza dell'informazione conta quanto l'estetica.</span></p></div>
+<section class="reveal" id="chi-sono"><div class="wrap"><div class="grid-2">
+<div><span class="eyebrow" data-i18n="about.label">Chi sono</span><h2 data-i18n="about.title">Dall'informatica al design, senza perdere il metodo</h2></div>
+<div><p data-i18n="about.p1">Il mio percorso in informatica mi ha dato familiarità con il pensiero sistemico, la lettura di dati reali e la costruzione di processi ripetibili. Nel design applico lo stesso approccio: ogni scelta, che sia un flusso, un componente o una gerarchia visiva, nasce da un'ipotesi verificabile e non da un'intuizione isolata.</p><p data-i18n="about.p2">Lavoro sia sul lato UX (ricerca, architettura dell'informazione, user flow) sia sul lato UI (design system, alta fedeltà, accessibilità), con un'attenzione particolare ai contesti industriali e data-intensive, dove la chiarezza dell'informazione conta quanto l'estetica.</p></div>
 </div></div></section>
-
 <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
-
-<section id="progetto" class="reveal"><div class="wrap">
-<span class="eyebrow" data-i18n="work.label">Caso studio</span><h2>Redesign dell'interfaccia operativa per un impianto industriale</h2>
-<p class="lede"><span data-i18n="work.lede">Progetto realizzato per un'azienda italiana attiva nella produzione di impianti industriali, in collaborazione con il team tecnico dell'agenzia per cui lavoro.</span></p>
-<div class="meta-strip"><div class="meta-item"><span class="label" data-i18n="work.metaRole">Ruolo</span><span class="value"><span data-i18n="work.role">UX/UI Design, sviluppo del design system</span></span></div><div class="meta-item"><span class="label" data-i18n="work.metaPhases">Fasi</span><span class="value"><span data-i18n="work.phases">Wireframe → Mockup → Prototipo interattivo</span></span></div><div class="meta-item"><span class="label" data-i18n="work.metaTools">Strumenti</span><span class="value"><span data-i18n="work.tools">Figma, Stark (audit accessibilità)</span></span></div></div>
-<div class="panel lift"><h3>Il contesto</h3><p><span data-i18n="work.context1">Il progetto nasce da una pipeline dati IoT/ML già esistente (raccolta e predizione dei dati di impianto). Il mio compito è stato progettare l'interfaccia web che rende questi dati fruibili a due profili utente: il <em>Plant Manager</em>, interessato alla performance d'insieme, e il <em>Maintenance Technician</em>, focalizzato su manutenzione predittiva e allarmi.</span></p><p><span data-i18n="work.context2">Il cliente desiderava rinnovare un'applicazione esistente, poco leggibile e priva di un sistema coerente. Le esigenze di business e utente erano già state raccolte dal cliente attraverso interviste dirette con gli utenti finali; ho ricevuto brief e interfacce originali, e da lì ho condotto un'analisi euristica per individuare criticità di usabilità prima di ridisegnare.</span></p></div>
-<h3 style="margin-top:2.4rem;" data-i18n="work.beforeAfterTitle">Prima e dopo</h3><p><span data-i18n="work.compareIntro">Confronto tra l'interfaccia originale e il nuovo design system, pensato per dare gerarchia visiva immediata tramite color-coding per categoria funzionale.</span></p>
-<div class="compare"><figure><div class="screen before"><div class="bar"></div><div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div></div><figcaption><span data-i18n="work.before">Prima: tile monocromatiche, nessuna gerarchia</span></figcaption></figure><figure><div class="screen after"><div class="bar"></div><div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div></div><figcaption><span data-i18n="work.after">Dopo: color coding per modulo funzionale</span></figcaption></figure></div>
-<h3 data-i18n="work.processTitle">Dal wireframe al prototipo</h3><p><span data-i18n="work.process1">Il lavoro ha coperto l'intero flusso applicativo: autenticazione con login, registrazione e reset password su due canali (email e telefono), selezione geografica con mappa interattiva sincronizzata a una lista filtrabile, landing page a moduli e le sette funzionalità core dell'app, tra cui manutenzione predittiva, performance dell'impianto, risparmio energetico, storico dati e gestione allarmi.</span></p><p><span data-i18n="work.process2">Ogni schermata è passata da wireframe a bassa fedeltà a mockup ad alta fedeltà, fino a un prototipo Figma cliccabile. Ho dedicato attenzione anche ai micro stati dei singoli componenti, come un filtro con zero, uno o più elementi selezionati, e non solo alle schermate considerate "finali".</span></p>
-<blockquote>Le user stories sono state scritte alla fine del processo invece che all'inizio, come normalmente ci si aspetterebbe in un workflow UX. Scrivendole a posteriori sono emersi elementi che avrebbero potuto migliorare ulteriormente l'app fin dalle prime fasi: una lezione che porto con me nei progetti successivi.<footer>Dalla documentazione del progetto</footer></blockquote>
-<div id="palette"><h3 data-i18n="palette.title">Design system, la palette</h3><p><span data-i18n="palette.intro">Palette estratta dal file Figma di produzione, organizzata per funzione: base, brand, semantica (stati positivi/critici/warning) e accenti categorici per modulo.</span></p>
-<div class="palette-group"><h3>Base &amp; neutrali</h3><div class="swatches">
+<!-- The case study keeps its existing editorial structure so the project remains the focus. -->
+<section class="reveal" id="progetto"><div class="wrap">
+<span class="eyebrow" data-i18n="case.label">Caso studio</span><h2 data-i18n="case.title">Redesign dell'interfaccia operativa per un impianto industriale</h2>
+<p class="lede" data-i18n="case.lede">Progetto realizzato per un'azienda italiana attiva nella produzione di impianti industriali, in collaborazione con il team tecnico dell'agenzia per cui lavoro.</p>
+<div class="meta-strip"><div class="meta-item"><span class="label" data-i18n="meta.roleLabel">Ruolo</span><span class="value" data-i18n="meta.role">UX/UI Design, sviluppo del design system</span></div><div class="meta-item"><span class="label" data-i18n="meta.phasesLabel">Fasi</span><span class="value" data-i18n="meta.phases">Wireframe → Mockup → Prototipo interattivo</span></div><div class="meta-item"><span class="label" data-i18n="meta.toolsLabel">Strumenti</span><span class="value" data-i18n="meta.tools">Figma, Stark (audit accessibilità)</span></div></div>
+<div class="panel lift"><h3 data-i18n="case.contextTitle">Il contesto</h3><p data-i18n="case.contextP1">Il progetto nasce da una pipeline dati IoT/ML già esistente (raccolta e predizione dei dati di impianto). Il mio compito è stato progettare l'interfaccia web che rende questi dati fruibili a due profili utente: il <em>Plant Manager</em>, interessato alla performance d'insieme, e il <em>Maintenance Technician</em>, focalizzato su manutenzione predittiva e allarmi.</p><p data-i18n="case.contextP2">Il cliente desiderava rinnovare un'applicazione esistente, poco leggibile e priva di un sistema coerente. Le esigenze di business e utente erano già state raccolte dal cliente attraverso interviste dirette con gli utenti finali; ho ricevuto brief e interfacce originali, e da lì ho condotto un'analisi euristica per individuare criticità di usabilità prima di ridisegnare.</p></div>
+<h3 class="case-subtitle" data-i18n="case.beforeAfterTitle">Prima e dopo</h3><p data-i18n="case.beforeAfterText">Confronto tra l'interfaccia originale e il nuovo design system, pensato per dare gerarchia visiva immediata tramite color-coding per categoria funzionale.</p>
+<div class="compare"><figure><div class="screen before"><div class="bar"></div><div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div></div><figcaption data-i18n="case.beforeCaption">Prima: tile monocromatiche, nessuna gerarchia</figcaption></figure><figure><div class="screen after"><div class="bar"></div><div class="tiles"><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div><div class="tile"></div></div></div><figcaption data-i18n="case.afterCaption">Dopo: color coding per modulo funzionale</figcaption></figure></div>
+<h3 data-i18n="case.processTitle">Dal wireframe al prototipo</h3><p data-i18n="case.processP1">Il lavoro ha coperto l'intero flusso applicativo: autenticazione con login, registrazione e reset password su due canali (email e telefono), selezione geografica con mappa interattiva sincronizzata a una lista filtrabile, landing page a moduli e le sette funzionalità core dell'app, tra cui manutenzione predittiva, performance dell'impianto, risparmio energetico, storico dati e gestione allarmi.</p><p data-i18n="case.processP2">Ogni schermata è passata da wireframe a bassa fedeltà a mockup ad alta fedeltà, fino a un prototipo Figma cliccabile. Ho dedicato attenzione anche ai micro stati dei singoli componenti, come un filtro con zero, uno o più elementi selezionati, e non solo alle schermate considerate "finali".</p>
+<blockquote data-i18n-html="case.quote">Le user stories sono state scritte alla fine del processo invece che all'inizio, come normalmente ci si aspetterebbe in un workflow UX. Scrivendole a posteriori sono emersi elementi che avrebbero potuto migliorare ulteriormente l'app fin dalle prime fasi: una lezione che porto con me nei progetti successivi.<footer>Dalla documentazione del progetto</footer></blockquote>
+<div id="palette"><h3 data-i18n="palette.title">Design system, la palette</h3><p data-i18n="palette.lede">Palette estratta dal file Figma di produzione, organizzata per funzione: base, brand, semantica (stati positivi/critici/warning) e accenti categorici per modulo.</p>
+<div class="palette-group"><h3 data-i18n="palette.base">Base &amp; neutrali</h3><div class="swatches">
 <div class="swatch"><div class="chip" style="background:#1A1B20"></div><div class="info"><span class="name">Nero principale</span><span class="hex">#1A1B20</span></div></div>
 <div class="swatch"><div class="chip" style="background:#262934"></div><div class="info"><span class="name">Superficie scura</span><span class="hex">#262934</span></div></div>
 <div class="swatch"><div class="chip" style="background:#F5F7FA"></div><div class="info"><span class="name">Bianco input</span><span class="hex">#F5F7FA</span></div></div>
@@ -74,22 +68,22 @@
 <div class="swatch"><div class="chip" style="background:#787A7D"></div><div class="info"><span class="name">Grigio testo</span><span class="hex">#787A7D</span></div></div>
 <div class="swatch"><div class="chip" style="background:#000000"></div><div class="info"><span class="name">Nero</span><span class="hex">#000000</span></div></div>
 </div></div>
-<div class="palette-group"><h3>Brand</h3><div class="swatches"><div class="swatch"><div class="chip" style="background:#F7D70D"></div><div class="info"><span class="name">Giallo brand</span><span class="hex">#F7D70D</span></div></div><div class="swatch"><div class="chip" style="background:#24559D"></div><div class="info"><span class="name">Blu brand</span><span class="hex">#24559D</span></div></div></div></div>
-<div class="palette-group"><h3>Semantica: positivo, critico, warning</h3><div class="swatches">
+<div class="palette-group"><h3 data-i18n="palette.brand">Brand</h3><div class="swatches"><div class="swatch"><div class="chip" style="background:#F7D70D"></div><div class="info"><span class="name">Giallo brand</span><span class="hex">#F7D70D</span></div></div><div class="swatch"><div class="chip" style="background:#24559D"></div><div class="info"><span class="name">Blu brand</span><span class="hex">#24559D</span></div></div></div></div>
+<div class="palette-group"><h3 data-i18n="palette.semantic">Semantica: positivo, critico, warning</h3><div class="swatches">
 <div class="swatch"><div class="chip" style="background:#18CC00"></div><div class="info"><span class="name">Verde pieno</span><span class="hex">#18CC00</span></div></div><div class="swatch"><div class="chip" style="background:#99E7BD"></div><div class="info"><span class="name">Menta</span><span class="hex">#99E7BD</span></div></div><div class="swatch"><div class="chip" style="background:#C3EEBE"></div><div class="info"><span class="name">Verde chiaro</span><span class="hex">#C3EEBE</span></div></div><div class="swatch"><div class="chip" style="background:#D61E0D"></div><div class="info"><span class="name">Rosso</span><span class="hex">#D61E0D</span></div></div><div class="swatch"><div class="chip" style="background:#FF8747"></div><div class="info"><span class="name">Arancione</span><span class="hex">#FF8747</span></div></div><div class="swatch"><div class="chip" style="background:#FF8A3D"></div><div class="info"><span class="name">Arancione warning</span><span class="hex">#FF8A3D</span></div></div><div class="swatch"><div class="chip" style="background:#FFB788"></div><div class="info"><span class="name">Arancione chiaro</span><span class="hex">#FFB788</span></div></div>
 </div></div>
-<div class="palette-group"><h3>Accenti categorici per modulo</h3><div class="swatches">
+<div class="palette-group"><h3 data-i18n="palette.accent">Accenti categorici per modulo</h3><div class="swatches">
 <div class="swatch"><div class="chip" style="background:#8647FF"></div><div class="info"><span class="name">Viola Mixer</span><span class="hex">#8647FF</span></div></div><div class="swatch"><div class="chip" style="background:#C29AFF"></div><div class="info"><span class="name">Viola chiaro</span><span class="hex">#C29AFF</span></div></div><div class="swatch"><div class="chip" style="background:#E4D2FF"></div><div class="info"><span class="name">Lilla tenue</span><span class="hex">#E4D2FF</span></div></div><div class="swatch"><div class="chip" style="background:#C084FC"></div><div class="info"><span class="name">Viola linea</span><span class="hex">#C084FC</span></div></div><div class="swatch"><div class="chip" style="background:#6FAAFF"></div><div class="info"><span class="name">Blu filter</span><span class="hex">#6FAAFF</span></div></div><div class="swatch"><div class="chip" style="background:#5999F7"></div><div class="info"><span class="name">Blu electrical</span><span class="hex">#5999F7</span></div></div><div class="swatch"><div class="chip" style="background:#BCC8FF"></div><div class="info"><span class="name">Blu lavanda</span><span class="hex">#BCC8FF</span></div></div><div class="swatch"><div class="chip" style="background:#BED5F6"></div><div class="info"><span class="name">Azzurro maintenance</span><span class="hex">#BED5F6</span></div></div><div class="swatch"><div class="chip" style="background:#FC84DE"></div><div class="info"><span class="name">Rosa energy</span><span class="hex">#FC84DE</span></div></div><div class="swatch"><div class="chip" style="background:#F4C534"></div><div class="info"><span class="name">Oro period</span><span class="hex">#F4C534</span></div></div><div class="swatch"><div class="chip" style="background:#F6E46E"></div><div class="info"><span class="name">Giallo plant</span><span class="hex">#F6E46E</span></div></div><div class="swatch"><div class="chip" style="background:#00B8C5"></div><div class="info"><span class="name">Turchese</span><span class="hex">#00B8C5</span></div></div>
 </div></div></div>
 </div></section>
-
 <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
-<section id="accessibilita" class="reveal"><div class="wrap"><span class="eyebrow" data-i18n="accessibility.label">Accessibilità</span><h2 data-i18n="accessibility.title">Conformità WCAG verificata, non presunta</h2><div class="a11y-row"><div class="badge"><span class="lvl">AA</span><span class="std">WCAG 2</span></div><div class="badge"><span class="lvl">AAA</span><span class="std">WCAG 2</span></div><div class="a11y-text"><p><span data-i18n="accessibility.text">Tutti i mockup del progetto sono stati sottoposti a verifica tramite <strong>Stark, Universal Accessibility Framework (SUAF)</strong>, per controllare la conformità alle <a href="https://www.w3.org/WAI/WCAG2AA-Conformance" target="_blank" rel="noopener">Web Content Accessibility Guidelines</a>. Il risultato è una conformità di livello <strong>AA</strong> su tutti i componenti verificati, e <strong>AAA</strong> per la maggior parte di essi, contrasto colore, dimensione del testo e stati interattivi inclusi.</span></p></div></div></div></section>
+<!-- Accessibility is presented as evidence within the case study, not as a decorative claim. -->
+<section class="reveal" id="accessibilita"><div class="wrap"><span class="eyebrow" data-i18n="accessibility.label">Accessibilità</span><h2 data-i18n="accessibility.title">Conformità WCAG verificata, non presunta</h2><div class="a11y-row"><div class="badge"><span class="lvl">AA</span><span class="std">WCAG 2</span></div><div class="badge"><span class="lvl">AAA</span><span class="std">WCAG 2</span></div><div class="a11y-text"><p data-i18n-html="accessibility.p">Tutti i mockup del progetto sono stati sottoposti a verifica tramite <strong>Stark, Universal Accessibility Framework (SUAF)</strong>, per controllare la conformità alle <a href="https://www.w3.org/WAI/WCAG2AA-Conformance" rel="noopener" target="_blank">Web Content Accessibility Guidelines</a>. Il risultato è una conformità di livello <strong>AA</strong> su tutti i componenti verificati, e <strong>AAA</strong> per la maggior parte di essi, contrasto colore, dimensione del testo e stati interattivi inclusi.</p></div></div></div></section>
 <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
-<section id="contatti" class="reveal"><div class="wrap" style="text-align:center"><span class="eyebrow" data-i18n="contact.label">Contatti</span><h2 data-i18n="contact.title">Parliamone</h2><p class="lede" style="margin:0 auto" data-i18n="contact.text">Sono disponibile per nuove collaborazioni e progetti di UX/UI design.</p></div></section>
+<section class="reveal" id="contatti"><div class="wrap" style="text-align:center"><span class="eyebrow" data-i18n="contact.label">Contatti</span><h2 data-i18n="contact.title">Parliamone</h2><p class="lede contact-lede" data-i18n="contact.lede">Sono disponibile per nuove collaborazioni e progetti di UX/UI design.</p></div></section>
 </main>
-<footer class="site"><div class="wrap"><div class="rosone small" style="margin:0 auto 1.2rem"></div><div class="contact-links"><a href="mailto:antonietta.pascarella@email.com">Email</a><a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a><a href="https://behance.net" target="_blank" rel="noopener">Behance</a></div><p class="fine" data-i18n="footer.text">Antonietta Pascarella, UI/UX Designer · Bologna, Italia</p></div></footer>
-
-<script type="module" src="script.js"></script>
+<!-- The footer closes the page quietly and keeps the contact actions easy to scan. -->
+<footer class="site"><div class="wrap"><div class="rosone small" style="margin:0 auto 1.2rem"></div><div class="contact-links"><a href="mailto:antonietta.pascarella@email.com">Email</a><a href="https://linkedin.com" rel="noopener" target="_blank">LinkedIn</a><a href="https://behance.net" rel="noopener" target="_blank">Behance</a></div><p class="fine" data-i18n="footer.note">Antonietta Pascarella, UI/UX Designer · Bologna, Italia</p></div></footer>
+<script src="script.js" type="module"></script>
 </body>
 </html>

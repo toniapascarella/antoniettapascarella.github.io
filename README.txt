@@ -1,10 +1,7 @@
-Place these two files in the same folder as index.html:
+Antonietta Pascarella portfolio
 
+This version keeps the existing bee-based interaction and references the existing local asset:
 animal-bee.glb
-colormap.png
 
-The website loads:
-animal-bee.glb
-colormap.png
-
-No assets folder is required for the bee files.
+Place animal-bee.glb next to index.html when deploying the site.
+The typing sound is synthesized with Web Audio API, so no copyrighted audio file is bundled.
