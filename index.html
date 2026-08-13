@@ -184,8 +184,8 @@ function setupScene(canvas, small = false) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(small ? 28 : 25, 1, 0.01, 100);
 
-  camera.position.set(0, -6.4, small ? 1.05 : 1.25);
-  camera.lookAt(0, 0, small ? 0.95 : 1.20);
+  camera.position.set(0, 0.05, small ? 5.2 : 5.7);
+  camera.lookAt(0, 0.05, small ? 0.78 : 1.05);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -339,10 +339,7 @@ function loadBee(scene, callback, small = false) {
       applyTextureFallback(source);
 
       const model = centerModel(source, small);
-      
-      model.userData.baseRotationX = Math.PI;
-      model.rotation.x = Math.PI;
-      
+
       if (gltf.animations.length) {
         const mixer = new THREE.AnimationMixer(source);
 
@@ -400,17 +397,17 @@ function animateBee(model, time, delta) {
 
   const breathe = reducedMotion ? 0 : Math.sin(time * 1.6) * 0.009;
 
-  const targetX = model.userData.baseRotationX + pointer.y * 0.055 + poseCurrent.tilt;
-  const targetY = -pointer.x * 0.18 + poseCurrent.head;
+  const targetX = pointer.y * 0.055 + poseCurrent.tilt;
+  const targetY = pointer.x * 0.18 + poseCurrent.head;
   const targetZ = poseCurrent.lean;
-  
+
   model.position.z += (
     model.userData.baseZ +
     breathe +
     poseCurrent.bounce -
     model.position.z
   ) * 0.07;
-  
+
   model.rotation.x += (targetX - model.rotation.x) * 0.065;
   model.rotation.y += (targetY - model.rotation.y) * 0.065;
   model.rotation.z += (targetZ - model.rotation.z) * 0.065;
