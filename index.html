@@ -40,11 +40,11 @@
   --font-body:'EB Garamond',Georgia,serif;
   --font-ui:'Jost',sans-serif;
 
-  --h1:clamp(2.2rem, 5vw, 3.8rem);
-  --h2:clamp(1.6rem, 3.5vw, 2.25rem);
-  --h3:clamp(1.25rem, 2.5vw, 1.5rem);
+  --h1:clamp(2rem, 5vw, 3.8rem);
+  --h2:clamp(1.5rem, 3.5vw, 2.25rem);
+  --h3:clamp(1.2rem, 2.5vw, 1.5rem);
 
-  --body:clamp(0.98rem, 1.5vw, 1.0625rem);
+  --body:clamp(0.95rem, 1.5vw, 1.0625rem);
   --micro:.8125rem;
 }
 
@@ -76,16 +76,13 @@ a{
   color:inherit;
 }
 
-img,
-svg{
+img, svg{
   max-width:100%;
   height:auto;
   display:block;
 }
 
-h1,
-h2,
-h3{
+h1, h2, h3{
   font-family:var(--font-display);
   color:var(--ink);
   margin:0 0 .5em;
@@ -138,7 +135,7 @@ em{
 }
 
 .rosone{
-  --size:clamp(120px, 20vw, 200px);
+  --size:clamp(100px, 15vw, 180px);
   width:var(--size);
   height:var(--size);
   border-radius:50%;
@@ -174,7 +171,7 @@ em{
 }
 
 .rosone.small{
-  --size:clamp(48px, 10vw, 64px);
+  --size:clamp(40px, 8vw, 56px);
   box-shadow:
     0 0 0 4px var(--bg),
     0 0 0 5px var(--line-soft);
@@ -185,7 +182,7 @@ em{
   align-items:center;
   justify-content:center;
   gap:1rem;
-  margin:clamp(2rem, 5vw, 3.2rem) 0;
+  margin:clamp(1.5rem, 4vw, 3rem) 0;
   color:var(--line);
 }
 
@@ -194,12 +191,7 @@ em{
   content:"";
   flex:1;
   height:1px;
-  background:linear-gradient(
-    90deg,
-    transparent,
-    var(--line),
-    transparent
-  );
+  background:linear-gradient(90deg, transparent, var(--line), transparent);
 }
 
 .panel{
@@ -207,40 +199,10 @@ em{
   background:var(--bg-panel);
   border:1px solid var(--line);
   border-radius:20px;
-  padding:clamp(1.25rem, 4vw, 3rem);
+  padding:clamp(1.25rem, 4vw, 2.5rem);
   box-shadow:
     inset 0 0 0 6px var(--bg),
     inset 0 0 0 7px var(--line-soft);
-}
-
-.panel::before,
-.panel::after{
-  content:"";
-  position:absolute;
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  background:
-    radial-gradient(
-      circle,
-      var(--ocra) 0 30%,
-      transparent 32%
-    ),
-    radial-gradient(
-      circle,
-      var(--line) 0 60%,
-      transparent 62%
-    );
-}
-
-.panel::before{
-  top:10px;
-  left:10px;
-}
-
-.panel::after{
-  bottom:10px;
-  right:10px;
 }
 
 header.nav{
@@ -265,32 +227,26 @@ header.nav{
 nav.links{
   display:flex;
   gap:clamp(0.8rem, 2vw, 1.6rem);
-  flex-wrap:nowrap;
   overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
   scrollbar-width:none;
   font-family:var(--font-ui);
   font-size:.85rem;
   letter-spacing:.06em;
   text-transform:uppercase;
-  padding-bottom:2px;
+  white-space:nowrap;
 }
 
-nav.links::-webkit-scrollbar {
-  display:none;
-}
+nav.links::-webkit-scrollbar { display:none; }
 
 nav.links a{
   text-decoration:none;
   color:var(--ink-soft);
   padding-bottom:2px;
   border-bottom:1px solid transparent;
-  transition:border-color .2s,color .2s;
-  white-space:nowrap;
+  transition:border-color .2s, color .2s;
 }
 
-nav.links a:hover,
-nav.links a:focus-visible{
+nav.links a:hover{
   color:var(--ink);
   border-color:var(--ocra);
 }
@@ -302,64 +258,46 @@ nav.links a:focus-visible{
   flex-shrink:0;
 }
 
-.icon-btn{
+.icon-btn, .lang-btn{
   border:1px solid var(--line);
   background:transparent;
   color:var(--ink);
+  cursor:pointer;
+  transition:background .2s, border-color .2s;
+}
+
+.icon-btn{
   border-radius:50%;
   width:38px;
   height:38px;
   display:flex;
   align-items:center;
   justify-content:center;
-  cursor:pointer;
-  transition:background .2s, border-color .2s;
 }
 
-.icon-btn:hover{
-  background:var(--bg-panel);
-  border-color:var(--ocra);
-}
-
-.icon-btn svg{
-  width:18px;
-  height:18px;
-  fill:currentColor;
-}
+.icon-btn svg{ width:18px; height:18px; fill:currentColor; }
 
 .lang-btn{
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--ink);
   border-radius:20px;
   padding:.4rem .75rem;
   font:600 .75rem var(--font-ui);
   letter-spacing:.08em;
   text-transform:uppercase;
-  cursor:pointer;
-  transition:background .2s, border-color .2s;
 }
 
-.lang-btn:hover{
+.icon-btn:hover, .lang-btn:hover{
   background:var(--bg-panel);
   border-color:var(--ocra);
 }
 
 .scroll-progress{
   position:fixed;
-  left:0;
-  top:0;
-  height:2px;
-  width:0;
+  left:0; top:0; height:2px; width:0;
   background:var(--ocra);
   z-index:100;
-  transform-origin:left;
 }
 
-.welcome-section {
-  padding: 1.5rem 0 0 0;
-  background: transparent;
-}
+.welcome-section { padding: 1.2rem 0 0 0; }
 
 .welcome-box {
   display: flex;
@@ -368,15 +306,15 @@ nav.links a:focus-visible{
   background: var(--bg-panel);
   border: 1px solid var(--line);
   border-radius: 16px;
-  padding: 1rem 1.2rem;
+  padding: 0.8rem 1.2rem;
   box-shadow: inset 0 0 0 4px var(--bg);
-  min-height: 60px;
+  min-height: 52px;
   text-align: center;
 }
 
 .welcome-text {
   font-family: var(--font-display);
-  font-size: clamp(1rem, 2.5vw, 1.45rem);
+  font-size: clamp(0.95rem, 2.2vw, 1.35rem);
   font-weight: 600;
   color: var(--ink);
   margin: 0;
@@ -392,35 +330,21 @@ nav.links a:focus-visible{
   animation: blink 0.8s infinite;
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
 .hero{
   min-height:calc(100vh - 120px);
   display:flex;
   align-items:center;
-  padding:clamp(1.5rem,4vw,3.5rem) 0;
+  padding:clamp(1.5rem, 4vw, 3rem) 0;
 }
 
 .hero-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
   gap:clamp(1.5rem, 4vw, 3rem);
-  flex-wrap:wrap-reverse;
+  align-items:center;
   width:100%;
-}
-
-.hero-text{
-  flex:1 1 320px;
-  min-width:280px;
-}
-
-.hero-copy{
-  position:relative;
-  z-index:2;
 }
 
 .hero-kicker{
@@ -435,34 +359,14 @@ nav.links a:focus-visible{
 }
 
 .hero-kicker::before{
-  content:"";
-  width:26px;
-  height:1px;
-  background:var(--ocra);
-}
-
-.hero h1{
-  font-size:var(--h1);
-  line-height:.98;
-  letter-spacing:-.02em;
-  max-width:650px;
-  margin-top:.3em;
-}
-
-.hero h1 em{
-  color:var(--vinaccia);
-}
-
-.hero-intro{
-  max-width:54ch;
-  font-size:clamp(0.98rem, 1.6vw, 1.08rem);
+  content:""; width:26px; height:1px; background:var(--ocra);
 }
 
 .hero-tags{
   display:flex;
   gap:.5rem;
   flex-wrap:wrap;
-  margin-top:1.4rem;
+  margin-top:1.2rem;
 }
 
 .tag{
@@ -481,7 +385,7 @@ nav.links a:focus-visible{
   display:inline-flex;
   align-items:center;
   gap:.5em;
-  margin-top:1.8rem;
+  margin-top:1.5rem;
   font-family:var(--font-ui);
   font-size:.85rem;
   letter-spacing:.08em;
@@ -494,46 +398,25 @@ nav.links a:focus-visible{
 
 .hero-visual{
   position:relative;
-  width:clamp(280px, 40vw, 470px);
-  height:clamp(280px, 45vw, 520px);
+  width:100%;
+  max-width:420px;
+  aspect-ratio:1;
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:visible;
-  flex:0 0 auto;
   margin:0 auto;
 }
 
 .hero-visual::before{
   content:"";
   position:absolute;
-  width:78%;
-  aspect-ratio:1;
+  width:80%;
+  height:80%;
   border-radius:50%;
   background:
-    radial-gradient(
-      circle at center,
-      transparent 0 57%,
-      var(--line-soft) 57.5% 58%,
-      transparent 58.5%
-    ),
-    repeating-conic-gradient(
-      from 0deg,
-      var(--line) 0deg 2deg,
-      transparent 2deg 18deg
-    );
-  opacity:.62;
-  transform:rotate(-7deg);
-}
-
-.hero-visual::after{
-  content:"";
-  position:absolute;
-  inset:13% 8%;
-  border:1px solid var(--line-soft);
-  border-radius:48% 52% 46% 54%;
-  transform:rotate(5deg);
-  pointer-events:none;
+    radial-gradient(circle at center, transparent 0 57%, var(--line-soft) 57.5% 58%, transparent 58.5%),
+    repeating-conic-gradient(from 0deg, var(--line) 0deg 2deg, transparent 2deg 18deg);
+  opacity:.6;
 }
 
 #avatar-canvas{
@@ -542,53 +425,23 @@ nav.links a:focus-visible{
   width:100%;
   height:100%;
   display:block;
-  cursor:default;
-  touch-action:none;
-  opacity:0;
-  transition:opacity .35s ease;
-}
-
-#avatar-canvas.is-ready{
-  opacity:1;
 }
 
 .avatar-label{
   position:absolute;
   z-index:3;
-  right:-2%;
+  right:-5%;
   top:2%;
-  width:clamp(120px, 20vw, 165px);
-  font:italic clamp(0.75rem, 1.5vw, 0.9rem)/1.3 var(--font-display);
+  width:clamp(110px, 18vw, 150px);
+  font:italic clamp(0.75rem, 1.2vw, 0.85rem)/1.3 var(--font-display);
   color:var(--ink-soft);
-  transform:rotate(2deg);
   pointer-events:none;
-  text-align:left;
 }
 
-.avatar-label::after{
-  content:"";
-  position:absolute;
-  width:32px;
-  height:16px;
-  border-top:1px solid var(--ocra);
-  border-radius:50%;
-  left:-26px;
-  top:10px;
-  transform:rotate(-16deg);
-}
+section{ padding:clamp(2rem, 5vw, 4rem) 0; }
 
-section{
-  padding:clamp(2rem, 5vw, 4.5rem) 0;
-}
-
-section#chi-sono,
-section#accessibilita,
-section#contatti{
+section#chi-sono, section#accessibilita, section#contatti{
   border-top:1px solid var(--line-soft);
-}
-
-.lede{
-  max-width:60ch;
 }
 
 .grid-2{
@@ -614,1215 +467,585 @@ section#contatti{
   margin-bottom:.3em;
 }
 
-.meta-item .value{
-  font-family:var(--font-body);
-  font-size:.98rem;
-  color:var(--ink);
-}
-
-.compare{
+.compare-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-  gap:1.5rem;
-  margin:1.6rem 0 2.5rem;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
 }
 
-.screen{
+.compare-card{
+  background:var(--bg-panel);
   border:1px solid var(--line);
-  border-radius:20px;
-  background:#1c1d22;
-  aspect-ratio:16/10;
-  padding:14px;
-  position:relative;
-  overflow:hidden;
-}
-
-.screen .bar{
-  height:8px;
-  background:#3a3c46;
-  margin-bottom:8px;
-  width:40%;
-  border-radius:20px;
-}
-
-.screen .tiles{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:6px;
-  height:calc(100% - 24px);
-}
-
-.screen .tile{
-  background:#2b2c34;
-  border:1px solid #3a3c46;
-  border-radius:8px;
-}
-
-.screen.after .tile:nth-child(1){ border-color:#8647FF; }
-.screen.after .tile:nth-child(2){ border-color:#FF8747; }
-.screen.after .tile:nth-child(3){ border-color:#18CC00; }
-.screen.after .tile:nth-child(4){ border-color:#F7D70D; }
-.screen.after .tile:nth-child(5){ border-color:#5999F7; }
-.screen.after .tile:nth-child(6){ border-color:#FF2C20; }
-
-figcaption{
-  font-family:var(--font-ui);
-  font-size:var(--micro);
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  color:var(--ink-faint);
-  margin-top:.6em;
-  text-align:center;
-}
-
-blockquote{
-  margin:2rem 0;
-  padding:clamp(1rem, 3vw, 1.4rem) clamp(1.2rem, 4vw, 1.8rem);
-  border-left:3px solid var(--vinaccia);
+  padding:1.2rem;
   border-radius:12px;
-  background:var(--bg-panel);
-  font-style:italic;
-  color:var(--ink-soft);
 }
 
-blockquote footer{
-  margin-top:.6em;
-  font-style:normal;
+.compare-card.old{ border-color:var(--vinaccia); }
+.compare-card.new{ border-color:var(--oliva); }
+
+.work-list{
+  display:grid;
+  gap:1.5rem;
+}
+
+.work-item{
+  display:grid;
+  grid-template-columns: auto 1fr auto;
+  gap:1.5rem;
+  align-items:baseline;
+  padding:1.2rem 1.5rem;
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  text-decoration:none;
+  transition:border-color .2s, transform .2s;
+}
+
+.work-item:hover{
+  border-color:var(--ocra);
+  transform:translateY(-2px);
+}
+
+.work-num{
+  font-family:var(--font-ui);
+  font-size:.85rem;
+  color:var(--ocra);
+  font-weight:600;
+}
+
+.work-title{
+  font-family:var(--font-display);
+  font-size:var(--h3);
+  margin:0;
+  color:var(--ink);
+}
+
+.work-tag{
   font-family:var(--font-ui);
   font-size:var(--micro);
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:var(--ocra);
-}
-
-.palette-group{
-  margin-bottom:2.2rem;
-}
-
-.palette-group h3{
-  margin-bottom:.9rem;
-}
-
-.swatches{
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));
-  gap:.9rem;
-}
-
-.swatch{
-  border:1px solid var(--line);
-  border-radius:16px;
-  overflow:hidden;
-  background:var(--bg);
-}
-
-.swatch .chip{
-  height:52px;
-}
-
-.swatch .info{
-  padding:.55em .7em;
-  font-family:var(--font-ui);
-}
-
-.swatch .name{
-  font-size:.78rem;
-  color:var(--ink);
-  display:block;
-}
-
-.swatch .hex{
-  font-size:.72rem;
-  color:var(--ink-faint);
-  letter-spacing:.03em;
-}
-
-.a11y-row{
-  display:flex;
-  gap:1.8rem;
-  flex-wrap:wrap;
-  align-items:center;
-  margin-top:1.6rem;
-}
-
-.badge{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  width:84px;
-  height:84px;
-  border-radius:50%;
-  border:2px solid var(--ocra);
-  box-shadow:
-    0 0 0 4px var(--bg),
-    0 0 0 5px var(--line-soft);
-  font-family:var(--font-display);
-  font-weight:700;
-  flex-shrink:0;
-}
-
-.badge .lvl{
-  font-size:1.35rem;
-  color:var(--ink);
-}
-
-.badge .std{
-  font-size:.6rem;
-  font-family:var(--font-ui);
   text-transform:uppercase;
   letter-spacing:.08em;
-  color:var(--ocra);
+  color:var(--ink-faint);
+  text-align:right;
 }
 
-.a11y-text{
-  flex:1;
-  min-width:240px;
+.contact-box{
+  text-align:center;
+  max-width:600px;
+  margin:0 auto;
 }
 
-footer.site{
-  padding:clamp(2.5rem,6vw,4rem) 0 3rem;
+.contact-email{
+  font-family:var(--font-display);
+  font-size:clamp(1.5rem, 4vw, 2.8rem);
+  font-weight:700;
+  color:var(--ink);
+  text-decoration:none;
+  display:inline-block;
+  margin:1rem 0;
+  border-bottom:2px solid var(--ocra);
+  word-break:break-word;
+}
+
+.contact-email:hover{ color:var(--ocra); }
+
+.bee-companion-fixed {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 90px;
+  height: 90px;
+  z-index: 99;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.bee-companion-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+footer{
+  padding:2rem 0;
+  border-top:1px solid var(--line);
+  font-family:var(--font-ui);
+  font-size:var(--micro);
+  color:var(--ink-faint);
   text-align:center;
 }
 
-.contact-links{
-  display:flex;
-  justify-content:center;
-  gap:1.6rem;
-  flex-wrap:wrap;
-  font-family:var(--font-ui);
-  font-size:.9rem;
-  text-transform:uppercase;
-  letter-spacing:.06em;
-  margin-top:1.4rem;
-}
-
-.contact-links a{
-  text-decoration:none;
-  border-bottom:1px solid var(--line);
-  padding-bottom:2px;
-  color:var(--ink-soft);
-}
-
-.contact-links a:hover{
-  color:var(--ink);
-  border-color:var(--ocra);
-}
-
-.fine{
-  margin-top:2.4rem;
-  font-family:var(--font-ui);
-  font-size:var(--micro);
-  color:var(--ink-faint);
-  letter-spacing:.04em;
-}
-
-a:focus-visible,
-button:focus-visible{
-  outline:2px solid var(--vinaccia);
-  outline-offset:3px;
-}
-
-.reveal{
-  opacity:0;
-  transform:translateY(26px);
-  transition:opacity .7s ease,transform .7s ease;
-}
-
-.reveal.is-visible{
-  opacity:1;
-  transform:none;
-}
-
-.lift{
-  transition:transform .3s ease,box-shadow .3s ease;
-}
-
-.lift:hover{
-  transform:translateY(-4px);
-  box-shadow:0 16px 35px rgba(36,27,18,.08);
-}
-
-.character-companion{
-  position:fixed;
-  right:max(12px, env(safe-area-inset-right));
-  bottom:max(12px, env(safe-area-inset-bottom));
-  z-index:40;
-  width:clamp(110px, 20vw, 150px);
-  height:clamp(135px, 25vw, 184px);
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:rgba(241,237,228,.92);
-  backdrop-filter:blur(8px);
-  box-shadow:0 14px 35px rgba(36,27,18,.10);
-  overflow:hidden;
-  opacity:0;
-  transform:translateY(20px) scale(.96);
-  pointer-events:none;
-  transition:opacity .35s ease,transform .35s ease;
-}
-
-.character-companion.is-active{
-  opacity:1;
-  transform:none;
-  pointer-events:auto;
-}
-
-.character-companion canvas{
-  width:100%;
-  height:100%;
-  display:block;
-  cursor:default;
-  touch-action:none;
-}
-
-.companion-caption{
-  position:absolute;
-  left:8px;
-  bottom:6px;
-  font:.55rem var(--font-ui);
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:var(--ink-faint);
-  background:rgba(241,237,228,.82);
-  padding:2px 6px;
-  border-radius:20px;
-}
-
-.solange-bubble{
-  position:fixed;
-  left:max(12px, env(safe-area-inset-left));
-  bottom:max(12px, env(safe-area-inset-bottom));
-  z-index:41;
-  display:flex;
-  align-items:center;
-  gap:.55rem;
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:var(--bg-panel);
-  color:var(--ink);
-  padding:.65rem .95rem;
-  font:500 .8rem var(--font-ui);
-  letter-spacing:.03em;
-  cursor:pointer;
-  box-shadow:0 14px 35px rgba(36,27,18,.10);
-}
-
-.solange-bubble:hover{
-  border-color:var(--ocra);
-}
-
-.solange-bubble .dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--oliva);
-  box-shadow:0 0 0 4px rgba(95,113,72,.12);
-}
-
-.solange-panel{
-  position:fixed;
-  left:max(12px, env(safe-area-inset-left));
-  bottom:max(12px, env(safe-area-inset-bottom));
-  z-index:42;
-  width:clamp(280px, 90vw, 340px);
-  max-height:clamp(320px, 80vh, 460px);
-  display:flex;
-  flex-direction:column;
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:var(--bg);
-  box-shadow:0 20px 45px rgba(36,27,18,.16);
-  opacity:0;
-  transform:translateY(14px) scale(.98);
-  pointer-events:none;
-  transition:opacity .25s ease,transform .25s ease;
-}
-
-.solange-panel.is-open{
-  opacity:1;
-  transform:none;
-  pointer-events:auto;
-}
-
-.solange-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:.8rem 1rem;
-  border-bottom:1px solid var(--line-soft);
-}
-
-.solange-head .who{
-  font-family:var(--font-display);
-  font-weight:700;
-  font-size:1rem;
-}
-
-.solange-head .who small{
-  display:block;
-  font-family:var(--font-ui);
-  font-weight:400;
-  font-size:.65rem;
-  letter-spacing:.05em;
-  text-transform:uppercase;
-  color:var(--ink-faint);
-  margin-top:.15em;
-}
-
-.solange-close{
-  border:none;
-  background:transparent;
-  color:var(--ink-faint);
-  font-size:1.1rem;
-  cursor:pointer;
-  line-height:1;
-  padding:.2rem .35rem;
-}
-
-.solange-close:hover{
-  color:var(--ink);
-}
-
-.solange-log{
-  flex:1;
-  overflow-y:auto;
-  padding:.8rem 1rem;
-  display:flex;
-  flex-direction:column;
-  gap:.75rem;
-}
-
-.solange-msg{
-  max-width:88%;
-  padding:.5rem .75rem;
-  border-radius:16px;
-  font-size:.85rem;
-  line-height:1.4;
-}
-
-.solange-msg.user{
-  align-self:flex-end;
-  background:var(--ocra);
-  color:#fff;
-  border-bottom-right-radius:4px;
-}
-
-.solange-msg.bot{
-  align-self:flex-start;
-  background:var(--bg-panel);
-  color:var(--ink-soft);
-  border-bottom-left-radius:4px;
-}
-
-.solange-form{
-  display:flex;
-  gap:.4rem;
-  padding:.75rem 1rem;
-  border-top:1px solid var(--line-soft);
-}
-
-.solange-form input{
-  flex:1;
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:.5rem .85rem;
-  font:.82rem var(--font-body);
-  background:var(--bg-panel);
-  color:var(--ink);
-  min-width:0;
-}
-
-.solange-form input:focus-visible{
-  outline:2px solid var(--vinaccia);
-  outline-offset:2px;
-}
-
-.solange-form button{
-  border:none;
-  border-radius:20px;
-  padding:.5rem .85rem;
-  background:var(--ocra);
-  color:#fff;
-  font:600 .75rem var(--font-ui);
-  letter-spacing:.05em;
-  text-transform:uppercase;
-  cursor:pointer;
-  flex-shrink:0;
-}
-
-.solange-form button:hover{
-  opacity:.9;
-}
-
-@media(max-width:768px){
-  .hero{ min-height:auto; }
-  .hero-inner{ flex-wrap:wrap; justify-content:center; text-align:left; }
-  .hero-visual{ margin:1rem auto 0; }
-  .avatar-label{ right:0; top:0; }
-}
-
-@media(prefers-reduced-motion:reduce){
-  html{ scroll-behavior:auto; }
-  .reveal{ opacity:1; transform:none; transition:none; }
-  .lift{ transition:none; }
-  .character-companion{ transition:none; }
+@media (max-width: 768px){
+  .hero-inner{
+    grid-template-columns: 1fr;
+    text-align:center;
+  }
+  .hero-kicker{ justify-content:center; }
+  .hero-kicker::before{ display:none; }
+  .hero-tags{ justify-content:center; }
+  .avatar-label{ display:none; }
+  .compare-grid{ grid-template-columns: 1fr; }
+  .work-item{ grid-template-columns: 1fr; gap:.5rem; text-align:left; }
+  .work-tag{ text-align:left; }
+  .bee-companion-fixed{ width:70px; height:70px; bottom:10px; right:10px; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="scroll-progress" id="scrollProgress"></div>
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
 <header class="nav">
   <div class="nav-inner">
+    <a href="#" style="text-decoration:none; display:flex; align-items:center; gap:.5rem;">
+      <div class="rosone small" aria-hidden="true"></div>
+      <span style="font-family:var(--font-display); font-weight:700; font-size:1.1rem; color:var(--ink);">A. Pascarella</span>
+    </a>
 
     <nav class="links">
-      <a href="#home" data-sound="hover" data-i18n="nav.home">Home</a>
-      <a href="#chi-sono" data-sound="hover" data-i18n="nav.about">About</a>
-      <a href="#progetto" data-sound="hover" data-i18n="nav.work">Work</a>
-      <a href="#contatti" data-sound="hover" data-i18n="nav.contact">Contact</a>
+      <a href="#progetti">Progetti</a>
+      <a href="#chi-sono">Chi Sono</a>
+      <a href="#accessibilita">Accessibilità</a>
+      <a href="#contatti">Contatti</a>
     </nav>
 
     <div class="nav-tools">
-      <button class="icon-btn" id="soundToggle" type="button" aria-label="Attiva/Disattiva Suono" title="Audio On/Off">
-        <svg id="soundIconOn" viewBox="0 0 24 24">
-          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-        </svg>
-        <svg id="soundIconOff" viewBox="0 0 24 24" style="display:none;">
-          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-        </svg>
+      <button class="icon-btn" id="sound-toggle" title="Attiva/Disattiva Suoni" aria-label="Attiva o disattiva audio">
+        <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none;"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
       </button>
 
-      <button class="lang-btn" id="langToggle" type="button" aria-label="Cambia Lingua">
-        EN
-      </button>
+      <button class="lang-btn" id="lang-btn" title="Cambia Lingua">EN</button>
     </div>
-
   </div>
 </header>
 
-<div class="welcome-section">
+<section class="welcome-section">
   <div class="wrap">
     <div class="welcome-box">
-      <p class="welcome-text"><span id="typewriterText"></span><span class="cursor"></span></p>
+      <span class="welcome-text" id="typewriter-text" data-it="Benvenuto nel mio spazio creativo virtuale ✨" data-en="Welcome to my virtual creative space ✨"></span><span class="cursor" id="typewriter-cursor"></span>
     </div>
   </div>
-</div>
+</section>
 
-<div class="character-companion" id="characterCompanion" aria-hidden="true">
-  <canvas id="companion-canvas" aria-label="Piccola ape 3D interattiva"></canvas>
-  <div class="companion-caption" id="companionCaption">in ascolto</div>
-</div>
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-kicker">UI/UX &amp; Product Designer</div>
+        <h1 style="margin-top:.4rem;">Progetto esperienze digitali armoniose, accessibili e orientate all'utente.</h1>
+        <p>Unisco ricerca UX rigorosa, estetica rinascimentale e sviluppo front-end moderno per trasformare problemi complessi in interfacce semplici.</p>
+        
+        <div class="hero-tags">
+          <span class="tag">UI/UX Design</span>
+          <span class="tag">Accessibility (WCAG 2.2)</span>
+          <span class="tag">Design System</span>
+          <span class="tag">Frontend Dev</span>
+        </div>
 
-<button type="button" class="solange-bubble" id="solangeBubble" data-sound="click" aria-haspopup="dialog" aria-expanded="false">
-  <span class="dot"></span>
-  <span data-i18n="bot.bubble">Chiedi a Solange</span>
-</button>
-
-<div class="solange-panel" id="solangePanel" role="dialog" aria-label="Chat con Solange" aria-hidden="true">
-  <div class="solange-head">
-    <div class="who">
-      Solange
-      <small data-i18n="bot.subtitle">risponde a domande su Antonietta</small>
-    </div>
-    <button type="button" class="solange-close" id="solangeClose" aria-label="Chiudi la chat">×</button>
-  </div>
-
-  <div class="solange-log" id="solangeLog">
-    <div class="solange-msg bot" data-i18n="bot.welcome">
-      Ciao, sono Solange. Puoi chiedermi qualcosa sul percorso di Antonietta, sul progetto in portfolio, sulla palette o sull'accessibilità. Se non trovo la risposta nel testo di questa pagina, te lo dico chiaramente.
-    </div>
-  </div>
-
-  <form class="solange-form" id="solangeForm">
-    <input type="text" id="solangeInput" placeholder="Es. cosa ha fatto Antonietta?" autocomplete="off" data-i18n-ph="bot.placeholder">
-    <button type="submit" data-sound="click" data-i18n="bot.submit">Chiedi</button>
-  </form>
-</div>
-
-<main>
-
-<section id="home" class="hero">
-  <div class="wrap hero-inner">
-
-    <div class="hero-text hero-copy reveal">
-      <span class="hero-kicker" data-i18n="hero.kicker">
-        UI/UX Designer · Bologna
-      </span>
-
-      <h1 data-i18n="hero.title">
-        Progetto interfacce con <em>rigore, curiosità</em> e attenzione alle persone.
-      </h1>
-
-      <p class="hero-intro" data-i18n="hero.intro">
-        Sono Antonietta, laureata magistrale in Informatica con lode.
-        Ho portato nel design il metodo che mi ha insegnato l'informatica:
-        ricerca strutturata, iterazioni documentate e decisioni motivate,
-        non solo schermate belle da vedere.
-      </p>
-
-      <div class="hero-tags">
-        <span class="tag" data-sound="hover">UX Research</span>
-        <span class="tag" data-sound="hover">UI Design</span>
-        <span class="tag" data-sound="hover">Design System</span>
-        <span class="tag" data-sound="hover">Data-Informed Design</span>
+        <div>
+          <a href="#progetti" class="cta">Esplora i lavori &rarr;</a>
+        </div>
       </div>
 
-      <a class="cta" href="#progetto" data-sound="click" data-i18n="hero.cta">
-        Scopri il progetto ↓
+      <div class="hero-visual">
+        <canvas id="avatar-canvas"></canvas>
+        <div class="avatar-label">
+          ★ Modello 3D dell'ape interattivo. Ruotalo col mouse/touch!
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
+
+<section id="progetti">
+  <div class="wrap">
+    <span class="eyebrow">Lavori Selezionati</span>
+    <h2>Casi studio &amp; Progetti</h2>
+    <p>Una selezione di progetti che combinano architettura dell'informazione, estetica curata e accessibilità universale.</p>
+
+    <div class="work-list" style="margin-top:2rem;">
+      <a href="#" class="work-item">
+        <span class="work-num">01</span>
+        <div>
+          <h3 class="work-title">Aeterna Design System</h3>
+          <p style="margin:0; font-size:.9rem;">Design system scalabile conforme alle linee guida WCAG 2.2 AA per ecosistemi enterprise.</p>
+        </div>
+        <span class="work-tag">UI/UX • Design System</span>
+      </a>
+
+      <a href="#" class="work-item">
+        <span class="work-num">02</span>
+        <div>
+          <h3 class="work-title">BioHeritage Platform</h3>
+          <p style="margin:0; font-size:.9rem;">Piattaforma digitale per la catalogazione ed esplorazione di archivi storici e botanici.</p>
+        </div>
+        <span class="work-tag">Product Design • Web App</span>
+      </a>
+
+      <a href="#" class="work-item">
+        <span class="work-num">03</span>
+        <div>
+          <h3 class="work-title">Lumina Health Portal</h3>
+          <p style="margin:0; font-size:.9rem;">Riprogettazione dell'esperienza utente per la gestione delle cartelle cliniche dei pazienti.</p>
+        </div>
+        <span class="work-tag">UX Research • Mobile App</span>
       </a>
     </div>
-
-    <div class="hero-visual">
-      <canvas id="avatar-canvas" aria-label="Ape 3D interattiva"></canvas>
-      <div class="avatar-label" id="avatarLabel" data-i18n="hero.avatarLabel">
-        ciao, sono Solange e risponderò alle tue domande su Antonietta
-      </div>
-    </div>
-
   </div>
 </section>
 
-<div class="wrap">
-  <div class="divider">
-    <div class="rosone small"></div>
-  </div>
-</div>
+<div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
 
-<section id="chi-sono" class="reveal">
+<section id="chi-sono">
   <div class="wrap">
     <div class="grid-2">
-
       <div>
-        <span class="eyebrow" data-i18n="about.eyebrow">Chi sono</span>
-        <h2 data-i18n="about.title">Dall'informatica al design, senza perdere il metodo</h2>
+        <span class="eyebrow">Chi Sono</span>
+        <h2>Dietro le quinte</h2>
+        <p>Sono <strong>Antonietta Pascarella</strong>, UI/UX Designer basata in Italia con una passione profonda per il design sistemico e l'accessibilità digitale.</p>
+        <p>Credo che il design sia la sintesi perfetta tra funzionalità, empatia e rigore formale. Mi occupo dell'intero ciclo di vita del prodotto: dalla fase di ricerca con gli utenti alla definizione del design system, fino alla prototipazione e collaborazione con gli sviluppatori.</p>
       </div>
 
-      <div>
-        <p data-i18n="about.p1">
-          Il mio percorso in informatica mi ha dato familiarità con il pensiero
-          sistemico, la lettura di dati reali e la costruzione di processi
-          ripetibili. Nel design applico lo stesso approccio: ogni scelta,
-          che sia un flusso, un componente o una gerarchia visiva, nasce da
-          un'ipotesi verificabile e non da un'intuizione isolata.
-        </p>
-
-        <p data-i18n="about.p2">
-          Lavoro sia sul lato UX (ricerca, architettura dell'informazione,
-          user flow) sia sul lato UI (design system, alta fedeltà,
-          accessibilità), con un'attenzione particolare ai contesti
-          industriali e data-intensive, dove la chiarezza dell'informazione
-          conta quanto l'estetica.
-        </p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="wrap">
-  <div class="divider">
-    <div class="rosone small"></div>
-  </div>
-</div>
-
-<section id="progetto" class="reveal">
-  <div class="wrap">
-
-    <span class="eyebrow" data-i18n="work.eyebrow">Caso studio</span>
-
-    <h2 data-i18n="work.title">
-      Redesign dell'interfaccia operativa per un impianto industriale
-    </h2>
-
-    <p class="lede" data-i18n="work.lede">
-      Progetto realizzato per un'azienda italiana attiva nella produzione
-      di impianti industriali, in collaborazione con il team tecnico
-      dell'agenzia per cui lavoro.
-    </p>
-
-    <div class="meta-strip">
-
-      <div class="meta-item">
-        <span class="label" data-i18n="work.roleLabel">Ruolo</span>
-        <span class="value" data-i18n="work.roleValue">
-          UX/UI Design, sviluppo del design system
-        </span>
-      </div>
-
-      <div class="meta-item">
-        <span class="label" data-i18n="work.phasesLabel">Fasi</span>
-        <span class="value" data-i18n="work.phasesValue">
-          Wireframe → Mockup → Prototipo interattivo
-        </span>
-      </div>
-
-      <div class="meta-item">
-        <span class="label" data-i18n="work.toolsLabel">Strumenti</span>
-        <span class="value">
-          Figma, Stark (audit accessibilità)
-        </span>
-      </div>
-
-    </div>
-
-    <div class="panel lift">
-
-      <h3 data-i18n="work.contextTitle">Il contesto</h3>
-
-      <p data-i18n="work.contextP1">
-        Il progetto nasce da una pipeline dati IoT/ML già esistente
-        (raccolta e predizione dei dati di impianto). Il mio compito è stato
-        progettare l'interfaccia web che rende questi dati fruibili a due
-        profili utente: il <em>Plant Manager</em>, interessato alla performance
-        d'insieme, e il <em>Maintenance Technician</em>, focalizzato su
-        manutenzione predittiva e allarmi.
-      </p>
-
-      <p data-i18n="work.contextP2">
-        Il cliente desiderava rinnovare un'applicazione esistente, poco
-        leggibile e priva di un sistema coerente. Le esigenze di business
-        e utente erano già state raccolte dal cliente attraverso interviste
-        dirette con gli utenti finali; ho ricevuto brief e interfacce originali,
-        e da lì ho condotto un'analisi euristica per individuare criticità
-        di usabilità prima di ridisegnare.
-      </p>
-
-    </div>
-
-    <h3 style="margin-top:2.4rem;" data-i18n="work.compareTitle">
-      Prima e dopo
-    </h3>
-
-    <p data-i18n="work.compareDesc">
-      Confronto tra l'interfaccia originale e il nuovo design system,
-      pensato per dare gerarchia visiva immediata tramite color-coding
-      per categoria funzionale.
-    </p>
-
-    <div class="compare">
-
-      <figure>
-        <div class="screen before">
-          <div class="bar"></div>
-          <div class="tiles">
-            <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-            <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+      <div class="panel">
+        <span class="eyebrow">Competenze &amp; Strumenti</span>
+        <div class="meta-strip">
+          <div class="meta-item">
+            <span class="label">Design</span>
+            UI/UX, Prototyping, Wireframing, Design Systems, User Research, Information Architecture
+          </div>
+          <div class="meta-item">
+            <span class="label">Strumenti</span>
+            Figma, Adobe CC, FigJam, Protopie, HTML5/CSS3, JavaScript, Three.js
+          </div>
+          <div class="meta-item">
+            <span class="label">Standard</span>
+            WCAG 2.2 Level AA, WAI-ARIA, Mobile-first Design
           </div>
         </div>
-        <figcaption data-i18n="work.beforeCap">
-          Prima: tile monocromatiche, nessuna gerarchia
-        </figcaption>
-      </figure>
-
-      <figure>
-        <div class="screen after">
-          <div class="bar"></div>
-          <div class="tiles">
-            <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-            <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-          </div>
-        </div>
-        <figcaption data-i18n="work.afterCap">
-          Dopo: color coding per modulo funzionale
-        </figcaption>
-      </figure>
-
-    </div>
-
-    <h3 data-i18n="work.flowTitle">Dal wireframe al prototipo</h3>
-
-    <p data-i18n="work.flowP1">
-      Il lavoro ha coperto l'intero flusso applicativo: autenticazione con
-      login, registrazione e reset password su due canali (email e telefono),
-      selezione geografica con mappa interattiva sincronizzata a una lista
-      filtrabile, landing page a moduli e le sette funzionalità core dell'app,
-      tra cui manutenzione predittiva, performance dell'impianto, risparmio
-      energetico, storico dati e gestione allarmi.
-    </p>
-
-    <p data-i18n="work.flowP2">
-      Ogni schermata è passata da wireframe a bassa fedeltà a mockup ad alta
-      fedeltà, fino a un prototipo Figma cliccabile. Ho dedicato attenzione
-      anche ai micro stati dei singoli componenti, come un filtro con zero,
-      uno o più elementi selezionati, e non solo alle schermate considerate
-      "finali".
-    </p>
-
-    <blockquote>
-      <span data-i18n="work.quote">
-        Le user stories sono state scritte alla fine del processo invece che
-        all'inizio, come normalmente ci si aspetterebbe in un workflow UX.
-        Scrivendole a posteriori sono emersi elementi che avrebbero potuto
-        migliorare ulteriormente l'app fin dalle prime fasi: una lezione che
-        porto con me nei progetti successivi.
-      </span>
-      <footer data-i18n="work.quoteFooter">
-        Dalla documentazione del progetto
-      </footer>
-    </blockquote>
-
-    <div id="palette">
-
-      <h3 data-i18n="palette.title">Design system, la palette</h3>
-
-      <p data-i18n="palette.intro">
-        Palette estratta dal file Figma di produzione, organizzata per funzione:
-        base, brand, semantica (stati positivi/critici/warning) e accenti
-        categorici per modulo.
-      </p>
-
-      <div class="palette-group">
-        <h3 data-i18n="palette.baseTitle">Base &amp; neutrali</h3>
-        <div class="swatches">
-          <div class="swatch"><div class="chip" style="background:#1A1B20"></div><div class="info"><span class="name" data-i18n="palette.c1">Nero principale</span><span class="hex">#1A1B20</span></div></div>
-          <div class="swatch"><div class="chip" style="background:#262934"></div><div class="info"><span class="name" data-i18n="palette.c2">Superficie scura</span><span class="hex">#262934</span></div></div>
-          <div class="swatch"><div class="chip" style="background:#F5F7FA"></div><div class="info"><span class="name" data-i18n="palette.c3">Bianco input</span><span class="hex">#F5F7FA</span></div></div>
-          <div class="swatch"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #ddd"></div><div class="info"><span class="name" data-i18n="palette.c4">Bianco</span><span class="hex">#FFFFFF</span></div></div>
-          <div class="swatch"><div class="chip" style="background:#787A7D"></div><div class="info"><span class="name" data-i18n="palette.c5">Grigio testo</span><span class="hex">#787A7D</span></div></div>
-          <div class="swatch"><div class="chip" style="background:#000000"></div><div class="info"><span class="name" data-i18n="palette.c6">Nero</span><span class="hex">#000000</span></div></div>
-        </div>
       </div>
-
-      <div class="palette-group">
-        <h3 data-i18n="palette.brandTitle">Brand</h3>
-        <div class="swatches">
-          <div class="swatch"><div class="chip" style="background:#F7D70D"></div><div class="info"><span class="name" data-i18n="palette.c7">Giallo brand</span><span class="hex">#F7D70D</span></div></div>
-          <div class="swatch"><div class="chip" style="background:#24559D"></div><div class="info"><span class="name" data-i18n="palette.c8">Blu brand</span><span class="hex">#24559D</span></div></div>
-        </div>
-      </div>
-
     </div>
-
   </div>
 </section>
 
-<div class="wrap">
-  <div class="divider">
-    <div class="rosone small"></div>
-  </div>
-</div>
+<div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
 
-<section id="accessibilita" class="reveal">
+<section id="accessibilita">
   <div class="wrap">
+    <span class="eyebrow">Accessibilità al Centro</span>
+    <h2>Design per Chiunque</h2>
+    <p>Il web appartiene a tutti. L'accessibilità non è un dettaglio secondario o una lista di controlli da spuntare alla fine, ma la base di ogni processo creativo sensato.</p>
 
-    <span class="eyebrow" data-i18n="a11y.eyebrow">Accessibilità</span>
+    <div class="compare-grid" style="margin-top:2rem;">
+      <div class="compare-card old">
+        <h3 style="color:var(--vinaccia); font-size:1.1rem; margin-bottom:.5rem;">Approccio Convenzionale</h3>
+        <p style="font-size:.9rem; margin:0;">Contrasti cromatici deboli, focus state nascosti o assenti, interazioni pensate unicamente per il mouse e mancato rispetto dei lettori di schermo.</p>
+      </div>
 
-    <h2 data-i18n="a11y.title">Conformità WCAG verificata, non presunta</h2>
-
-    <div class="a11y-row">
-      <div class="badge"><span class="lvl">AA</span><span class="std">WCAG 2</span></div>
-      <div class="badge"><span class="lvl">AAA</span><span class="std">WCAG 2</span></div>
-
-      <div class="a11y-text">
-        <p data-i18n="a11y.desc">
-          Tutti i mockup del progetto sono stati sottoposti a verifica tramite
-          <strong>Stark, Universal Accessibility Framework (SUAF)</strong>,
-          per controllare la conformità alle Web Content Accessibility Guidelines.
-          Il risultato è una conformità di livello <strong>AA</strong> su tutti i componenti verificati, e <strong>AAA</strong> per la maggior parte di essi.
-        </p>
+      <div class="compare-card new">
+        <h3 style="color:var(--oliva); font-size:1.1rem; margin-bottom:.5rem;">Mio Approccio Integrato</h3>
+        <p style="font-size:.9rem; margin:0;">Standard WCAG 2.2 AA integrati fin dai primi sketch, navigabilità completa da tastiera, contrasti elevati e test continui di usabilità.</p>
       </div>
     </div>
-
   </div>
 </section>
 
-<div class="wrap">
-  <div class="divider">
-    <div class="rosone small"></div>
-  </div>
-</div>
+<div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
 
-<section id="contatti" class="reveal">
-  <div class="wrap" style="text-align:center">
-
-    <span class="eyebrow" data-i18n="contact.eyebrow">Contatti</span>
-    <h2 data-i18n="contact.title">Parliamone</h2>
-    <p class="lede" style="margin:0 auto" data-i18n="contact.lede">
-      Sono disponibile per nuove collaborazioni e progetti di UX/UI design.
-    </p>
-
-  </div>
-</section>
-
-</main>
-
-<footer class="site">
+<section id="contatti">
   <div class="wrap">
-    <div class="rosone small" style="margin:0 auto 1.2rem"></div>
+    <div class="contact-box panel">
+      <span class="eyebrow">Mettiamoci in contatto</span>
+      <h2>Hai un progetto in mente?</h2>
+      <p>Sono sempre aperta a nuove collaborazioni, progetti sfidanti e conversazioni sul design e sull'accessibilità.</p>
 
-    <div class="contact-links">
-      <a href="mailto:antonietta.pascarella@email.com">Email</a>
-      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://behance.net" target="_blank" rel="noopener">Behance</a>
+      <a href="mailto:antonietta.pascarella@example.com" class="contact-email">antonietta.pascarella@example.com</a>
+
+      <div style="margin-top:1.5rem; display:flex; justify-content:center; gap:1.5rem;" class="hero-tags">
+        <a href="#" class="tag" style="text-decoration:none;">LinkedIn</a>
+        <a href="#" class="tag" style="text-decoration:none;">GitHub</a>
+        <a href="#" class="tag" style="text-decoration:none;">Dribbble</a>
+      </div>
     </div>
+  </div>
+</section>
 
-    <p class="fine" data-i18n="footer.fine">
-      Antonietta Pascarella, UI/UX Designer · Bologna, Italia
-    </p>
+<footer>
+  <div class="wrap">
+    <p>&copy; 2026 Antonietta Pascarella. Progettato e curato nei minimi dettagli.</p>
   </div>
 </footer>
 
-<script type="module">
+<div class="bee-companion-fixed" id="bee-fixed-container" title="Ciao! Sono l'ape guida. Fai click per interagire con me!">
+  <canvas class="bee-companion-canvas" id="bee-companion-canvas"></canvas>
+</div>
 
+<script type="module">
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-const translations = {
-  it: {
-    "nav.home": "Home",
-    "nav.about": "About",
-    "nav.work": "Work",
-    "nav.contact": "Contact",
-    "welcome.text": "Ciao, benvenuto/a nella pagina di Antonietta Pascarella",
-    "hero.kicker": "UI/UX Designer · Bologna",
-    "hero.title": "Progetto interfacce con <em>rigore, curiosità</em> e attenzione alle persone.",
-    "hero.intro": "Sono Antonietta, laureata magistrale in Informatica con lode. Ho portato nel design il metodo che mi ha insegnato l'informatica: ricerca strutturata, iterazioni documentate e decisioni motivate, non solo schermate belle da vedere.",
-    "hero.cta": "Scopri il progetto ↓",
-    "hero.avatarLabel": "ciao, sono Solange e risponderò alle tue domande su Antonietta",
-    "about.eyebrow": "Chi sono",
-    "about.title": "Dall'informatica al design, senza perdere il metodo",
-    "about.p1": "Il mio percorso in informatica mi ha dato familiarità con il pensiero sistemico, la lettura di dati reali e la costruzione di processi ripetibili. Nel design applico lo stesso approccio: ogni scelta, che sia un flusso, un componente o una gerarchia visiva, nasce da un'ipotesi verificabile e non da un'intuizione isolata.",
-    "about.p2": "Lavoro sia sul lato UX (ricerca, architettura dell'informazione, user flow) sia sul lato UI (design system, alta fedeltà, accessibilità), con un'attenzione particolare ai contesti industriali e data-intensive, dove la chiarezza dell'informazione conta quanto l'estetica.",
-    "work.eyebrow": "Caso studio",
-    "work.title": "Redesign dell'interfaccia operativa per un impianto industriale",
-    "work.lede": "Progetto realizzato per un'azienda italiana attiva nella produzione di impianti industriali, in collaborazione con il team tecnico dell'agenzia per cui lavoro.",
-    "work.roleLabel": "Ruolo",
-    "work.roleValue": "UX/UI Design, sviluppo del design system",
-    "work.phasesLabel": "Fasi",
-    "work.phasesValue": "Wireframe → Mockup → Prototipo interattivo",
-    "work.toolsLabel": "Strumenti",
-    "work.contextTitle": "Il contesto",
-    "work.contextP1": "Il progetto nasce da una pipeline dati IoT/ML già esistente (raccolta e predizione dei dati di impianto). Il mio compito è stato progettare l'interfaccia web che rende questi dati fruibili a due profili utente: il Plant Manager, interessato alla performance d'insieme, e il Maintenance Technician, focalizzato su manutenzione predittiva e allarmi.",
-    "work.contextP2": "Il cliente desiderava rinnovare un'applicazione esistente, poco leggibile e priva di un sistema coerente. Le esigenze di business e utente erano già state raccolte dal cliente attraverso interviste dirette con gli utenti finali; ho ricevuto brief e interfacce originali, e da lì ho condotto un'analisi euristica per individuare criticità di usabilità prima di ridisegnare.",
-    "work.compareTitle": "Prima e dopo",
-    "work.compareDesc": "Confronto tra l'interfaccia originale e il nuovo design system, pensato per dare gerarchia visiva immediata tramite color-coding per categoria funzionale.",
-    "work.beforeCap": "Prima: tile monocromatiche, nessuna gerarchia",
-    "work.afterCap": "Dopo: color coding per modulo funzionale",
-    "work.flowTitle": "Dal wireframe al prototipo",
-    "work.flowP1": "Il lavoro ha coperto l'intero flusso applicativo: autenticazione con login, registrazione e reset password su due canali (email e telefono), selezione geografica con mappa interattiva sincronizzata a una lista filtrabile, landing page a moduli e le sette funzionalità core dell'app, tra cui manutenzione predittiva, performance dell'impianto, risparmio energetico, storico dati e gestione allarmi.",
-    "work.flowP2": "Ogni schermata è passata da wireframe a bassa fedeltà a mockup ad alta fedeltà, fino a un prototipo Figma cliccabile. Ho dedicato attenzione anche ai micro stati dei singoli componenti, come un filtro con zero, uno o più elementi selezionati, e non solo alle schermate considerate 'finali'.",
-    "work.quote": "Le user stories sono state scritte alla fine del processo invece che all'inizio, come normalmente ci si aspetterebbe in un workflow UX. Scrivendole a posteriori sono emersi elementi che avrebbero potuto migliorare ulteriormente l'app fin dalle prime fasi: una lezione che porto con me nei progetti successivi.",
-    "work.quoteFooter": "Dalla documentazione del progetto",
-    "palette.title": "Design system, la palette",
-    "palette.intro": "Palette estratta dal file Figma di produzione, organizzata per funzione: base, brand, semantica (stati positivi/critici/warning) e accenti categorici per modulo.",
-    "palette.baseTitle": "Base & neutrali",
-    "palette.brandTitle": "Brand",
-    "palette.c1": "Nero principale",
-    "palette.c2": "Superficie scura",
-    "palette.c3": "Bianco input",
-    "palette.c4": "Bianco",
-    "palette.c5": "Grigio testo",
-    "palette.c6": "Nero",
-    "palette.c7": "Giallo brand",
-    "palette.c8": "Blu brand",
-    "a11y.eyebrow": "Accessibilità",
-    "a11y.title": "Conformità WCAG verificata, non presunta",
-    "a11y.desc": "Tutti i mockup del progetto sono stati sottoposti a verifica tramite Stark, Universal Accessibility Framework (SUAF), per controllare la conformità alle Web Content Accessibility Guidelines. Il risultato è una conformità di livello AA su tutti i componenti verificati, e AAA per la maggior parte di essi.",
-    "contact.eyebrow": "Contatti",
-    "contact.title": "Parliamone",
-    "contact.lede": "Sono disponibile per nuove collaborazioni e progetti di UX/UI design.",
-    "footer.fine": "Antonietta Pascarella, UI/UX Designer · Bologna, Italia",
-    "bot.bubble": "Chiedi a Solange",
-    "bot.subtitle": "risponde a domande su Antonietta",
-    "bot.welcome": "Ciao, sono Solange. Puoi chiedermi qualcosa sul percorso di Antonietta, sul progetto in portfolio, sulla palette o sull'accessibilità. Se non trovo la risposta nel testo di questa pagina, te lo dico chiaramente.",
-    "bot.placeholder": "Es. cosa ha fatto Antonietta?",
-    "bot.submit": "Chiedi",
-    "caption.home": "in ascolto",
-    "caption.about": "ti racconto",
-    "caption.work": "guarda qui",
-    "caption.contact": "scrivimi"
-  },
-  en: {
-    "nav.home": "Home",
-    "nav.about": "About",
-    "nav.work": "Work",
-    "nav.contact": "Contact",
-    "welcome.text": "Hello, welcome to Antonietta Pascarella's page",
-    "hero.kicker": "UI/UX Designer · Bologna",
-    "hero.title": "Designing interfaces with <em>rigor, curiosity</em> and care for people.",
-    "hero.intro": "I'm Antonietta, graduated with honors in Computer Science. I brought into design the methodology that IT taught me: structured research, documented iterations and reasoned decisions, not just pretty screens.",
-    "hero.cta": "Explore project ↓",
-    "hero.avatarLabel": "hi, I'm Solange and I'll answer your questions about Antonietta",
-    "about.eyebrow": "About me",
-    "about.title": "From Computer Science to Design, keeping the methodology",
-    "about.p1": "My computer science background taught me systemic thinking, analyzing real data, and building repeatable processes. In design I apply the same approach: every choice, whether a flow, a component or a visual hierarchy, stems from a verifiable hypothesis rather than isolated intuition.",
-    "about.p2": "I work across both UX (research, information architecture, user flows) and UI (design systems, high-fidelity, accessibility), focusing on industrial and data-intensive domains where clarity matters as much as aesthetics.",
-    "work.eyebrow": "Case study",
-    "work.title": "Redesign of an operational interface for an industrial plant",
-    "work.lede": "Project created for an Italian industrial manufacturing company, in collaboration with the technical team of my agency.",
-    "work.roleLabel": "Role",
-    "work.roleValue": "UX/UI Design, design system development",
-    "work.phasesLabel": "Phases",
-    "work.phasesValue": "Wireframes → Mockups → Interactive prototype",
-    "work.toolsLabel": "Tools",
-    "work.contextTitle": "The context",
-    "work.contextP1": "The project stems from an existing IoT/ML data pipeline. My task was designing the web interface rendering this data actionable for two user roles: Plant Manager and Maintenance Technician.",
-    "work.contextP2": "The client wanted to overhaul an existing app that lacked visual hierarchy. User needs had been gathered via interviews; I conducted a heuristic evaluation to pinpoint usability flaws before redesigning.",
-    "work.compareTitle": "Before & After",
-    "work.compareDesc": "Comparison between the original UI and the new design system, engineered for instant visual clarity using functional color coding.",
-    "work.beforeCap": "Before: monochromatic tiles, no clear hierarchy",
-    "work.afterCap": "After: functional color coding per module",
-    "work.flowTitle": "From wireframe to prototype",
-    "work.flowP1": "The work covered the entire application flow: authentication, location selection with interactive maps, modular landing page, and 7 core features including predictive maintenance and energy saving.",
-    "work.flowP2": "Every screen progressed from low-fidelity wireframes to high-fidelity mockups and an interactive Figma prototype, paying close attention to micro-states of UI components.",
-    "work.quote": "User stories were written at the end of the process instead of the beginning. Writing them afterwards revealed key insights that could have improved the app earlier: a valuable lesson I carry into future projects.",
-    "work.quoteFooter": "From project documentation",
-    "palette.title": "Design system, the palette",
-    "palette.intro": "Palette extracted from the production Figma file, organized by function: base, brand, semantic states, and modular categorical accents.",
-    "palette.baseTitle": "Base & neutrals",
-    "palette.brandTitle": "Brand",
-    "palette.c1": "Primary black",
-    "palette.c2": "Dark surface",
-    "palette.c3": "Input white",
-    "palette.c4": "White",
-    "palette.c5": "Text gray",
-    "palette.c6": "Black",
-    "palette.c7": "Brand yellow",
-    "palette.c8": "Brand blue",
-    "a11y.eyebrow": "Accessibility",
-    "a11y.title": "WCAG compliance verified, not assumed",
-    "a11y.desc": "All project mockups were audited using Stark and SUAF for WCAG compliance. Resulting in AA level compliance across all tested components, and AAA for most.",
-    "contact.eyebrow": "Contact",
-    "contact.title": "Let's talk",
-    "contact.lede": "Available for new projects and UX/UI design collaborations.",
-    "footer.fine": "Antonietta Pascarella, UI/UX Designer · Bologna, Italy",
-    "bot.bubble": "Ask Solange",
-    "bot.subtitle": "answers questions about Antonietta",
-    "bot.welcome": "Hi, I'm Solange. You can ask me about Antonietta's journey, portfolio project, color palette, or accessibility.",
-    "bot.placeholder": "E.g. what is Antonietta's background?",
-    "bot.submit": "Ask",
-    "caption.home": "listening",
-    "caption.about": "let me tell you",
-    "caption.work": "look here",
-    "caption.contact": "write me"
-  }
-};
+let audioCtx = null;
+let soundEnabled = true;
 
-let currentLang = 'it';
-
-function applyLanguage(lang) {
-  currentLang = lang;
-  document.documentElement.lang = lang;
-
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (translations[lang][key]) {
-      el.innerHTML = translations[lang][key];
-    }
-  });
-
-  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-    const key = el.getAttribute('data-i18n-ph');
-    if (translations[lang][key]) {
-      el.setAttribute('placeholder', translations[lang][key]);
-    }
-  });
-
-  const typewriterText = document.getElementById('typewriterText');
-  if (typewriterText) {
-    typewriterText.textContent = translations[lang]["welcome.text"];
-  }
-
-  const langBtn = document.getElementById('langToggle');
-  if (langBtn) {
-    langBtn.textContent = lang === 'it' ? 'EN' : 'IT';
+function initAudio() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) audioCtx = new AudioContext();
   }
 }
 
-document.getElementById('langToggle')?.addEventListener('click', () => {
-  enableAudio();
-  blip('click');
-  const nextLang = currentLang === 'it' ? 'en' : 'it';
-  applyLanguage(nextLang);
-});
+function playTone(freq, type = 'sine', duration = 0.08) {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
 
-const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-let audioCtx = null;
-let soundOn = true;
-
-function enableAudio() {
-  if (!AudioContextClass) return;
-  audioCtx ||= new AudioContextClass();
   if (audioCtx.state === 'suspended') {
     audioCtx.resume();
   }
+
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  } catch(e) {}
 }
 
-['pointerdown', 'keydown', 'touchstart', 'scroll', 'mousemove'].forEach(type => {
-  window.addEventListener(type, enableAudio, { passive: true, once: true });
-});
+const soundToggleBtn = document.getElementById('sound-toggle');
+const soundIconOn = document.getElementById('sound-icon-on');
+const soundIconOff = document.getElementById('sound-icon-off');
 
-function blip(kind = 'hover') {
-  if (!soundOn || !AudioContextClass) return;
-  audioCtx ||= new AudioContextClass();
-  if (audioCtx.state !== 'running') return;
-
-  const oscillator = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  const now = audioCtx.currentTime;
-
-  oscillator.type = 'sine';
-  oscillator.frequency.setValueAtTime(kind === 'click' ? 520 : 330, now);
-  oscillator.frequency.exponentialRampToValueAtTime(kind === 'click' ? 760 : 420, now + 0.055);
-
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(kind === 'click' ? 0.028 : 0.009, now + 0.008);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + (kind === 'click' ? 0.1 : 0.055));
-
-  oscillator.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  oscillator.start(now);
-  oscillator.stop(now + 0.12);
-}
-
-function playCuriousKeypress(char) {
-  if (!soundOn || !AudioContextClass || char === ' ') return;
-  audioCtx ||= new AudioContextClass();
-  if (audioCtx.state !== 'running') return;
-
-  const now = audioCtx.currentTime;
-
-  const osc = audioCtx.createOscillator();
-  const oscGain = audioCtx.createGain();
-  
-  const baseFrequencies = [523.25, 587.33, 659.25, 783.99, 880.00];
-  const randomFreq = baseFrequencies[Math.floor(Math.random() * baseFrequencies.length)];
-
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(randomFreq, now);
-  osc.frequency.exponentialRampToValueAtTime(randomFreq * 0.85, now + 0.04);
-
-  oscGain.gain.setValueAtTime(0.015, now);
-  oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
-
-  osc.connect(oscGain);
-  oscGain.connect(audioCtx.destination);
-
-  osc.start(now);
-  osc.stop(now + 0.045);
-}
-
-const soundToggle = document.getElementById('soundToggle');
-const soundIconOn = document.getElementById('soundIconOn');
-const soundIconOff = document.getElementById('soundIconOff');
-
-soundToggle?.addEventListener('click', () => {
-  enableAudio();
-  soundOn = !soundOn;
-
-  if (soundOn) {
+soundToggleBtn.addEventListener('click', () => {
+  soundEnabled = !soundEnabled;
+  if (soundEnabled) {
     soundIconOn.style.display = 'block';
     soundIconOff.style.display = 'none';
-    blip('click');
+    playTone(600, 'sine', 0.1);
   } else {
     soundIconOn.style.display = 'none';
     soundIconOff.style.display = 'block';
   }
 });
 
-function startTypewriterAnimation() {
-  const container = document.getElementById('typewriterText');
-  if (!container) return;
+const typewriterEl = document.getElementById('typewriter-text');
+let currentLang = 'IT';
+let typewriterTimeout = null;
 
-  const textToType = translations[currentLang]["welcome.text"];
-  let index = 0;
-  container.textContent = "";
+function typeWriter(text, index = 0) {
+  if (index < text.length) {
+    typewriterEl.textContent = text.substring(0, index + 1);
+    if (Math.random() > 0.3) playTone(800 + Math.random() * 200, 'sine', 0.03);
+    typewriterTimeout = setTimeout(() => typeWriter(text, index + 1), 50 + Math.random() * 40);
+  }
+}
 
-  function typeChar() {
-    if (index < textToType.length) {
-      const char = textToType.charAt(index);
-      container.textContent += char;
-      index++;
-      playCuriousKeypress(char);
-      
-      const delay = 45 + Math.random() * 35;
-      setTimeout(typeChar, delay);
+function startTypewriter() {
+  if (typewriterTimeout) clearTimeout(typewriterTimeout);
+  typewriterEl.textContent = '';
+  const text = currentLang === 'IT' ? typewriterEl.dataset.it : typewriterEl.dataset.en;
+  typeWriter(text, 0);
+}
+
+document.getElementById('lang-btn').addEventListener('click', (e) => {
+  currentLang = currentLang === 'IT' ? 'EN' : 'IT';
+  e.target.textContent = currentLang === 'IT' ? 'EN' : 'IT';
+  startTypewriter();
+  playTone(500, 'triangle', 0.1);
+});
+
+startTypewriter();
+
+const scrollProgress = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  if (total > 0) {
+    const progress = (window.scrollY / total) * 100;
+    scrollProgress.style.width = `${progress}%`;
+  }
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    playTone(400, 'sine', 0.05);
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
     }
+  });
+});
+
+let sharedBeeScene = null;
+const MODEL_URL = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/Bee/glTF-Binary/Bee.glb';
+
+function setupMainCanvas() {
+  const canvas = document.getElementById('avatar-canvas');
+  if (!canvas) return;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0, 0, 3.5);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+  scene.add(ambient);
+
+  const dirLight = new THREE.DirectionalLight(0xfff5ea, 2);
+  dirLight.position.set(2, 4, 3);
+  scene.add(dirLight);
+
+  let beeGroup = new THREE.Group();
+  scene.add(beeGroup);
+
+  let mixer = null;
+
+  const loader = new GLTFLoader();
+  loader.load(MODEL_URL, (gltf) => {
+    const model = gltf.scene;
+    model.scale.set(0.8, 0.8, 0.8);
+    model.position.set(0, -0.2, 0);
+    beeGroup.add(model);
+
+    if (gltf.animations && gltf.animations.length > 0) {
+      mixer = new THREE.AnimationMixer(model);
+      const action = mixer.clipAction(gltf.animations[0]);
+      action.play();
+    }
+  }, undefined, (err) => {
+    console.warn('Fallback rendering for main canvas:', err);
+    const geo = new THREE.SphereGeometry(0.7, 32, 32);
+    const mat = new THREE.MeshStandardMaterial({ color: 0xA97C22, roughness: 0.4 });
+    const mesh = new THREE.Mesh(geo, mat);
+    beeGroup.add(mesh);
+  });
+
+  let mouseX = 0, mouseY = 0;
+  let targetX = 0, targetY = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+    mouseX = (e.clientX - windowHalfX) / windowHalfX;
+    mouseY = (e.clientY - windowHalfY) / windowHalfY;
+  });
+
+  function resize() {
+    const parent = canvas.parentElement;
+    if (!parent) return;
+    const width = parent.clientWidth;
+    const height = parent.clientHeight || width;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height, false);
   }
 
-  setTimeout(typeChar, 250);
+  window.addEventListener('resize', resize);
+  resize();
+
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    if (mixer) mixer.update(delta);
+
+    targetX += (mouseX - targetX) * 0.05;
+    targetY += (mouseY - targetY) * 0.05;
+
+    beeGroup.rotation.y = targetX * 0.8 + Math.sin(clock.getElapsedTime()) * 0.1;
+    beeGroup.rotation.x = targetY * 0.5;
+    beeGroup.position.y = Math.sin(clock.getElapsedTime() * 2) * 0.08;
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
 }
 
-window.addEventListener('DOMContentLoaded', startTypewriterAnimation);
+function setupCompanionCanvas() {
+  const canvas = document.getElementById('bee-companion-canvas');
+  if (!canvas) return;
 
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const heroCanvas = document.getElementById('avatar-canvas');
-const companionCanvas = document.getElementById('companion-canvas');
-const companion = document.getElementById('characterCompanion');
-const companionCaption = document.getElementById('companionCaption');
-
-let heroRenderer, heroScene, heroCamera;
-let companionRenderer, companionScene, companionCamera;
-
-const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
-const poseTarget = { head: 0, tilt: 0, lean: 0, bounce: 0 };
-const poseCurrent = { ...poseTarget };
-
-function setupScene(canvas, small = false) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(small ? 28 : 25, 1, 0.01, 100);
-  camera.position.set(0, 0.05, small ? 5.2 : 5.7);
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0, 0, 3);
 
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true,
-    powerPreference: 'high-performance'
-  });
-
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(90, 90);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-  const light = new THREE.HemisphereLight(0xfff8ec, 0x5b5042, 1.8);
-  scene.add(light);
+  const ambient = new THREE.AmbientLight(0xffffff, 1.5);
+  scene.add(ambient);
 
-  return { scene, camera, renderer };
-}
+  const dirLight = new THREE.DirectionalLight(0xffeedd, 1.8);
+  dirLight.position.set(1, 3, 2);
+  scene.add(dirLight);
 
-function resizeScene(sceneData, canvas) {
-  if(!canvas) return;
-  const rect = canvas.getBoundingClientRect();
-  const width = Math.max(1, rect.width);
-  const height = Math.max(1, rect.height);
-  sceneData.renderer.setSize(width, height, false);
-  sceneData.camera.aspect = width / height;
-  sceneData.camera.updateProjectionMatrix();
-}
+  let companionGroup = new THREE.Group();
+  scene.add(companionGroup);
 
-window.addEventListener('resize', () => {
-  if (heroCanvas && heroScene) resizeScene({ scene: heroScene, camera: heroCamera, renderer: heroRenderer }, heroCanvas);
-  if (companionCanvas && companionScene) resizeScene({ scene: companionScene, camera: companionCamera, renderer: companionRenderer }, companionCanvas);
-});
+  let mixer = null;
 
-// Reveal Scroll observer
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
+  const loader = new GLTFLoader();
+  loader.load(MODEL_URL, (gltf) => {
+    const model = gltf.scene;
+    model.scale.set(0.65, 0.65, 0.65);
+    model.position.set(0, -0.1, 0);
+    companionGroup.add(model);
+
+    if (gltf.animations && gltf.animations.length > 0) {
+      mixer = new THREE.AnimationMixer(model);
+      const action = mixer.clipAction(gltf.animations[0]);
+      action.play();
     }
+  }, undefined, () => {
+    const geo = new THREE.SphereGeometry(0.5, 16, 16);
+    const mat = new THREE.MeshStandardMaterial({ color: 0xA97C22 });
+    companionGroup.add(new THREE.Mesh(geo, mat));
   });
-}, { threshold: 0.1 });
 
-reveals.forEach(el => observer.observe(el));
+  const clock = new THREE.Clock();
 
-// Solange Chat Panel
-const solangeBubble = document.getElementById('solangeBubble');
-const solangePanel = document.getElementById('solangePanel');
-const solangeClose = document.getElementById('solangeClose');
+  function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    if (mixer) mixer.update(delta);
 
-solangeBubble?.addEventListener('click', () => {
-  solangePanel?.classList.toggle('is-open');
+    companionGroup.rotation.y += 0.02;
+    companionGroup.position.y = Math.sin(clock.getElapsedTime() * 3) * 0.05;
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+  const fixedContainer = document.getElementById('bee-fixed-container');
+  fixedContainer.addEventListener('click', () => {
+    playTone(900, 'sine', 0.12);
+    companionGroup.rotation.y += Math.PI * 2;
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  setupMainCanvas();
+  setupCompanionCanvas();
 });
-
-solangeClose?.addEventListener('click', () => {
-  solangePanel?.classList.remove('is-open');
-});
-
 </script>
+
 </body>
 </html>
