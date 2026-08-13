@@ -97,7 +97,7 @@ function loadAvatar(scene, callback, small = false) {
       callback(model);
     },
     undefined,
-    error => console.error('Unable to load avatar.glb:', error)
+    error => console.error('Unable to load animal-bee.glb:', error)
   );
 }
 
