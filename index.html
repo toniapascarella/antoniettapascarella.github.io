@@ -85,7 +85,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--vinaccia);outline-o
 </div></header>
 
 <div class="character-companion" id="characterCompanion" aria-hidden="true">
-<canvas id="companion-canvas" aria-label="Piccolo avatar 3D interattivo"></canvas>
+<canvas id="companion-canvas" aria-label="Piccola ape 3D interattiva"></canvas>
 <div class="companion-caption" id="companionCaption">in ascolto</div>
 </div>
 
@@ -99,7 +99,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--vinaccia);outline-o
 <a class="cta" href="#progetto" data-sound="click">Scopri il progetto ↓</a>
 <div class="hero-note">scroll / move the character / listen to the details</div>
 </div>
-<div class="hero-visual"><canvas id="avatar-canvas" aria-label="Avatar 3D interattivo di Antonietta"></canvas><div class="avatar-label">ciao, sono Antonietta! ♡</div><div class="avatar-status"><i></i><span>interactive character</span></div></div>
+<div class="hero-visual"><canvas id="avatar-canvas" aria-label="Ape 3D interattiva"></canvas><div class="avatar-label">ciao, sono Antonietta! ♡</div><div class="avatar-status"><i></i><span>interactive character</span></div></div>
 </div></section>
 
 <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
@@ -155,8 +155,8 @@ const companionCanvas = document.getElementById('companion-canvas');
 const companion = document.getElementById('characterCompanion');
 const companionCaption = document.getElementById('companionCaption');
 
-let heroRenderer, heroScene, heroCamera, avatar;
-let companionRenderer, companionScene, companionCamera, companionAvatar;
+let heroRenderer, heroScene, heroCamera, bee;
+let companionRenderer, companionScene, companionCamera, companionBee;
 let clock;
 
 const pointer = {
@@ -166,16 +166,26 @@ const pointer = {
   targetY: 0
 };
 
-const poseTarget = { head: 0, tilt: 0, arm: 0, lean: 0, bounce: 0 };
+const poseTarget = {
+  head: 0,
+  tilt: 0,
+  lean: 0,
+  bounce: 0
+};
+
 const poseCurrent = { ...poseTarget };
-const eyeState = new WeakMap();
-const avatarUrl = 'animal-bee.glb';
+const mixers = new WeakMap();
+const beeParts = new WeakMap();
+
+const beeUrl = 'animal-bee.glb';
+const textureUrl = 'colormap.png';
 
 function setupScene(canvas, small = false) {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(small ? 30 : 27, 1, 0.01, 100);
-  camera.position.set(0, -6.2, small ? 1.05 : 1.25);
-  camera.lookAt(0, 0, small ? 0.95 : 1.22);
+  const camera = new THREE.PerspectiveCamera(small ? 28 : 25, 1, 0.01, 100);
+
+  camera.position.set(0, -6.4, small ? 1.05 : 1.25);
+  camera.lookAt(0, 0, small ? 0.95 : 1.20);
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
@@ -187,20 +197,20 @@ function setupScene(canvas, small = false) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.0;
   renderer.setClearColor(0x000000, 0);
 
-  scene.add(new THREE.HemisphereLight(0xfff8ec, 0x5b5042, 1.7));
+  scene.add(new THREE.HemisphereLight(0xfff8ec, 0x5b5042, 1.8));
 
-  const key = new THREE.DirectionalLight(0xfff4d9, 2.0);
+  const key = new THREE.DirectionalLight(0xfff0d2, 2.2);
   key.position.set(2.5, -4.5, 5);
   scene.add(key);
 
-  const fill = new THREE.DirectionalLight(0xe5e4ef, 0.9);
+  const fill = new THREE.DirectionalLight(0xe7e8f0, 1.0);
   fill.position.set(-3.5, -2, 2.5);
   scene.add(fill);
 
-  const rim = new THREE.DirectionalLight(0xc9c9dd, 0.7);
+  const rim = new THREE.DirectionalLight(0xd6d4e5, 0.65);
   rim.position.set(2, 2.5, 4);
   scene.add(rim);
 
@@ -211,54 +221,154 @@ function resizeScene(sceneData, canvas) {
   const rect = canvas.getBoundingClientRect();
   const width = Math.max(1, rect.width);
   const height = Math.max(1, rect.height);
+
   sceneData.renderer.setSize(width, height, false);
   sceneData.camera.aspect = width / height;
   sceneData.camera.updateProjectionMatrix();
 }
 
-function prepareAvatar(source, small = false) {
+function centerModel(source, small = false) {
   source.rotation.set(0, 0, 0);
   source.updateMatrixWorld(true);
 
   const bounds = new THREE.Box3().setFromObject(source);
   const size = bounds.getSize(new THREE.Vector3());
   const center = bounds.getCenter(new THREE.Vector3());
-  const targetHeight = small ? 1.72 : 2.38;
+
+  const targetHeight = small ? 1.45 : 2.15;
   const scale = targetHeight / Math.max(size.z, 0.001);
 
   source.scale.setScalar(scale);
-  source.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
+  source.position.set(
+    -center.x * scale,
+    -center.y * scale,
+    -center.z * scale
+  );
   source.updateMatrixWorld(true);
 
   const wrapper = new THREE.Group();
   wrapper.add(source);
-  wrapper.position.set(0, 0, small ? 0.90 : 1.20);
-  wrapper.rotation.y = 0;
-  wrapper.userData.avatarSource = source;
-  wrapper.userData.baseY = 0;
+
+  wrapper.position.set(0, 0, small ? 0.78 : 1.05);
+  wrapper.rotation.set(0, 0, 0);
+
+  wrapper.userData.source = source;
+  wrapper.userData.baseZ = wrapper.position.z;
 
   return wrapper;
 }
 
-function loadAvatar(scene, callback, small = false) {
-  new GLTFLoader().load(
-    avatarUrl,
+function findParts(root) {
+  const parts = {
+    eyes: [],
+    wings: [],
+    antennae: []
+  };
+
+  root.traverse(node => {
+    if (!node.name) return;
+
+    const name = node.name.toLowerCase();
+
+    if (
+      name.includes('eye') ||
+      name.includes('pupil') ||
+      name.includes('iris')
+    ) {
+      parts.eyes.push(node);
+    }
+
+    if (
+      name.includes('wing') ||
+      name.includes('ala')
+    ) {
+      parts.wings.push(node);
+    }
+
+    if (
+      name.includes('antenna') ||
+      name.includes('antena')
+    ) {
+      parts.antennae.push(node);
+    }
+  });
+
+  return parts;
+}
+
+function applyTextureFallback(source) {
+  const loader = new THREE.TextureLoader();
+
+  loader.load(
+    textureUrl,
+    texture => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.anisotropy = 4;
+      texture.flipY = false;
+
+      source.traverse(node => {
+        if (!node.isMesh || !node.material) return;
+
+        const materials = Array.isArray(node.material)
+          ? node.material
+          : [node.material];
+
+        materials.forEach(material => {
+          if (!material.map) {
+            material.map = texture;
+            material.needsUpdate = true;
+          }
+        });
+      });
+    },
+    undefined,
+    () => {
+      console.info('colormap.png was not needed or could not be loaded.');
+    }
+  );
+}
+
+function loadBee(scene, callback, small = false) {
+  const loader = new GLTFLoader();
+
+  loader.load(
+    beeUrl,
     gltf => {
-      const model = prepareAvatar(gltf.scene, small);
+      const source = gltf.scene;
+
+      applyTextureFallback(source);
+
+      const model = centerModel(source, small);
+
+      if (gltf.animations.length) {
+        const mixer = new THREE.AnimationMixer(source);
+
+        gltf.animations.forEach(clip => {
+          const action = mixer.clipAction(clip);
+          action.play();
+        });
+
+        mixers.set(model, mixer);
+      }
+
+      beeParts.set(model, findParts(source));
+
       scene.add(model);
       callback(model);
     },
     undefined,
-    error => console.error('Unable to load avatar.glb:', error)
+    error => {
+      console.error('Unable to load animal-bee.glb:', error);
+    }
   );
 }
 
 function applyPose(name) {
   const poses = {
-    home: { head: 0, tilt: 0, arm: 0, lean: 0, bounce: 0 },
-    about: { head: -0.11, tilt: 0.035, arm: -0.08, lean: -0.025, bounce: 0.01 },
-    work: { head: 0.15, tilt: -0.025, arm: 0.18, lean: 0.02, bounce: -0.006 },
-    contact: { head: -0.16, tilt: 0.045, arm: -0.24, lean: -0.015, bounce: 0.012 }
+    home: { head: 0, tilt: 0, lean: 0, bounce: 0 },
+    about: { head: -0.08, tilt: 0.025, lean: -0.018, bounce: 0.008 },
+    work: { head: 0.11, tilt: -0.02, lean: 0.018, bounce: -0.005 },
+    contact: { head: -0.12, tilt: 0.035, lean: -0.012, bounce: 0.01 }
   };
 
   const labels = {
@@ -269,95 +379,87 @@ function applyPose(name) {
   };
 
   Object.assign(poseTarget, poses[name] || poses.home);
-  if (companionCaption) companionCaption.textContent = labels[name] || labels.home;
+
+  if (companionCaption) {
+    companionCaption.textContent = labels[name] || labels.home;
+  }
 }
 
-function findPart(root, names) {
-  const wanted = names.map(name => name.toLowerCase());
-  let found = null;
-
-  root.traverse(node => {
-    if (found || !node.name) return;
-    const name = node.name.toLowerCase();
-    if (wanted.some(value => name === value || name.includes(value))) found = node;
-  });
-
-  return found;
-}
-
-function animateAvatar(model, time) {
+function animateBee(model, time, delta) {
   if (!model) return;
 
   for (const key of Object.keys(poseCurrent)) {
-    poseCurrent[key] += (poseTarget[key] - poseCurrent[key]) * 0.06;
+    poseCurrent[key] += (poseTarget[key] - poseCurrent[key]) * 0.055;
   }
 
-  pointer.x += (pointer.targetX - pointer.x) * 0.09;
-  pointer.y += (pointer.targetY - pointer.y) * 0.09;
+  pointer.x += (pointer.targetX - pointer.x) * 0.08;
+  pointer.y += (pointer.targetY - pointer.y) * 0.08;
 
-  const source = model.userData.avatarSource || model;
-  const breathe = reducedMotion ? 0 : Math.sin(time * 1.5) * 0.012;
-  const targetX = pointer.y * 0.045;
-  const targetY = -pointer.x * 0.22 + poseCurrent.head;
-  const targetZ = -pointer.y * 0.035 + poseCurrent.tilt;
+  const breathe = reducedMotion ? 0 : Math.sin(time * 1.6) * 0.009;
 
-  model.position.z += (model.userData.baseY + breathe + poseCurrent.bounce - model.position.z) * 0.08;
-  model.position.x += (poseCurrent.lean - model.position.x) * 0.08;
-  model.rotation.x += (targetX - model.rotation.x) * 0.07;
-  model.rotation.y += (targetY - model.rotation.y) * 0.07;
-  model.rotation.z += (targetZ - model.rotation.z) * 0.07;
+  const targetX = pointer.y * 0.055 + poseCurrent.tilt;
+  const targetY = -pointer.x * 0.18 + poseCurrent.head;
+  const targetZ = poseCurrent.lean;
 
-  const armLeft = findPart(source, ['arm_-1', 'arm_left', 'left_arm']);
-  const armRight = findPart(source, ['arm_1', 'arm_right', 'right_arm']);
-  const handLeft = findPart(source, ['hand_-1', 'hand_left', 'left_hand']);
-  const handRight = findPart(source, ['hand_1', 'hand_right', 'right_hand']);
-  const head = findPart(source, ['head', 'face']);
-  const pupilLeft = findPart(source, ['pupil_-1']);
-  const pupilRight = findPart(source, ['pupil_1']);
-  const irisLeft = findPart(source, ['iris_-1']);
-  const irisRight = findPart(source, ['iris_1']);
+  model.position.z += (
+    model.userData.baseZ +
+    breathe +
+    poseCurrent.bounce -
+    model.position.z
+  ) * 0.07;
 
-  if (!eyeState.has(model)) {
-    eyeState.set(model, {
-      pupilLeft: pupilLeft ? { x: pupilLeft.position.x, y: pupilLeft.position.y } : null,
-      pupilRight: pupilRight ? { x: pupilRight.position.x, y: pupilRight.position.y } : null,
-      irisLeft: irisLeft ? { x: irisLeft.position.x, y: irisLeft.position.y } : null,
-      irisRight: irisRight ? { x: irisRight.position.x, y: irisRight.position.y } : null
+  model.rotation.x += (targetX - model.rotation.x) * 0.065;
+  model.rotation.y += (targetY - model.rotation.y) * 0.065;
+  model.rotation.z += (targetZ - model.rotation.z) * 0.065;
+
+  const mixer = mixers.get(model);
+  if (mixer) {
+    mixer.update(delta);
+  }
+
+  const parts = beeParts.get(model);
+
+  if (!parts) return;
+
+  if (!reducedMotion) {
+    parts.wings.forEach((wing, index) => {
+      const direction = index % 2 === 0 ? 1 : -1;
+      wing.rotation.z += (
+        Math.sin(time * 7.0) * 0.035 * direction -
+        wing.rotation.z
+      ) * 0.18;
     });
   }
 
-  const eyes = eyeState.get(model);
-  const eyeX = THREE.MathUtils.clamp(pointer.x * 0.032, -0.032, 0.032);
-  const eyeY = THREE.MathUtils.clamp(-pointer.y * 0.022, -0.022, 0.022);
+  const eyeTurn = pointer.x * 0.035;
+  const eyeLift = -pointer.y * 0.02;
 
-  if (pupilLeft && eyes.pupilLeft) {
-    pupilLeft.position.x += (eyes.pupilLeft.x + eyeX - pupilLeft.position.x) * 0.16;
-    pupilLeft.position.y += (eyes.pupilLeft.y + eyeY - pupilLeft.position.y) * 0.16;
-  }
-  if (pupilRight && eyes.pupilRight) {
-    pupilRight.position.x += (eyes.pupilRight.x + eyeX - pupilRight.position.x) * 0.16;
-    pupilRight.position.y += (eyes.pupilRight.y + eyeY - pupilRight.position.y) * 0.16;
-  }
-  if (irisLeft && eyes.irisLeft) {
-    irisLeft.position.x += (eyes.irisLeft.x + eyeX * 0.8 - irisLeft.position.x) * 0.14;
-    irisLeft.position.y += (eyes.irisLeft.y + eyeY * 0.8 - irisLeft.position.y) * 0.14;
-  }
-  if (irisRight && eyes.irisRight) {
-    irisRight.position.x += (eyes.irisRight.x + eyeX * 0.8 - irisRight.position.x) * 0.14;
-    irisRight.position.y += (eyes.irisRight.y + eyeY * 0.8 - irisRight.position.y) * 0.14;
-  }
+  parts.eyes.forEach(eye => {
+    const base = eye.userData.basePosition;
 
-  if (armLeft) armLeft.rotation.z += (-poseCurrent.arm * 0.20 - armLeft.rotation.z) * 0.07;
-  if (armRight) armRight.rotation.z += (poseCurrent.arm * 0.20 - armRight.rotation.z) * 0.07;
-  if (handLeft) handLeft.rotation.z += (-poseCurrent.arm * 0.10 - handLeft.rotation.z) * 0.07;
-  if (handRight) handRight.rotation.z += (poseCurrent.arm * 0.10 - handRight.rotation.z) * 0.07;
-  if (head) head.rotation.z += (poseCurrent.tilt * 0.35 - head.rotation.z) * 0.05;
+    if (!base) {
+      eye.userData.basePosition = eye.position.clone();
+      return;
+    }
+
+    eye.position.x += (
+      base.x + eyeTurn - eye.position.x
+    ) * 0.12;
+
+    eye.position.y += (
+      base.y + eyeLift - eye.position.y
+    ) * 0.12;
+  });
 }
 
 function setPointerFromEvent(event, canvas) {
   const rect = canvas.getBoundingClientRect();
+
+  if (!rect.width || !rect.height) return;
+
   const x = (event.clientX - rect.left) / rect.width;
   const y = (event.clientY - rect.top) / rect.height;
+
   pointer.targetX = THREE.MathUtils.clamp((x - 0.5) * 2, -1, 1);
   pointer.targetY = THREE.MathUtils.clamp((y - 0.5) * 2, -1, 1);
 }
@@ -374,23 +476,50 @@ function init3D() {
   heroScene = hero.scene;
   heroCamera = hero.camera;
   heroRenderer = hero.renderer;
-  loadAvatar(heroScene, model => { avatar = model; heroCanvas.classList.add('is-ready'); });
+
+  loadBee(
+    heroScene,
+    model => {
+      bee = model;
+      heroCanvas.classList.add('is-ready');
+    },
+    false
+  );
+
   resizeScene(hero, heroCanvas);
   window.addEventListener('resize', () => resizeScene(hero, heroCanvas));
 
-  heroCanvas.addEventListener('pointermove', event => setPointerFromEvent(event, heroCanvas));
+  heroCanvas.addEventListener(
+    'pointermove',
+    event => setPointerFromEvent(event, heroCanvas)
+  );
+
   heroCanvas.addEventListener('pointerleave', resetPointer);
 
   if (companionCanvas) {
     const small = setupScene(companionCanvas, true);
+
     companionScene = small.scene;
     companionCamera = small.camera;
     companionRenderer = small.renderer;
-    loadAvatar(companionScene, model => { companionAvatar = model; companionCanvas.classList.add('is-ready'); }, true);
+
+    loadBee(
+      companionScene,
+      model => {
+        companionBee = model;
+        companionCanvas.classList.add('is-ready');
+      },
+      true
+    );
+
     resizeScene(small, companionCanvas);
     window.addEventListener('resize', () => resizeScene(small, companionCanvas));
 
-    companionCanvas.addEventListener('pointermove', event => setPointerFromEvent(event, companionCanvas));
+    companionCanvas.addEventListener(
+      'pointermove',
+      event => setPointerFromEvent(event, companionCanvas)
+    );
+
     companionCanvas.addEventListener('pointerleave', resetPointer);
   }
 
@@ -400,129 +529,166 @@ function init3D() {
 
 function render() {
   requestAnimationFrame(render);
-  const time = clock.getElapsedTime();
-  animateAvatar(avatar, time);
-  animateAvatar(companionAvatar, time);
 
-  if (heroRenderer) heroRenderer.render(heroScene, heroCamera);
-  if (companionRenderer) companionRenderer.render(companionScene, companionCamera);
+  const delta = clock.getDelta();
+  const time = clock.elapsedTime;
+
+  animateBee(bee, time, delta);
+  animateBee(companionBee, time, delta);
+
+  if (heroRenderer) {
+    heroRenderer.render(heroScene, heroCamera);
+  }
+
+  if (companionRenderer) {
+    companionRenderer.render(companionScene, companionCamera);
+  }
 }
 
 init3D();
 
-const revealObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-visible');
-    }
-  });
-}, { threshold: 0.12 });
+const revealObserver = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      }
+    });
+  },
+  { threshold: 0.12 }
+);
 
-document.querySelectorAll('.reveal').forEach(element => revealObserver.observe(element));
+document.querySelectorAll('.reveal').forEach(element => {
+  revealObserver.observe(element);
+});
 
 const sections = [...document.querySelectorAll('main section[id]')];
 
-const sectionObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
+const sectionObserver = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
 
-    const poses = {
-      home: 'home',
-      'chi-sono': 'about',
-      progetto: 'work',
-      contatti: 'contact'
-    };
+      const poses = {
+        home: 'home',
+        'chi-sono': 'about',
+        progetto: 'work',
+        contatti: 'contact'
+      };
 
-    if (poses[entry.target.id]) {
-      applyPose(poses[entry.target.id]);
+      const pose = poses[entry.target.id];
 
-      const showCompanion = entry.target.id !== 'home';
-      companion?.classList.toggle('is-active', showCompanion);
-      companion?.setAttribute('aria-hidden', String(!showCompanion));
-    }
-  });
-}, { threshold: 0.42 });
+      if (pose) {
+        applyPose(pose);
+      }
+
+      const isHome = entry.target.id === 'home';
+
+      companion?.classList.toggle('is-active', !isHome);
+      companion?.setAttribute('aria-hidden', String(isHome));
+    });
+  },
+  { threshold: 0.42 }
+);
 
 sections.forEach(section => sectionObserver.observe(section));
 
-document.querySelectorAll('.lift,.case-link').forEach(element => {
+document.querySelectorAll('.lift, .case-link').forEach(element => {
   element.addEventListener('mouseenter', () => {
     applyPose('work');
-    pointer.x = 0.34;
+    pointer.targetX = 0.28;
   });
 
-  element.addEventListener('mouseleave', () => {
-    pointer.x = 0;
-  });
+  element.addEventListener('mouseleave', resetPointer);
 });
 
 const progress = document.getElementById('scrollProgress');
 
-window.addEventListener('scroll', () => {
-  const total = document.documentElement.scrollHeight - window.innerHeight;
-  progress.style.width = `${total > 0 ? (window.scrollY / total) * 100 : 0}%`;
-}, { passive: true });
+window.addEventListener(
+  'scroll',
+  () => {
+    const height = document.documentElement.scrollHeight - innerHeight;
+    progress.style.width = (
+      height > 0 ? (scrollY / height) * 100 : 0
+    ) + '%';
+  },
+  { passive: true }
+);
 
-const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-let audioContext = null;
+const AudioContextClass =
+  window.AudioContext || window.webkitAudioContext;
+
+let audioCtx = null;
 let soundOn = true;
 
-function enableAudio() {
-  if (!AudioContextClass) return;
-
-  if (!audioContext) {
-    try {
-      audioContext = new AudioContextClass();
-    } catch (error) {
-      audioContext = null;
-      return;
-    }
-  }
-
-  if (audioContext.state === 'suspended') {
-    audioContext.resume().catch(() => {});
-  }
-}
-
 function blip(kind = 'hover') {
-  if (!soundOn || !audioContext || audioContext.state !== 'running') return;
+  if (!soundOn || !AudioContextClass) return;
 
-  const oscillator = audioContext.createOscillator();
-  const gain = audioContext.createGain();
-  const now = audioContext.currentTime;
+  audioCtx ||= new AudioContextClass();
+
+  if (audioCtx.state !== 'running') {
+    return;
+  }
+
+  const oscillator = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  const now = audioCtx.currentTime;
 
   oscillator.type = 'sine';
-  oscillator.frequency.setValueAtTime(kind === 'click' ? 520 : 330, now);
+
+  oscillator.frequency.setValueAtTime(
+    kind === 'click' ? 520 : 330,
+    now
+  );
+
   oscillator.frequency.exponentialRampToValueAtTime(
     kind === 'click' ? 760 : 420,
     now + 0.055
   );
 
   gain.gain.setValueAtTime(0.0001, now);
+
   gain.gain.exponentialRampToValueAtTime(
     kind === 'click' ? 0.028 : 0.009,
     now + 0.008
   );
+
   gain.gain.exponentialRampToValueAtTime(
     0.0001,
     now + (kind === 'click' ? 0.1 : 0.055)
   );
 
   oscillator.connect(gain);
-  gain.connect(audioContext.destination);
+  gain.connect(audioCtx.destination);
+
   oscillator.start(now);
   oscillator.stop(now + 0.12);
 }
 
-document.addEventListener('pointerdown', enableAudio, { once: true, passive: true });
-document.addEventListener('keydown', enableAudio, { once: true });
+function enableAudio() {
+  if (!AudioContextClass) return;
+
+  audioCtx ||= new AudioContextClass();
+
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
+
+window.addEventListener('pointerdown', enableAudio, {
+  once: true,
+  passive: true
+});
 
 document.querySelectorAll('[data-sound]').forEach(element => {
   element.addEventListener('mouseenter', () => {
-    if (element.dataset.sound === 'hover') blip('hover');
+    if (element.dataset.sound === 'hover') {
+      blip('hover');
+    }
   });
 
   element.addEventListener('click', () => {
+    enableAudio();
     blip('click');
   });
 });
@@ -530,15 +696,22 @@ document.querySelectorAll('[data-sound]').forEach(element => {
 const soundToggle = document.getElementById('soundToggle');
 
 soundToggle?.addEventListener('click', () => {
+  enableAudio();
+
   soundOn = !soundOn;
-  soundToggle.textContent = soundOn ? '◖ SOUND ON' : '◖ SOUND OFF';
-  soundToggle.setAttribute('aria-pressed', String(!soundOn));
+
+  soundToggle.textContent =
+    soundOn ? '◖ sound on' : '◖ sound off';
+
+  soundToggle.setAttribute(
+    'aria-pressed',
+    String(!soundOn)
+  );
 
   if (soundOn) {
-        blip('click');
+    blip('click');
   }
 });
-
 </script>
 </body>
 </html>
