@@ -46,7 +46,6 @@ nav.links a:hover,nav.links a:focus-visible{color:var(--ink);border-color:var(--
 .hero h1{font-size:clamp(3rem,6vw,5.7rem);line-height:.94;letter-spacing:-.025em;max-width:650px}.hero h1 em{color:var(--vinaccia)}
 .hero-intro{max-width:54ch;font-size:1.08rem}.hero-tags{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.6rem}.tag{font-family:var(--font-ui);font-size:var(--micro);text-transform:uppercase;letter-spacing:.08em;border:1px solid var(--line);padding:.35em .8em;border-radius:20px;color:var(--ink-soft);background:var(--bg-panel)}
 .cta{display:inline-flex;align-items:center;gap:.5em;margin-top:2rem;font-family:var(--font-ui);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ocra);padding-bottom:.2em}
-.hero-note{margin-top:1rem;font:.72rem var(--font-ui);color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase}
 .hero-visual{position:relative;width:min(43vw,470px);height:min(58vw,560px);min-width:320px;min-height:430px;display:flex;align-items:center;justify-content:center;overflow:visible;flex:0 0 auto;margin:0 auto}
 .hero-visual::before{content:"";position:absolute;width:78%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at center,transparent 0 57%,var(--line-soft) 57.5% 58%,transparent 58.5%),repeating-conic-gradient(from 0deg,var(--line) 0deg 2deg,transparent 2deg 18deg);opacity:.62;transform:rotate(-7deg)}
 .hero-visual::after{content:"";position:absolute;inset:13% 8%;border:1px solid var(--line-soft);border-radius:48% 52% 46% 54%;transform:rotate(5deg);pointer-events:none}
@@ -54,8 +53,7 @@ nav.links a:hover,nav.links a:focus-visible{color:var(--ink);border-color:var(--
 .hero-visual{will-change:auto}
 #avatar-canvas{opacity:0;transition:opacity .35s ease}
 #avatar-canvas.is-ready{opacity:1}
-.avatar-label{position:absolute;z-index:3;right:2%;top:12%;font:italic 1rem var(--font-display);color:var(--ink-soft);transform:rotate(3deg);pointer-events:none}.avatar-label::after{content:"";position:absolute;width:52px;height:24px;border-top:1px solid var(--ocra);border-radius:50%;left:-44px;top:22px;transform:rotate(-16deg)}
-.avatar-status{position:absolute;z-index:3;bottom:4%;left:5%;display:flex;align-items:center;gap:.45rem;font:.68rem var(--font-ui);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint)}.avatar-status i{width:7px;height:7px;border-radius:50%;background:var(--oliva);box-shadow:0 0 0 4px rgba(95,113,72,.12)}
+.avatar-label{position:absolute;z-index:3;right:2%;top:10%;max-width:230px;font:italic .92rem/1.35 var(--font-display);color:var(--ink-soft);transform:rotate(2deg);pointer-events:none;text-align:right}.avatar-label::after{content:"";position:absolute;width:52px;height:24px;border-top:1px solid var(--ocra);border-radius:50%;left:-44px;top:-6px;transform:rotate(-16deg)}
 section{padding:clamp(2.5rem,6vw,4.5rem) 0}section#chi-sono,section#accessibilita,section#contatti{border-top:1px solid var(--line-soft)}
 .lede{max-width:60ch}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,3rem)}
 .meta-strip{display:flex;flex-wrap:wrap;gap:2rem 3rem;margin:1.6rem 0 2.4rem;font-family:var(--font-ui)}.meta-item .label{display:block;font-size:var(--micro);text-transform:uppercase;letter-spacing:.1em;color:var(--ocra);margin-bottom:.3em}.meta-item .value{font-family:var(--font-body);font-size:.98rem;color:var(--ink)}
@@ -69,10 +67,22 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--vinaccia);outline-o
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}.reveal.is-visible{opacity:1;transform:none}.lift{transition:transform .3s ease,box-shadow .3s ease}.lift:hover{transform:translateY(-4px);box-shadow:0 16px 35px rgba(36,27,18,.08)}
 .case-link{display:inline-flex;align-items:center;gap:.4rem;margin-top:1.1rem;font:500 .76rem var(--font-ui);text-transform:uppercase;letter-spacing:.08em;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ocra)}
 .character-companion{position:fixed;right:20px;bottom:20px;z-index:40;width:150px;height:184px;border:1px solid var(--line);border-radius:20px;background:rgba(241,237,228,.92);backdrop-filter:blur(8px);box-shadow:0 14px 35px rgba(36,27,18,.10);overflow:hidden;opacity:0;transform:translateY(20px) scale(.96);pointer-events:none;transition:opacity .35s ease,transform .35s ease}.character-companion.is-active{opacity:1;transform:none;pointer-events:auto}.character-companion canvas{width:100%;height:100%;display:block;cursor:default;touch-action:none}.companion-caption{position:absolute;left:10px;bottom:8px;font:.58rem var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:rgba(241,237,228,.82);padding:3px 6px;border-radius:20px}
+.solange-bubble{position:fixed;left:20px;bottom:20px;z-index:41;display:flex;align-items:center;gap:.55rem;border:1px solid var(--line);border-radius:20px;background:var(--bg-panel);color:var(--ink);padding:.7rem 1.05rem;font:500 .82rem var(--font-ui);letter-spacing:.03em;cursor:pointer;box-shadow:0 14px 35px rgba(36,27,18,.10)}.solange-bubble:hover{border-color:var(--ocra)}.solange-bubble .dot{width:7px;height:7px;border-radius:50%;background:var(--oliva);box-shadow:0 0 0 4px rgba(95,113,72,.12)}
+.solange-panel{position:fixed;left:20px;bottom:20px;z-index:42;width:min(340px,calc(100vw - 40px));max-height:min(460px,calc(100vh - 100px));display:flex;flex-direction:column;border:1px solid var(--line);border-radius:20px;background:var(--bg);box-shadow:0 20px 45px rgba(36,27,18,.16);opacity:0;transform:translateY(14px) scale(.98);pointer-events:none;transition:opacity .25s ease,transform .25s ease}.solange-panel.is-open{opacity:1;transform:none;pointer-events:auto}
+.solange-head{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.1rem;border-bottom:1px solid var(--line-soft)}.solange-head .who{font-family:var(--font-display);font-weight:700;font-size:1.05rem}.solange-head .who small{display:block;font-family:var(--font-ui);font-weight:400;font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);margin-top:.15em}
+.solange-close{border:none;background:transparent;color:var(--ink-faint);font-size:1.1rem;cursor:pointer;line-height:1;padding:.2rem .35rem}.solange-close:hover{color:var(--ink)}
+.solange-log{flex:1;overflow-y:auto;padding:.9rem 1.1rem;display:flex;flex-direction:column;gap:.75rem}
+.solange-msg{max-width:88%;padding:.55rem .8rem;border-radius:20px;font-size:.88rem;line-height:1.45}
+.solange-msg.user{align-self:flex-end;background:var(--ocra);color:#fff;border-bottom-right-radius:6px}
+.solange-msg.bot{align-self:flex-start;background:var(--bg-panel);color:var(--ink-soft);border-bottom-left-radius:6px}
+.solange-form{display:flex;gap:.5rem;padding:.85rem 1.1rem;border-top:1px solid var(--line-soft)}
+.solange-form input{flex:1;border:1px solid var(--line);border-radius:20px;padding:.55rem .95rem;font:.86rem var(--font-body);background:var(--bg-panel);color:var(--ink)}
+.solange-form input:focus-visible{outline:2px solid var(--vinaccia);outline-offset:2px}
+.solange-form button{border:none;border-radius:20px;padding:.55rem 1rem;background:var(--ocra);color:#fff;font:600 .78rem var(--font-ui);letter-spacing:.05em;text-transform:uppercase;cursor:pointer}.solange-form button:hover{opacity:.9}
 @media(max-width:900px){.hero{min-height:auto}.hero-inner{flex-wrap:wrap;padding-top:1rem}.hero-visual{width:min(100%,520px);margin:0 auto}}
 @media(max-width:720px){.grid-2{grid-template-columns:1fr}}
 @media(max-width:640px){.compare{grid-template-columns:1fr}}
-@media(max-width:560px){.rosone{--size:130px}.nav-inner{align-items:flex-start;flex-wrap:wrap}.brand{font-size:1rem}nav.links{width:100%;order:3;justify-content:space-between;gap:1rem;font-size:.75rem}.nav-tools{position:absolute;right:1.25rem;top:.85rem}.hero h1{font-size:clamp(2.8rem,14vw,4.2rem)}.hero-visual{min-width:100%;height:440px;min-height:440px}.avatar-label{right:4%;top:8%}.character-companion{right:10px;bottom:10px;width:118px;height:148px}.companion-caption{font-size:.5rem}}
+@media(max-width:560px){.rosone{--size:130px}.nav-inner{align-items:flex-start;flex-wrap:wrap}.brand{font-size:1rem}nav.links{width:100%;order:3;justify-content:space-between;gap:1rem;font-size:.75rem}.nav-tools{position:absolute;right:1.25rem;top:.85rem}.hero h1{font-size:clamp(2.8rem,14vw,4.2rem)}.hero-visual{min-width:100%;height:440px;min-height:440px}.avatar-label{right:4%;top:6%;max-width:170px;font-size:.8rem}.character-companion{right:10px;bottom:10px;width:118px;height:148px}.companion-caption{font-size:.5rem}.solange-bubble{left:10px;bottom:10px;padding:.6rem .85rem;font-size:.76rem}.solange-panel{left:10px;bottom:10px;width:calc(100vw - 20px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.lift{transition:none}.character-companion{transition:none}}
 </style>
 </head>
@@ -80,13 +90,31 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--vinaccia);outline-o
 <div class="scroll-progress" id="scrollProgress"></div>
 <header class="nav"><div class="nav-inner">
 <div class="brand">Antonietta Pascarella <span>·</span> UX/UI</div>
-<nav class="links"><a href="#home" data-sound="hover">01. Home</a><a href="#chi-sono" data-sound="hover">02. About</a><a href="#progetto" data-sound="hover">03. Work</a><a href="#contatti" data-sound="hover">04. Contact</a></nav>
+<nav class="links"><a href="#home" data-sound="hover">Home</a><a href="#chi-sono" data-sound="hover">About</a><a href="#progetto" data-sound="hover">Work</a><a href="#contatti" data-sound="hover">Contact</a></nav>
 <div class="nav-tools"><button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false">sound on</button></div>
 </div></header>
 
 <div class="character-companion" id="characterCompanion" aria-hidden="true">
 <canvas id="companion-canvas" aria-label="Piccola ape 3D interattiva"></canvas>
 <div class="companion-caption" id="companionCaption">in ascolto</div>
+</div>
+
+<button type="button" class="solange-bubble" id="solangeBubble" data-sound="click" aria-haspopup="dialog" aria-expanded="false">
+<span class="dot"></span> Chiedi a Solange
+</button>
+
+<div class="solange-panel" id="solangePanel" role="dialog" aria-label="Chat con Solange" aria-hidden="true">
+<div class="solange-head">
+<div class="who">Solange<small>risponde a domande su Antonietta</small></div>
+<button type="button" class="solange-close" id="solangeClose" aria-label="Chiudi la chat">×</button>
+</div>
+<div class="solange-log" id="solangeLog">
+<div class="solange-msg bot">Ciao, sono Solange. Puoi chiedermi qualcosa sul percorso di Antonietta, sul progetto in portfolio, sulla palette o sull'accessibilità. Se non trovo la risposta nel testo di questa pagina, te lo dico chiaramente.</div>
+</div>
+<form class="solange-form" id="solangeForm">
+<input type="text" id="solangeInput" placeholder="Es. cosa ha fatto Antonietta?" autocomplete="off">
+<button type="submit" data-sound="click">Chiedi</button>
+</form>
 </div>
 
 <main>
@@ -97,9 +125,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--vinaccia);outline-o
 <p class="hero-intro">Sono Antonietta, laureata magistrale in Informatica con lode. Ho portato nel design il metodo che mi ha insegnato l'informatica: ricerca strutturata, iterazioni documentate e decisioni motivate, non solo schermate belle da vedere.</p>
 <div class="hero-tags"><span class="tag" data-sound="hover">UX Research</span><span class="tag" data-sound="hover">UI Design</span><span class="tag" data-sound="hover">Design System</span><span class="tag" data-sound="hover">Data-Informed Design</span></div>
 <a class="cta" href="#progetto" data-sound="click">Scopri il progetto ↓</a>
-<div class="hero-note">scroll / move the character / listen to the details</div>
 </div>
-<div class="hero-visual"><canvas id="avatar-canvas" aria-label="Ape 3D interattiva"></canvas><div class="avatar-label">ciao, sono Antonietta! ♡</div><div class="avatar-status"><i></i><span>interactive character</span></div></div>
+<div class="hero-visual"><canvas id="avatar-canvas" aria-label="Ape 3D interattiva"></canvas><div class="avatar-label">ciao, sono Solange e risponderò alle tue domande su Antonietta</div></div>
 </div></section>
 
 <div class="wrap"><div class="divider"><div class="rosone small"></div></div></div>
@@ -452,13 +479,9 @@ function animateBee(model, time, delta) {
   });
 }
 
-function setPointerFromEvent(event, canvas) {
-  const rect = canvas.getBoundingClientRect();
-
-  if (!rect.width || !rect.height) return;
-
-  const x = (event.clientX - rect.left) / rect.width;
-  const y = (event.clientY - rect.top) / rect.height;
+function setPointerFromWindow(event) {
+  const x = event.clientX / window.innerWidth;
+  const y = event.clientY / window.innerHeight;
 
   pointer.targetX = THREE.MathUtils.clamp((x - 0.5) * 2, -1, 1);
   pointer.targetY = THREE.MathUtils.clamp((y - 0.5) * 2, -1, 1);
@@ -489,12 +512,10 @@ function init3D() {
   resizeScene(hero, heroCanvas);
   window.addEventListener('resize', () => resizeScene(hero, heroCanvas));
 
-  heroCanvas.addEventListener(
+  window.addEventListener(
     'pointermove',
-    event => setPointerFromEvent(event, heroCanvas)
+    event => setPointerFromWindow(event)
   );
-
-  heroCanvas.addEventListener('pointerleave', resetPointer);
 
   if (companionCanvas) {
     const small = setupScene(companionCanvas, true);
@@ -514,13 +535,6 @@ function init3D() {
 
     resizeScene(small, companionCanvas);
     window.addEventListener('resize', () => resizeScene(small, companionCanvas));
-
-    companionCanvas.addEventListener(
-      'pointermove',
-      event => setPointerFromEvent(event, companionCanvas)
-    );
-
-    companionCanvas.addEventListener('pointerleave', resetPointer);
   }
 
   clock = new THREE.Clock();
@@ -675,9 +689,10 @@ function enableAudio() {
   }
 }
 
-window.addEventListener('pointerdown', enableAudio, {
-  once: true,
-  passive: true
+enableAudio();
+
+['pointerdown', 'keydown', 'touchstart', 'scroll', 'mousemove'].forEach(type => {
+  window.addEventListener(type, enableAudio, { passive: true });
 });
 
 document.querySelectorAll('[data-sound]').forEach(element => {
@@ -711,6 +726,142 @@ soundToggle?.addEventListener('click', () => {
   if (soundOn) {
     blip('click');
   }
+});
+
+const knowledgeBase = [
+  {
+    keywords: ['chi', 'antonietta', 'percorso', 'informatica', 'laurea', 'background', 'formazione', 'studi'],
+    answer: "Antonietta è una UI/UX designer laureata magistrale in Informatica con lode. Porta nel design lo stesso metodo che ha imparato in informatica: ricerca strutturata, iterazioni documentate e decisioni motivate, non solo schermate belle da vedere."
+  },
+  {
+    keywords: ['metodo', 'approccio', 'lavora', 'ruolo', 'competenze', 'ux', 'ui'],
+    answer: "Antonietta lavora sia sul lato UX, ricerca, architettura dell'informazione, user flow, sia sul lato UI, design system, alta fedeltà, accessibilità. Le interessano in particolare i contesti industriali e data intensive, dove la chiarezza dell'informazione conta quanto l'estetica."
+  },
+  {
+    keywords: ['progetto', 'caso', 'studio', 'impianto', 'industriale', 'plant', 'redesign', 'lavoro'],
+    answer: "Il progetto in portfolio è il redesign dell'interfaccia operativa di un impianto industriale, realizzato per un'azienda italiana attiva nella produzione di impianti industriali. Antonietta ha seguito UX/UI design e sviluppo del design system, dal wireframe al prototipo interattivo."
+  },
+  {
+    keywords: ['contesto', 'manager', 'tecnico', 'manutenzione', 'utenti', 'plant manager', 'technician'],
+    answer: "Il progetto serve due profili utente: il Plant Manager, interessato alla performance d'insieme dell'impianto, e il Maintenance Technician, focalizzato su manutenzione predittiva e allarmi."
+  },
+  {
+    keywords: ['ricerca', 'interviste', 'euristica', 'analisi', 'brief'],
+    answer: "Le esigenze di business e utente erano già state raccolte dal cliente tramite interviste dirette con gli utenti finali. Antonietta ha ricevuto brief e interfacce originali, e ha condotto un'analisi euristica per individuare le criticità di usabilità prima di ridisegnare."
+  },
+  {
+    keywords: ['wireframe', 'mockup', 'prototipo', 'figma', 'processo', 'fasi'],
+    answer: "Il lavoro è passato da wireframe a bassa fedeltà a mockup ad alta fedeltà, fino a un prototipo Figma cliccabile, con attenzione anche ai micro stati dei singoli componenti e non solo alle schermate finali."
+  },
+  {
+    keywords: ['user', 'stories', 'lezione', 'imparato'],
+    answer: "Una cosa che Antonietta racconta apertamente: le user stories sono state scritte alla fine del processo invece che all'inizio. Scrivendole a posteriori sono emersi elementi che avrebbero potuto migliorare l'app fin dalle prime fasi, una lezione che porta nei progetti successivi."
+  },
+  {
+    keywords: ['palette', 'colori', 'colore', 'design system'],
+    answer: "La palette del progetto è organizzata per funzione: colori base e neutrali, colori brand, colori semantici per stati positivi, critici e di warning, e accenti categorici per ogni modulo dell'app. La trovi nella sezione del caso studio."
+  },
+  {
+    keywords: ['accessibilità', 'wcag', 'stark', 'contrasto', 'suaf'],
+    answer: "Tutti i mockup sono stati verificati con Stark, Universal Accessibility Framework, per controllare la conformità alle Web Content Accessibility Guidelines. Il risultato è conformità AA su tutti i componenti e AAA per la maggior parte."
+  },
+  {
+    keywords: ['contatti', 'email', 'linkedin', 'behance', 'contattare', 'scrivere'],
+    answer: "Puoi contattare Antonietta via email oppure trovarla su LinkedIn e Behance, con i link in fondo alla pagina."
+  }
+];
+
+function normalize(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ');
+}
+
+function askSolange(question) {
+  const words = normalize(question)
+    .split(/\s+/)
+    .filter(word => word.length > 2);
+
+  if (!words.length) {
+    return "Fammi una domanda un po' più specifica, così provo a trovare la risposta.";
+  }
+
+  let best = null;
+  let bestScore = 0;
+
+  knowledgeBase.forEach(entry => {
+    let score = 0;
+
+    words.forEach(word => {
+      entry.keywords.forEach(keyword => {
+        if (keyword.includes(word) || word.includes(keyword)) {
+          score += 1;
+        }
+      });
+    });
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = entry;
+    }
+  });
+
+  if (best && bestScore > 0) {
+    return best.answer;
+  }
+
+  return 'Questa informazione non è presente in questa pagina.';
+}
+
+const solangeBubble = document.getElementById('solangeBubble');
+const solangePanel = document.getElementById('solangePanel');
+const solangeClose = document.getElementById('solangeClose');
+const solangeForm = document.getElementById('solangeForm');
+const solangeInput = document.getElementById('solangeInput');
+const solangeLog = document.getElementById('solangeLog');
+
+function openSolange() {
+  solangePanel.classList.add('is-open');
+  solangePanel.setAttribute('aria-hidden', 'false');
+  solangeBubble.setAttribute('aria-expanded', 'true');
+  solangeBubble.style.display = 'none';
+  solangeInput.focus();
+}
+
+function closeSolange() {
+  solangePanel.classList.remove('is-open');
+  solangePanel.setAttribute('aria-hidden', 'true');
+  solangeBubble.setAttribute('aria-expanded', 'false');
+  solangeBubble.style.display = '';
+}
+
+solangeBubble?.addEventListener('click', openSolange);
+solangeClose?.addEventListener('click', closeSolange);
+
+solangeForm?.addEventListener('submit', event => {
+  event.preventDefault();
+
+  const question = solangeInput.value.trim();
+  if (!question) return;
+
+  const userBubble = document.createElement('div');
+  userBubble.className = 'solange-msg user';
+  userBubble.textContent = question;
+  solangeLog.appendChild(userBubble);
+
+  const answer = askSolange(question);
+
+  const botBubble = document.createElement('div');
+  botBubble.className = 'solange-msg bot';
+  botBubble.textContent = answer;
+  solangeLog.appendChild(botBubble);
+
+  solangeInput.value = '';
+  solangeLog.scrollTop = solangeLog.scrollHeight;
+
+  blip('click');
 });
 </script>
 </body>
