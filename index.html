@@ -22,7 +22,7 @@
 </script>
 
 <style>
-:root{--bg:#F1EDE4;--bg-panel:#E8E0CC;--bg-panel-deep:#DED2B4;--ink:#241B12;--ink-soft:#4B3B27;--ink-faint:#7A6A54;--line:#C6B78F;--line-soft:#D8CBA9;--lavanda:#64628C;--oliva:#5F7148;--ocra:#A97C22;--vinaccia:#6E2C2C;--font-display:'Cormorant Garamond',serif;--font-body:'EB Garamond',Georgia,serif;--font-ui:'Jost',sans-serif;--h1:clamp(2.4rem,4.5vw,3rem);--h2:clamp(1.9rem,3.2vw,2.25rem);--h3:clamp(1.35rem,2.1vw,1.5rem);--body:1.0625rem;--micro:.8125rem}*{box-sizing:border-box;cursor:url('loading_flying_bee.svg') 48 48,auto}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}::selection{background:var(--ocra);color:#fff}a{color:inherit}img,svg{max-width:100%;display:block}h1,h2,h3{font-family:var(--font-display);color:var(--ink);margin:0 0 .5em;font-weight:700;letter-spacing:.005em}h1{font-size:var(--h1);line-height:1.12}h2{font-size:var(--h2);font-weight:600}h3{font-size:var(--h3);font-weight:600;color:var(--ink-soft)}p{margin:0 0 1.1em;color:var(--ink-soft)}em{color:var(--vinaccia);font-style:italic}.eyebrow{font-family:var(--font-ui);font-size:var(--micro);letter-spacing:.16em;text-transform:uppercase;color:var(--ocra);font-weight:500;display:inline-block;margin-bottom:.9em}.wrap{max-width:1040px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem)}
+:root{--bg:#F1EDE4;--bg-panel:#E8E0CC;--bg-panel-deep:#DED2B4;--ink:#241B12;--ink-soft:#4B3B27;--ink-faint:#7A6A54;--line:#C6B78F;--line-soft:#D8CBA9;--lavanda:#64628C;--oliva:#5F7148;--ocra:#A97C22;--vinaccia:#6E2C2C;--font-display:'Cormorant Garamond',serif;--font-body:'EB Garamond',Georgia,serif;--font-ui:'Jost',sans-serif;--h1:clamp(2.4rem,4.5vw,3rem);--h2:clamp(1.9rem,3.2vw,2.25rem);--h3:clamp(1.35rem,2.1vw,1.5rem);--body:1.0625rem;--micro:.8125rem}*{box-sizing:border-box;cursor:url('loading_flying_bee.svg') 144 144,auto}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}::selection{background:var(--ocra);color:#fff}a{color:inherit}img,svg{max-width:100%;display:block}h1,h2,h3{font-family:var(--font-display);color:var(--ink);margin:0 0 .5em;font-weight:700;letter-spacing:.005em}h1{font-size:var(--h1);line-height:1.12}h2{font-size:var(--h2);font-weight:600}h3{font-size:var(--h3);font-weight:600;color:var(--ink-soft)}p{margin:0 0 1.1em;color:var(--ink-soft)}em{color:var(--vinaccia);font-style:italic}.eyebrow{font-family:var(--font-ui);font-size:var(--micro);letter-spacing:.16em;text-transform:uppercase;color:var(--ocra);font-weight:500;display:inline-block;margin-bottom:.9em}.wrap{max-width:1040px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem)}
 
 .rosone{--size:200px;width:var(--size);height:var(--size);border-radius:50%;position:relative;flex:none;background:radial-gradient(circle at center,transparent 0 26%,var(--line-soft) 26% 27%,transparent 27% 40%,var(--line-soft) 40% 41%,transparent 41%),repeating-conic-gradient(from 0deg,var(--line) 0deg 3deg,transparent 3deg 30deg);border:2px solid var(--line);box-shadow:0 0 0 6px var(--bg),0 0 0 8px var(--line-soft)}.rosone::after{content:"";position:absolute;inset:38%;border-radius:50%;background:var(--ocra);opacity:.85}.rosone.small{--size:64px;box-shadow:0 0 0 4px var(--bg),0 0 0 5px var(--line-soft)}.divider{display:flex;align-items:center;justify-content:center;gap:1rem;margin:3.2rem 0;color:var(--line)}.divider::before,.divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
 
@@ -690,9 +690,9 @@ function blip(kind = 'hover') {
   oscillator.frequency.setValueAtTime(kind === 'click' ? 520 : 330, now);
   oscillator.frequency.exponentialRampToValueAtTime(kind === 'click' ? 760 : 420, now + 0.055);
 
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(kind === 'click' ? 0.028 : 0.009, now + 0.008);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + (kind === 'click' ? 0.1 : 0.055));
+  gain.gain.setValueAtTime(0.0005, now);
+  gain.gain.exponentialRampToValueAtTime(kind === 'click' ? 0.12 : 0.04, now + 0.008);
+  gain.gain.exponentialRampToValueAtTime(0.0005, now + (kind === 'click' ? 0.1 : 0.055));
 
   oscillator.connect(gain);
   gain.connect(audioCtx.destination);
@@ -721,7 +721,7 @@ function playCuriousKeypress(char) {
   osc.frequency.setValueAtTime(randomFreq, now);
   osc.frequency.exponentialRampToValueAtTime(randomFreq * 0.85, now + 0.04);
 
-  oscGain.gain.setValueAtTime(0.015, now);
+  oscGain.gain.setValueAtTime(0.08, now);
   oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
 
   osc.connect(oscGain);
