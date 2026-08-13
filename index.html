@@ -235,7 +235,7 @@ function centerModel(source, small = false) {
   const size = bounds.getSize(new THREE.Vector3());
   const center = bounds.getCenter(new THREE.Vector3());
 
-  const targetHeight = small ? 1.45 : 2.15;
+  const targetHeight = small ? 1.45 : 1.55;
   const scale = targetHeight / Math.max(size.z, 0.001);
 
   source.scale.setScalar(scale);
