@@ -260,17 +260,6 @@ header.nav{
   flex-wrap:nowrap;
 }
 
-.brand{
-  font-family:var(--font-display);
-  font-weight:700;
-  font-size:1.15rem;
-  letter-spacing:.03em;
-}
-
-.brand span{
-  color:var(--ocra);
-}
-
 nav.links{
   display:flex;
   gap:1.6rem;
@@ -1069,10 +1058,8 @@ button:focus-visible{
 
 @media(max-width:560px){
   .rosone{ --size:130px; }
-  .nav-inner{ align-items:flex-start; flex-wrap:wrap; }
-  .brand{ font-size:1rem; }
-  nav.links{ width:100%; order:3; justify-content:space-between; gap:1rem; font-size:.75rem; }
-  .nav-tools{ position:absolute; right:1.25rem; top:.85rem; }
+  .nav-inner{ align-items:center; flex-wrap:nowrap; }
+  nav.links{ gap:.8rem; font-size:.72rem; }
   .hero h1{ font-size:clamp(2.8rem,14vw,4.2rem); }
   .hero-visual{ min-width:100%; height:440px; min-height:440px; }
   .avatar-label{ right:1%; top:2%; width:145px; max-width:145px; font-size:.78rem; }
@@ -1097,10 +1084,6 @@ button:focus-visible{
 
 <header class="nav">
   <div class="nav-inner">
-
-    <div class="brand">
-      Antonietta Pascarella <span>·</span> UX/UI
-    </div>
 
     <nav class="links">
       <a href="#home" data-sound="hover" data-i18n="nav.home">Home</a>
@@ -1714,29 +1697,55 @@ function blip(kind = 'hover') {
   oscillator.stop(now + 0.12);
 }
 
-function playKeypressSound() {
-  if (!soundOn || !AudioContextClass) return;
+// Suono tastiera meccanica realistico (Web Audio API)
+function playKeypressSound(char) {
+  if (!soundOn || !AudioContextClass || char === ' ') return;
   audioCtx ||= new AudioContextClass();
   if (audioCtx.state !== 'running') return;
 
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
   const now = audioCtx.currentTime;
 
-  const baseFreq = 580 + Math.random() * 220; 
+  // Rumore d'impatto per simulare il tasto meccanico
+  const bufferSize = audioCtx.sampleRate * 0.015;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+  }
+  const noise = audioCtx.createBufferSource();
+  noise.buffer = buffer;
+
+  const noiseFilter = audioCtx.createBiquadFilter();
+  noiseFilter.type = 'bandpass';
+  noiseFilter.frequency.setValueAtTime(1800 + Math.random() * 600, now);
+  noiseFilter.Q.setValueAtTime(2, now);
+
+  const noiseGain = audioCtx.createGain();
+  noiseGain.gain.setValueAtTime(0.04, now);
+  noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.015);
+
+  noise.connect(noiseFilter);
+  noiseFilter.connect(noiseGain);
+  noiseGain.connect(audioCtx.destination);
+
+  // Tono di risonanza del tasto
+  const osc = audioCtx.createOscillator();
+  const oscGain = audioCtx.createGain();
+  const pitch = 350 + Math.random() * 120;
 
   osc.type = 'triangle';
-  osc.frequency.setValueAtTime(baseFreq, now);
-  osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.45, now + 0.03);
+  osc.frequency.setValueAtTime(pitch, now);
+  osc.frequency.exponentialRampToValueAtTime(pitch * 0.5, now + 0.025);
 
-  gain.gain.setValueAtTime(0.012, now);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+  oscGain.gain.setValueAtTime(0.02, now);
+  oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.025);
 
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
+  osc.connect(oscGain);
+  oscGain.connect(audioCtx.destination);
 
+  noise.start(now);
   osc.start(now);
-  osc.stop(now + 0.04);
+  osc.stop(now + 0.03);
 }
 
 // Toggle Suono Icone SVG
@@ -1759,7 +1768,7 @@ soundToggle?.addEventListener('click', () => {
 });
 
 
-// --- TYPEWRITER BANNER AUTOMATICO ---
+// --- TYPEWRITER BANNER AUTOMATICO CON SUONO DIGITAZIONE ---
 function startTypewriterAnimation() {
   const container = document.getElementById('typewriterText');
   if (!container) return;
@@ -1770,17 +1779,18 @@ function startTypewriterAnimation() {
 
   function typeChar() {
     if (index < textToType.length) {
-      container.textContent += textToType.charAt(index);
+      const char = textToType.charAt(index);
+      container.textContent += char;
       index++;
-      playKeypressSound();
+      playKeypressSound(char);
       
-      // variazione casuale per simulare la digitazione umana
-      const delay = 45 + Math.random() * 35;
+      // Variazione casuale della velocità di digitazione
+      const delay = 50 + Math.random() * 40;
       setTimeout(typeChar, delay);
     }
   }
 
-  // Avvio post-caricamento
+  // Avvio automatico post-caricamento
   setTimeout(typeChar, 300);
 }
 
