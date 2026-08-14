@@ -22,8 +22,12 @@
 </script>
 
 <style>
-:root{--bg:#F1EDE4;--bg-panel:#E8E0CC;--bg-panel-deep:#DED2B4;--ink:#241B12;--ink-soft:#4B3B27;--ink-faint:#7A6A54;--line:#C6B78F;--line-soft:#D8CBA9;--lavanda:#64628C;--oliva:#5F7148;--ocra:#A97C22;--vinaccia:#6E2C2C;--font-display:'Cormorant Garamond',serif;--font-body:'EB Garamond',Georgia,serif;--font-ui:'Jost',sans-serif;--h1:clamp(2.4rem,4.5vw,3rem);--h2:clamp(1.9rem,3.2vw,2.25rem);--h3:clamp(1.35rem,2.1vw,1.5rem);--body:1.0625rem;--micro:.8125rem}*{box-sizing:border-box;cursor:url('loading_flying_bee.svg') 128 128,auto}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}::selection{background:var(--ocra);color:#fff}a{color:inherit}img,svg{max-width:100%;display:block}h1,h2,h3{font-family:var(--font-display);color:var(--ink);margin:0 0 .5em;font-weight:700;letter-spacing:.005em}h1{font-size:var(--h1);line-height:1.12}h2{font-size:var(--h2);font-weight:600}h3{font-size:var(--h3);font-weight:600;color:var(--ink-soft)}p{margin:0 0 1.1em;color:var(--ink-soft)}em{color:var(--vinaccia);font-style:italic}.eyebrow{font-family:var(--font-ui);font-size:var(--micro);letter-spacing:.16em;text-transform:uppercase;color:var(--ocra);font-weight:500;display:inline-block;margin-bottom:.9em}.wrap{max-width:1040px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem)}
+:root{--bg:#F1EDE4;--bg-panel:#E8E0CC;--bg-panel-deep:#DED2B4;--ink:#241B12;--ink-soft:#4B3B27;--ink-faint:#7A6A54;--line:#C6B78F;--line-soft:#D8CBA9;--lavanda:#64628C;--oliva:#5F7148;--ocra:#A97C22;--vinaccia:#6E2C2C;--font-display:'Cormorant Garamond',serif;--font-body:'EB Garamond',Georgia,serif;--font-ui:'Jost',sans-serif;--h1:clamp(2.4rem,4.5vw,3rem);--h2:clamp(1.9rem,3.2vw,2.25rem);--h3:clamp(1.35rem,2.1vw,1.5rem);--body:1.0625rem;--micro:.8125rem}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:5rem}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:var(--body);line-height:1.55;-webkit-font-smoothing:antialiased}::selection{background:var(--ocra);color:#fff}a{color:inherit}img,svg{max-width:100%;display:block}h1,h2,h3{font-family:var(--font-display);color:var(--ink);margin:0 0 .5em;font-weight:700;letter-spacing:.005em}h1{font-size:var(--h1);line-height:1.12}h2{font-size:var(--h2);font-weight:600}h3{font-size:var(--h3);font-weight:600;color:var(--ink-soft)}p{margin:0 0 1.1em;color:var(--ink-soft)}em{color:var(--vinaccia);font-style:italic}.eyebrow{font-family:var(--font-ui);font-size:var(--micro);letter-spacing:.16em;text-transform:uppercase;color:var(--ocra);font-weight:500;display:inline-block;margin-bottom:.9em}.wrap{max-width:1040px;margin:0 auto;padding:0 clamp(1.25rem,4vw,3rem)}
 
+
+.skip-link{position:fixed;left:1rem;top:1rem;z-index:200;transform:translateY(-180%);background:var(--ink);color:var(--bg);padding:.7rem 1rem;border-radius:10px;font:600 .85rem var(--font-ui);text-decoration:none;transition:transform .2s ease}.skip-link:focus{transform:none}
+.cv-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(1.5rem,4vw,3rem);align-items:start}.cv-card{height:100%}.timeline{list-style:none;margin:1.6rem 0 0;padding:0;border-left:2px solid var(--line);display:grid;gap:1.35rem}.timeline li{position:relative;padding:0 0 .1rem 1.35rem}.timeline li::before{content:"";position:absolute;left:-7px;top:.42rem;width:11px;height:11px;border-radius:50%;background:var(--ocra);border:2px solid var(--bg-panel)}.timeline .date{display:block;font:600 .72rem var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--ocra);margin-bottom:.2rem}.timeline .role{display:block;font:600 1.05rem/1.25 var(--font-ui);color:var(--ink)}.timeline .place{display:block;font:.95rem var(--font-body);color:var(--ink-soft);margin:.2rem 0 .35rem}.timeline p{font-size:.96rem;margin:0}.skill-list{display:flex;flex-wrap:wrap;gap:.55rem;margin:.8rem 0 0;padding:0;list-style:none}.skill-list li{font:500 .76rem/1.25 var(--font-ui);color:var(--ink-soft);border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:.45rem .7rem}.cv-meta{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.2rem}.cv-meta-item{padding:1rem;border:1px solid var(--line-soft);border-radius:14px;background:rgba(241,237,228,.45)}.cv-meta-item strong{display:block;font:600 .72rem var(--font-ui);letter-spacing:.08em;text-transform:uppercase;color:var(--ocra);margin-bottom:.25rem}.cv-meta-item span{color:var(--ink-soft)}.cert-link{display:inline-flex;align-items:center;gap:.45rem;margin-top:.7rem;font:600 .78rem var(--font-ui);text-transform:uppercase;letter-spacing:.06em;text-decoration:none;border-bottom:1px solid var(--ocra);padding-bottom:.2rem}.section-note{max-width:65ch;margin-bottom:1.5rem}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:768px){.cv-grid{grid-template-columns:1fr}.cv-meta{grid-template-columns:1fr}}
 .rosone{--size:200px;width:var(--size);height:var(--size);border-radius:50%;position:relative;flex:none;background:radial-gradient(circle at center,transparent 0 26%,var(--line-soft) 26% 27%,transparent 27% 40%,var(--line-soft) 40% 41%,transparent 41%),repeating-conic-gradient(from 0deg,var(--line) 0deg 3deg,transparent 3deg 30deg);border:2px solid var(--line);box-shadow:0 0 0 6px var(--bg),0 0 0 8px var(--line-soft)}.rosone::after{content:"";position:absolute;inset:38%;border-radius:50%;background:var(--ocra);opacity:.85}.rosone.small{--size:64px;box-shadow:0 0 0 4px var(--bg),0 0 0 5px var(--line-soft)}.divider{display:flex;align-items:center;justify-content:center;gap:1rem;margin:3.2rem 0;color:var(--line)}.divider::before,.divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent)}
 
 .panel{position:relative;background:var(--bg-panel);border:1px solid var(--line);border-radius:20px;padding:clamp(1.75rem,4vw,3rem);box-shadow:inset 0 0 0 6px var(--bg),inset 0 0 0 7px var(--line-soft)}.panel::before,.panel::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,var(--ocra) 0 30%,transparent 32%),radial-gradient(circle,var(--line) 0 60%,transparent 62%)}.panel::before{top:10px;left:10px}.panel::after{bottom:10px;right:10px}header.nav{position:sticky;top:0;z-index:50;background:rgba(241,237,228,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}.nav-inner{max-width:1040px;margin:0 auto;padding:.9rem clamp(1.25rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:nowrap}
@@ -51,16 +55,19 @@ section{padding:clamp(2.5rem,6vw,4.5rem) 0}section#chi-sono,section#accessibilit
 </head>
 
 <body>
+<a class="skip-link" href="#main-content">Salta al contenuto principale</a>
 
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <header class="nav">
+  <a class="sr-only" href="#main-content">Contenuto principale</a>
   <div class="nav-inner">
 
     <nav class="links">
       <a href="#home" data-sound="hover" data-i18n="nav.home">Home</a>
       <a href="#chi-sono" data-sound="hover" data-i18n="nav.about">Chi sono</a>
       <a href="#progetto" data-sound="hover" data-i18n="nav.work">Progetti</a>
+      <a href="#percorso" data-sound="hover" data-i18n="nav.cv">Percorso</a>
       <a href="#contatti" data-sound="hover" data-i18n="nav.contact">Contatti</a>
     </nav>
 
@@ -100,7 +107,7 @@ section{padding:clamp(2.5rem,6vw,4.5rem) 0}section#chi-sono,section#accessibilit
   <span data-i18n="bot.bubble">Chiedi a Solange 💬</span>
 </button>
 
-<div class="solange-panel" id="solangePanel" role="dialog" aria-label="Chat con Solange" aria-hidden="true">
+<div class="solange-panel" id="solangePanel" role="dialog" aria-label="Chat con Solange" aria-modal="true" aria-hidden="true">
   <div class="solange-head">
     <div class="who">
       Solange 🐝
@@ -109,19 +116,20 @@ section{padding:clamp(2.5rem,6vw,4.5rem) 0}section#chi-sono,section#accessibilit
     <button type="button" class="solange-close" id="solangeClose" aria-label="Chiudi la chat">×</button>
   </div>
 
-  <div class="solange-log" id="solangeLog">
+  <div class="solange-log" id="solangeLog" role="log" aria-live="polite" aria-relevant="additions">
     <div class="solange-msg bot" data-i18n="bot.welcome">
       Ciao! Sono Solange 🐝 Chiedimi quello che vuoi: il percorso di Antonietta, i dettagli dei suoi progetti, le scelte sui colori o come cura l'accessibilità.
     </div>
   </div>
 
   <form class="solange-form" id="solangeForm">
-    <input type="text" id="solangeInput" placeholder="Es. Di cosa si occupa Antonietta?" autocomplete="off" data-i18n-ph="bot.placeholder">
+    <label class="sr-only" for="solangeInput">Domanda per Solange</label>
+     <input type="text" id="solangeInput" placeholder="Es. Di cosa si occupa Antonietta?" autocomplete="off" data-i18n-ph="bot.placeholder">
     <button type="submit" data-sound="click" data-i18n="bot.submit">Invia</button>
   </form>
 </div>
 
-<main>
+<main id="main-content">
 
 <section id="home" class="hero">
   <div class="wrap hero-inner">
@@ -152,7 +160,7 @@ section{padding:clamp(2.5rem,6vw,4.5rem) 0}section#chi-sono,section#accessibilit
     </div>
 
     <div class="hero-visual">
-      <canvas id="avatar-canvas" aria-label="Ape 3D interattiva"></canvas>
+      <canvas id="avatar-canvas" aria-label="Ape 3D interattiva. Elemento decorativo; i contenuti principali sono disponibili nel testo della pagina."></canvas>
       <div class="avatar-label" id="avatarLabel" data-i18n="hero.avatarLabel">
         Piacere! Sono Solange, la tua guida per scoprire l'esperienza di Antonietta 🐝
       </div>
@@ -186,6 +194,86 @@ section{padding:clamp(2.5rem,6vw,4.5rem) 0}section#chi-sono,section#accessibilit
         </p>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="divider">
+    <div class="rosone small"></div>
+  </div>
+</div>
+
+
+<section id="percorso" class="reveal">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="cv.eyebrow">Percorso</span>
+    <h2 data-i18n="cv.title">Esperienza, formazione e competenze tecniche</h2>
+    <p class="section-note" data-i18n="cv.lede">
+      Il mio profilo unisce UX/UI design, informatica, AI e cloud: progetto esperienze digitali accessibili e, quando serve, lavoro direttamente con dati, API e infrastrutture.
+    </p>
+
+    <div class="cv-grid">
+      <div class="panel cv-card">
+        <h3 data-i18n="cv.experienceTitle">Esperienza</h3>
+        <ol class="timeline">
+          <li>
+            <span class="date" data-i18n="cv.eetechDate">11/2023 – oggi</span>
+            <span class="role" data-i18n="cv.eetechRole">UX/UI Designer · AI Developer · AWS Solutions Architect</span>
+            <span class="place">EETECH · Bologna</span>
+            <p data-i18n="cv.eetechDesc">Disegno interfacce responsive e accessibili per contesti B2B e B2C, collaboro con sviluppatori e stakeholder e conduco ricerca e usability testing. Sviluppo inoltre pipeline ML su dati da sensori, integro modelli in AWS e realizzo dashboard per rendere interpretabili dati complessi anche a utenti non tecnici. Coordino il team Research &amp; Development.</p>
+          </li>
+          <li>
+            <span class="date" data-i18n="cv.thesisDate">03/2023 – 08/2023</span>
+            <span class="role" data-i18n="cv.thesisRole">Tesi · Web application per la riabilitazione</span>
+            <span class="place">University of Bologna · collaborazione con Istituto Ortopedico Rizzoli</span>
+            <p data-i18n="cv.thesisDesc">Proposta, studio di fattibilità, use case, interviste, wireframe, sviluppo responsive con Dash/Flask/React e validazione tramite System Usability Scale.</p>
+          </li>
+          <li>
+            <span class="date" data-i18n="cv.internDate">10/2022 – 10/2023</span>
+            <span class="role" data-i18n="cv.internRole">Internship · Data mining e analisi dei percorsi clinici</span>
+            <span class="place">University of Bologna</span>
+            <p data-i18n="cv.internDesc">Pre-processing, analisi e classificazione dei dati; studio e confronto dei percorsi assistenziali nel Pronto Soccorso con metodologie di data mining.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="panel cv-card">
+        <h3 data-i18n="cv.educationTitle">Formazione</h3>
+        <ol class="timeline">
+          <li>
+            <span class="date">10/2021 – 10/2023</span>
+            <span class="role" data-i18n="cv.masterRole">Laurea magistrale in Informatica · 110 e lode</span>
+            <span class="place">University of Bologna</span>
+            <p data-i18n="cv.masterDesc">Data analytics, AI, usability e UX design, wireframe, mockup e prototipi, visual design, design system, user testing e validazione con stakeholder.</p>
+          </li>
+          <li>
+            <span class="date">09/2018 – 09/2021</span>
+            <span class="role" data-i18n="cv.bachelorRole">Laurea triennale</span>
+            <span class="place">University of Pescara</span>
+            <p data-i18n="cv.bachelorDesc">Programmazione web e mobile, Java, PHP, database, algoritmi e strutture dati, sistemi operativi, reti e data mining.</p>
+          </li>
+        </ol>
+
+        <div class="cv-meta">
+          <div class="cv-meta-item">
+            <strong data-i18n="cv.certLabel">Certificazione</strong>
+            <span>AWS Certified Solutions Architect – Associate</span>
+            <a class="cert-link" href="https://www.credly.com/badges/1f368efe-b4dd-4b1b-b345-90950d8ab01d" target="_blank" rel="noopener noreferrer" data-i18n="cv.certLink">Verifica certificazione ↗</a>
+          </div>
+          <div class="cv-meta-item">
+            <strong data-i18n="cv.languagesLabel">Lingue</strong>
+            <span data-i18n="cv.languages">Italiano madrelingua · Inglese: C1 ascolto/lettura/produzione/interazione, B2 scrittura</span>
+          </div>
+        </div>
+
+        <h3 style="margin-top:2rem;" data-i18n="cv.skillsTitle">Competenze</h3>
+        <ul class="skill-list" aria-label="Competenze tecniche">
+          <li>UX/UI Design</li><li>Figma</li><li>Adobe XD</li><li>Design Systems</li><li>User Research</li><li>Usability Testing</li>
+          <li>Python</li><li>SQL</li><li>Pandas</li><li>Plotly</li><li>Dash</li><li>React.js</li><li>Flask</li><li>Django</li>
+          <li>Machine Learning</li><li>TensorFlow</li><li>PyTorch</li><li>AWS</li><li>Git</li><li>Terraform</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -446,6 +534,31 @@ const translations = {
     "nav.about": "Chi sono",
     "nav.work": "Progetti",
     "nav.contact": "Contatti",
+    "nav.cv": "Percorso",
+    "cv.eyebrow": "Percorso",
+    "cv.title": "Esperienza, formazione e competenze tecniche",
+    "cv.lede": "Il mio profilo unisce UX/UI design, informatica, AI e cloud: progetto esperienze digitali accessibili e, quando serve, lavoro direttamente con dati, API e infrastrutture.",
+    "cv.experienceTitle": "Esperienza",
+    "cv.eetechDate": "11/2023 – oggi",
+    "cv.eetechRole": "UX/UI Designer · AI Developer · AWS Solutions Architect",
+    "cv.eetechDesc": "Disegno interfacce responsive e accessibili per contesti B2B e B2C, collaboro con sviluppatori e stakeholder e conduco ricerca e usability testing. Sviluppo inoltre pipeline ML su dati da sensori, integro modelli in AWS e realizzo dashboard per rendere interpretabili dati complessi anche a utenti non tecnici. Coordino il team Research & Development.",
+    "cv.thesisDate": "03/2023 – 08/2023",
+    "cv.thesisRole": "Tesi · Web application per la riabilitazione",
+    "cv.thesisDesc": "Proposta, studio di fattibilità, use case, interviste, wireframe, sviluppo responsive con Dash/Flask/React e validazione tramite System Usability Scale.",
+    "cv.internDate": "10/2022 – 10/2023",
+    "cv.internRole": "Internship · Data mining e analisi dei percorsi clinici",
+    "cv.internDesc": "Pre-processing, analisi e classificazione dei dati; studio e confronto dei percorsi assistenziali nel Pronto Soccorso con metodologie di data mining.",
+    "cv.educationTitle": "Formazione",
+    "cv.masterRole": "Laurea magistrale in Informatica · 110 e lode",
+    "cv.masterDesc": "Data analytics, AI, usability e UX design, wireframe, mockup e prototipi, visual design, design system, user testing e validazione con stakeholder.",
+    "cv.bachelorRole": "Laurea triennale",
+    "cv.bachelorDesc": "Programmazione web e mobile, Java, PHP, database, algoritmi e strutture dati, sistemi operativi, reti e data mining.",
+    "cv.certLabel": "Certificazione",
+    "cv.certLink": "Verifica certificazione ↗",
+    "cv.languagesLabel": "Lingue",
+    "cv.languages": "Italiano madrelingua · Inglese: C1 ascolto/lettura/produzione/interazione, B2 scrittura",
+    "cv.skillsTitle": "Competenze",
+
     "welcome.text": "Ciao e benvenuto/a! Mi fa piacere che tu sia qui.",
     "hero.kicker": "UI/UX Designer · Bologna",
     "hero.title": "Disegno esperienze digitali con <em>rigore, cura</em> e tanta empatia.",
@@ -512,6 +625,31 @@ const translations = {
     "nav.about": "About",
     "nav.work": "Work",
     "nav.contact": "Contact",
+    "nav.cv": "Background",
+    "cv.eyebrow": "Background",
+    "cv.title": "Experience, education and technical skills",
+    "cv.lede": "My profile combines UX/UI design, computer science, AI and cloud: I design accessible digital experiences and, when needed, work directly with data, APIs and infrastructure.",
+    "cv.experienceTitle": "Experience",
+    "cv.eetechDate": "11/2023 – present",
+    "cv.eetechRole": "UX/UI Designer · AI Developer · AWS Solutions Architect",
+    "cv.eetechDesc": "I design responsive, accessible interfaces for B2B and B2C contexts, collaborate with developers and stakeholders, and run user research and usability testing. I also build ML pipelines for sensor data, integrate models on AWS, and create dashboards that make complex data understandable to non-technical users. I coordinate the Research & Development team.",
+    "cv.thesisDate": "03/2023 – 08/2023",
+    "cv.thesisRole": "Thesis · Rehabilitation web application",
+    "cv.thesisDesc": "Proposal, feasibility study, use cases, interviews, wireframes, responsive development with Dash/Flask/React, and validation through System Usability Scale testing.",
+    "cv.internDate": "10/2022 – 10/2023",
+    "cv.internRole": "Internship · Data mining and clinical pathway analysis",
+    "cv.internDesc": "Data preprocessing, analysis and classification; analysis and comparison of Emergency Department care pathways using data-mining methods.",
+    "cv.educationTitle": "Education",
+    "cv.masterRole": "Master's degree in Computer Science · graduated with honors",
+    "cv.masterDesc": "Data analytics, AI, usability and UX design, wireframes, mockups and prototypes, visual design, design systems, user testing and stakeholder validation.",
+    "cv.bachelorRole": "Bachelor's degree",
+    "cv.bachelorDesc": "Web and mobile programming, Java, PHP, databases, algorithms and data structures, operating systems, networks and data mining.",
+    "cv.certLabel": "Certification",
+    "cv.certLink": "Verify certification ↗",
+    "cv.languagesLabel": "Languages",
+    "cv.languages": "Italian native · English: C1 listening/reading/speaking, B2 writing",
+    "cv.skillsTitle": "Skills",
+
     "welcome.text": "Hi there! I'm really glad you stopped by.",
     "hero.kicker": "UI/UX Designer · Bologna",
     "hero.title": "Crafting digital experiences with <em>rigor, care</em> and empathy.",
@@ -998,7 +1136,7 @@ const sections = [...document.querySelectorAll('main section[id]')];
 const sectionObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
-    const poses = { home: 'home', 'chi-sono': 'about', progetto: 'work', contatti: 'contact' };
+    const poses = { home: 'home', 'chi-sono': 'about', progetto: 'work', percorso: 'about', contatti: 'contact' };
     const pose = poses[entry.target.id];
     if (pose) applyPose(pose);
 
@@ -1053,6 +1191,13 @@ const knowledgeBase = [
     answers: {
       it: "In questo caso studio trovi il redesign dell'interfaccia di un impianto industriale! Antonietta ha curato l'intero processo UX/UI e il Design System, rendendo i dati tecnici e predittivi immediati e semplici da leggere per tecnici e manager.",
       en: "In this case study, you can explore the redesign of an industrial plant interface! Antonietta took care of the full UX/UI process and Design System, making complex IoT data effortless to read for both technicians and managers."
+    }
+  },
+  {
+    keywords: ['esperienza','eetech','aws','ai','machine learning','certificazione','formazione','universita','università','competenze','python','terraform','inglese'],
+    answers: {
+      it: "Nel suo percorso professionale Antonietta lavora in EETECH dal novembre 2023 come UX/UI Designer, AI Developer e AWS Solutions Architect. Ha una laurea magistrale in Informatica con lode all'Università di Bologna e una laurea triennale, oltre a esperienza in ricerca, data mining e sviluppo di applicazioni. Tra le competenze tecniche ci sono Python, AWS, Terraform, React, Flask, Django, Dash, machine learning e data visualization.",
+      en: "Since November 2023, Antonietta has worked at EETECH as a UX/UI Designer, AI Developer and AWS Solutions Architect. She holds a Master's degree in Computer Science with honors from the University of Bologna, plus a Bachelor's degree, and has experience in research, data mining and application development. Her technical skills include Python, AWS, Terraform, React, Flask, Django, Dash, machine learning and data visualization."
     }
   },
   {
